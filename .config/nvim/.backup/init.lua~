@@ -1,0 +1,11 @@
+require "lazy_setup"
+require "keymapping"
+
+
+vim.opt.smarttab = true
+vim.opt.undofile = true
+
+vim.opt.backup = true
+vim.opt.backupdir = "./.backup"
+
+vim.opt.virtualedit = "onemore"
