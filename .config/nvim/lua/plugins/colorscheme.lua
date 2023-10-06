@@ -7,5 +7,5 @@ return {
 			vim.cmd([[colorscheme gruvbox-material]])
 		end,
 	},
-	{ "xiyaowong/transparent.nvim" },
+	{ "xiyaowong/transparent.nvim", lazy = false },
 }
