@@ -1,11 +1,11 @@
 return {
 	{
-		"sainnhe/gruvbox-material",
+		"rebelot/kanagawa.nvim",
 		lazy = false,
-		priority = 1000,
+		-- priority = 1000,
 		config = function()
-			vim.cmd([[colorscheme gruvbox-material]])
+			vim.cmd("colorscheme kanagawa")
 		end,
 	},
-	{ "xiyaowong/transparent.nvim", lazy = false },
+	{ "xiyaowong/transparent.nvim", enabled = true, priority = 900, lazy = false },
 }
