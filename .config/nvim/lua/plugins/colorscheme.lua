@@ -1,10 +1,25 @@
 return {
-	{
-		"rebelot/kanagawa.nvim",
-		priority = 1000,
-		config = function()
-			vim.cmd("colorscheme kanagawa")
-		end,
-	},
-	{ "xiyaowong/transparent.nvim", enabled = true, priority = 900, lazy = false },
+    {
+        "morhetz/gruvbox",
+        priority = 1000,
+        config = function()
+            vim.cmd("colorscheme gruvbox")
+        end,
+    },
+    -- { "xiyaowong/transparent.nvim", priority = 900, lazy = false, options = {
+    -- 			exclude_groups = {
+    -- 				"TelescopeNormal",
+    -- 				"TelescopeBorder",
+    -- 				"TelescopeSelectionCaret",
+    -- 				"TelescopeMatching",
+    -- 				"TelescopePromptNormal",
+    -- 				"TelescopePromptTitle",
+    -- 				"TelescopePromptPrefix",
+    -- 				"TelescopePromptBorder",
+    -- 				"TelescopePreviewTitle",
+    -- 				"TelescopePreviewBorder",
+    -- 				"TelescopeResultsTitle",
+    -- 				"TelescopeResultsBorder"
+    -- 		},
+    -- }}
 }

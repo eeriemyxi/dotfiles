@@ -3,3 +3,7 @@
 
 .config/i3/*
 !.config/i3/config
+
+# Unfinished/bad config, so hiding them.
+.config/i3
+.config/alacritty

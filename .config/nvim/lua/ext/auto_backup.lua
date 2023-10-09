@@ -3,30 +3,33 @@ vim.opt.backupdir = "./.backup"
 local backup_records = {}
 
 function backup_file(info)
-	local filename = info["file"]
+    local filename = info["file"]
 
-	print(string.format("Checking if backup is needed for `%s`...", filename))
+    local parent_path = vim.fs.dirname(filename)
+    vim.loop.fs_mkdir(parent_path, 448)
 
-	local record = backup_records[filename]
-	if record == nil then
-		backup_records[filename] = os.time() - 900
-		record = backup_records[filename]
-	end
+    print(string.format("Checking if backup is needed for `%s`...", filename))
 
-	if os.time() - record >= 900 then
-		vim.opt.backup = true
-		backup_records[filename] = os.time()
-		print(string.format("Backing up %s...", filename))
-	else
-		vim.opt.backup = false
-	end
+    local record = backup_records[filename]
+    if record == nil then
+        backup_records[filename] = os.time() - 900
+        record = backup_records[filename]
+    end
+
+    if os.time() - record >= 900 then
+        vim.opt.backup = true
+        backup_records[filename] = os.time()
+        print(string.format("Backing up %s...", filename))
+    else
+        vim.opt.backup = false
+    end
 end
 
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-	callback = function(info)
-		local formatted_date = os.date("%Y-%m-%d--%H:%M:%S")
-		vim.opt.bex = string.format("-%s~", formatted_date)
+    callback = function(info)
+        local formatted_date = os.date("%Y-%m-%d--%H:%M:%S")
+        vim.opt.bex = string.format("-%s~", formatted_date)
 
-		backup_file(info)
-	end,
+        backup_file(info)
+    end,
 })

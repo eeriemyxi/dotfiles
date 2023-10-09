@@ -1,9 +1,8 @@
 return {
-	"nvim-lualine/lualine.nvim",
-	event = "VeryLazy",
-	dependencies = { "nvim-tree/nvim-web-devicons" },
-	theme = "gruvbox-light",
-	opts = function()
-		return { theme = "gruvbox-material" }
-	end,
+    "nvim-lualine/lualine.nvim",
+    event = "VeryLazy",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+        require("lualine").setup({ options = { theme = "gruvbox" } })
+    end,
 }
