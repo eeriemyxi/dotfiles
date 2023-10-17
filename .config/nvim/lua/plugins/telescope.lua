@@ -25,5 +25,6 @@ return {
             },
         })
         tel.load_extension("fzf")
+        tel.load_extension("ag")
     end,
 }
