@@ -4,9 +4,9 @@ local backup_records = {}
 
 function backup_file(info)
     local filename = info["file"]
-
-    local parent_path = vim.fs.dirname(filename)
-    vim.loop.fs_mkdir(parent_path, 448)
+    local file_path = vim.fn.expand("#" .. info["buf"] .. ":p")
+    local parent_path = vim.fs.dirname(file_path)
+    vim.loop.fs_mkdir(parent_path .. "/.backup", 448)
 
     print(
         string.format(
