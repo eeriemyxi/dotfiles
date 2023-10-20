@@ -8,7 +8,12 @@ function backup_file(info)
     local parent_path = vim.fs.dirname(filename)
     vim.loop.fs_mkdir(parent_path, 448)
 
-    print(string.format("Checking if backup is needed for `%s`...", filename))
+    print(
+        string.format(
+            "Checking if backup is needed for `%s`...",
+            filename
+        )
+    )
 
     local record = backup_records[filename]
     if record == nil then

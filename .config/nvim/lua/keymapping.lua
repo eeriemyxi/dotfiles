@@ -1,4 +1,8 @@
-vim.keymap.set("n", "<Space>f", "<cmd>Telescope find_files<cr>")
+vim.keymap.set(
+    "n",
+    "<Space>f",
+    "<cmd>Telescope find_files<cr>"
+)
 vim.keymap.set("i", "hh", "<cmd>stopi<cr>")
 
 vim.keymap.set("n", "] ", "o<Esc>")

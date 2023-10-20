@@ -1,7 +1,6 @@
 return {
     "nvim-tree/nvim-tree.lua",
     version = "*",
-    lazy = false,
     dependencies = {
         "nvim-tree/nvim-web-devicons",
     },
@@ -12,7 +11,10 @@ return {
 
                 function opts(desc)
                     return {
-                        desc = string.format("nvim-tree: %s", desc),
+                        desc = string.format(
+                            "nvim-tree: %s",
+                            desc
+                        ),
                         buffer = bufnr,
                         noremap = true,
                         silent = true,
@@ -22,12 +24,23 @@ return {
 
                 api.config.mappings.default_on_attach(bufnr)
 
-                vim.keymap.set("n", "h", api.fs.rename_basename, opts("Rename"))
+                vim.keymap.set(
+                    "n",
+                    "h",
+                    api.fs.rename_basename,
+                    opts("Rename")
+                )
                 vim.keymap.set("n", "e", "k", opts("k"))
             end,
-            actions = { expand_all = { exclude = { ".backup", ".git" } } },
+            actions = {
+                expand_all = {
+                    exclude = { ".backup", ".git" },
+                },
+            },
         })
         vim.cmd.autocmd([[VimEnter * NvimTreeOpen]])
-        vim.cmd.autocmd([[VimEnter * call feedkeys("\<C-W>W")]])
+        vim.cmd.autocmd(
+            [[VimEnter * call feedkeys("\<C-W>W")]]
+        )
     end,
 }
