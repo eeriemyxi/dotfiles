@@ -4,6 +4,7 @@ vim.keymap.set(
     "<cmd>Telescope find_files<cr>"
 )
 vim.keymap.set("i", "hh", "<cmd>stopi<cr>")
+vim.keymap.set("n", "x", "\"_x")
 
 vim.keymap.set("n", "] ", "o<Esc>")
 vim.keymap.set("n", "[ ", "ko<Esc>")

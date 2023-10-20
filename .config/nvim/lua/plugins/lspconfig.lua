@@ -35,6 +35,5 @@ return {
             settings = pylsp_config,
             capabilities = capabilities,
         })
-        -- lspconfig.pyright.setup({capabilities = capabilities})
     end,
 }

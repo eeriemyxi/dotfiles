@@ -1,37 +1,72 @@
 return {
     { "hrsh7th/cmp-nvim-lsp", event = "LspAttach" },
-    { "hrsh7th/cmp-buffer", event = "LspAttach" },
-    { "hrsh7th/cmp-path", event = "LspAttach" },
-    { "hrsh7th/cmp-cmdline", event = "LspAttach" },
+    { "hrsh7th/cmp-buffer", event = "VeryLazy" },
+    { "hrsh7th/cmp-path", event = "VeryLazy" },
+    { "hrsh7th/cmp-cmdline", event = "VeryLazy" },
     {
         "hrsh7th/nvim-cmp",
-        event = "LspAttach",
+        event = "VeryLazy",
         config = function()
             local cmp = require("cmp")
+
             cmp.setup({
                 snippet = {
                     expand = function(args)
-                        require("luasnip").lsp_expand(
+                        require("snippy").lsp_expand(
                             args.body
                         )
                     end,
                 },
+
                 window = {
                     completion = cmp.config.window.bordered(),
                     documentation = cmp.config.window.bordered(),
                 },
+
                 mapping = cmp.mapping.preset.insert({
-                    ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-                    ["<C-f>"] = cmp.mapping.scroll_docs(4),
+
+                    ["<C-n>"] = cmp.mapping(
+                        function(fallback)
+                            if cmp.visible() then
+                                cmp.select_next_item()
+                            elseif
+                                snippy.can_expand_or_advance()
+                            then
+                                snippy.expand_or_advance()
+                            elseif has_words_before() then
+                                cmp.complete()
+                            else
+                                fallback()
+                            end
+                        end,
+                        { "i", "s" }
+                    ),
+
+                    ["<C-e>"] = cmp.mapping(
+                        function(fallback)
+                            if cmp.visible() then
+                                cmp.select_prev_item()
+                            elseif snippy.can_jump(-1) then
+                                snippy.previous()
+                            else
+                                fallback()
+                            end
+                        end,
+                        { "i", "s" }
+                    ),
+
+                    ["<C-u>"] = cmp.mapping.scroll_docs(-4),
+                    ["<C-l>"] = cmp.mapping.scroll_docs(4),
                     ["<C-Space>"] = cmp.mapping.complete(),
-                    ["<C-e>"] = cmp.mapping.abort(),
+                    ["<C-y>"] = cmp.mapping.abort(),
                     ["<CR>"] = cmp.mapping.confirm({
                         select = true,
                     }),
                 }),
+
                 sources = cmp.config.sources({
                     { name = "nvim_lsp" },
-                    { name = "luasnip" },
+                    { name = "snippy" },
                 }, {
                     { name = "buffer" },
                     { name = "codeium" },
