@@ -1,4 +1,4 @@
-require("lazy_setup")
+require("setup_plugin_manager")
 require("keymapping")
 
 require("ext.auto_backup")
