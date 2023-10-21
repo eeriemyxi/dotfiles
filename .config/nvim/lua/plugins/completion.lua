@@ -12,7 +12,7 @@ return {
             cmp.setup({
                 snippet = {
                     expand = function(args)
-                        require("snippy").lsp_expand(
+                        require("snippy").expand_snippet(
                             args.body
                         )
                     end,

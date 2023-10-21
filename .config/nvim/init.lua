@@ -2,6 +2,7 @@ require("setup_plugin_manager")
 require("keymapping")
 
 require("ext.auto_backup")
+
 if vim.g.neovide then
     require("ext.neovide")
 end
