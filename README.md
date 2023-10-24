@@ -12,3 +12,7 @@ Screenshots can be old.
 ![](assets/nvim_second.png)
 ![](assets/nvim_third.png)
 
+### Awesome (WM)
+![](assets/awesome_first.png)
+![](assets/awesome_second.png)
+![](assets/awesome_third.png)
