@@ -18,10 +18,10 @@ local net_bar = wibox.widget({
     layout = wibox.layout.align.horizontal,
     set_net_usage = function(self, val)
         t = val:sub(1, val:find("\n") - 1)
-        bytes_sent = tonumber(t:sub(1, t:find(" ") - 1))
-        bytes_recv = tonumber(t:sub(t:find(" ") + 1, t:len()))
+        bytes_recv = tonumber(t:sub(1, t:find(" ") - 1))
+        bytes_sent = tonumber(t:sub(t:find(" ") + 1, t:len()))
         self.usage.text =
-            string.format("%s up %s down", bytes_recv // 1024, bytes_sent // 1024)
+            string.format("%s up %s down", bytes_sent // 1024, bytes_recv // 1024)
     end,
 })
 

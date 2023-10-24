@@ -8,7 +8,7 @@ constants.SH_CMD_CPU_USAGE =
 constants.SH_CMD_MEM_USAGE =
     [[python -c "import psutil;print(f'{psutil.virtual_memory().percent:.0f}', end='')"]]
 constants.SH_CMD_NET_USAGE = string.format(
-    [[python -c "import psutil, time; n1 = psutil.net_io_counters(pernic=True); time.sleep(1); n2 = psutil.net_io_counters(pernic=True); s = (lambda n1, n2, it, a: (getattr(n2[it], a) - getattr(n1[it], a))); print(s(n1, n2, (it := '%s'), 'bytes_sent'), s(n1, n2, it, 'bytes_recv'))"]],
+    [[python -c "import psutil, time; n1 = psutil.net_io_counters(pernic=True); time.sleep(1); n2 = psutil.net_io_counters(pernic=True); s = (lambda n1, n2, it, a: (getattr(n2[it], a) - getattr(n1[it], a))); print(s(n1, n2, (it := '%s'), 'bytes_recv'), s(n1, n2, it, 'bytes_sent'))"]],
     constants.NETWORK_INTERFACE_NAME
 )
 
