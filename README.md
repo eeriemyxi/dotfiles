@@ -7,7 +7,7 @@ My personal dotfiles.
 # Screenshots
 Screenshots can be old.
 
-### Neovim
+### Neovim (Text Editor)
 ![](assets/nvim_first.png)
 ![](assets/nvim_second.png)
 ![](assets/nvim_third.png)
