@@ -50,6 +50,18 @@ local personal_keys = gears.table.join(
     end),
     awful.key({}, "XF86AudioStop", function()
         awful.spawn("playerctl stop")
+    end),
+
+    -- Got a new keyboard, but it doesn't have 
+    -- media keys...
+    awful.key({ "Mod1", "Shift" }, "k", function()
+        awful.spawn("playerctl play-pause")
+    end),
+    awful.key({ "Mod1", "Shift" }, "l", function()
+        awful.spawn("playerctl previous")
+    end),
+    awful.key({ "Mod1", "Shift" }, "u", function()
+        awful.spawn("playerctl next")
     end)
 )
 

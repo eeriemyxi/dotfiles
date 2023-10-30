@@ -213,10 +213,16 @@ awful.screen.connect_for_each_screen(function(s)
     )
     tag_cmd = awful.tag.add(
         "  cmd  ",
-        { screen = s, selected = false, layout = awful.layout.suit.fair }
+        { screen = s, selected = false, layout = awful.layout.suit.tile }
     )
-    tag_any1 = awful.tag.add("  any  ", { screen = s, selected = false })
-    tag_any2 = awful.tag.add("  any  ", { screen = s, selected = false })
+    tag_any1 = awful.tag.add(
+        "  any  ",
+        { screen = s, selected = false, layout = awful.layout.suit.tile }
+    )
+    tag_any2 = awful.tag.add(
+        "  any  ",
+        { screen = s, selected = false, layout = awful.layout.suit.tile }
+    )
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
@@ -285,13 +291,13 @@ end)
 -- }}}
 
 -- {{{ Mouse bindings
-root.buttons(gears.table.join(
-    awful.button({}, 3, function()
-        mymainmenu:toggle()
-    end),
-    awful.button({}, 4, awful.tag.viewnext),
-    awful.button({}, 5, awful.tag.viewprev)
-))
+-- root.buttons(gears.table.join(
+--     awful.button({}, 3, function()
+--         mymainmenu:toggle()
+--     end),
+--     awful.button({}, 4, awful.tag.viewnext),
+--     awful.button({}, 5, awful.tag.viewprev)
+-- ))
 -- }}}
 
 global_keys = require("ext.keymapping.global")
