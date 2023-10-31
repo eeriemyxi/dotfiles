@@ -37,11 +37,7 @@ def on_release(key):
 
         handle_backspace()
 
-        try:
-            CTRL_CHARS[key.char]
-        except KeyError:
-            pass
-        else:
+        if key.char in CTRL_CHARS:
             with controller.pressed(Key.ctrl):
                 controller.tap(key_obj)
                 return
