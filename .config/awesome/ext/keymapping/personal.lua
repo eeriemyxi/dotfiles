@@ -33,11 +33,11 @@ local personal_keys = gears.table.join(
     awful.key({}, "XF86AudioMute", function()
         awful.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle")
     end),
-    awful.key({ modkey, "Shift" }, "h", function()
-        awful.spawn(
-            "setxkbmap us -option shift:both_capslock " .. "-variant colemak; xset r 66"
-        )
-    end),
+    -- awful.key({ modkey, "Shift" }, "h", function()
+    --     awful.spawn(
+    --         "setxkbmap us -option shift:both_capslock " .. "-variant colemak; xset r 66"
+    --     )
+    -- ),
 
     awful.key({}, "XF86AudioPlay", function()
         awful.spawn("playerctl play-pause")
@@ -69,8 +69,11 @@ local personal_keys = gears.table.join(
     awful.key({ modkey, "Mod1"}, "u", function()
         awful.spawn("playerctl next")
     end),
-    awful.key({ modkey, "Mod1"}, "d", function()
+    awful.key({ modkey, "Mod1"}, "h", function()
         awful.spawn("flameshot gui")
+    end),
+    awful.key({ modkey }, "y", function()
+        awful.spawn("python /home/eeriemyxi/.config/awesome/ext/scripts/arrow_mode.py")
     end)
 )
 
