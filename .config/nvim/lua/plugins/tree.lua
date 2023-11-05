@@ -4,6 +4,7 @@ return {
     dependencies = {
         "nvim-tree/nvim-web-devicons",
     },
+    cond = not vim.g.started_by_firenvim,
     config = function()
         require("nvim-tree").setup({
             on_attach = function(bufnr)

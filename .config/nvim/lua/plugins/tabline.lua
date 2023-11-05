@@ -7,6 +7,7 @@ return {
     opts = {
         letters = "arstneiokcvm",
     },
+    cond = not vim.g.started_by_firenvim,
     init = function()
         local map = vim.api.nvim_set_keymap
         local opts = { noremap = true, silent = true }

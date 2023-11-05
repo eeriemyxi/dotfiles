@@ -10,7 +10,7 @@ from pynput.keyboard import Controller, Listener, Key
 
 
 SUPPRESS = False
-AL_SET = ("r", "f", "s", "t") + ("n", "u", "e", "i")
+AL_SET = ("r", "s", "t", "d") + ("h", "n", "e", "i")
 RE_SET = ("left", "up", "down", "right")
 ASSIGNED_CHARS = {}
 
