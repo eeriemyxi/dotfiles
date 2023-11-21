@@ -11,7 +11,6 @@ return {
             pylsp = {
                 plugins = {
                     ruff = { enable = true },
-                    pylsp_mypy = { enabled = false },
                 },
             },
         }
@@ -33,6 +32,9 @@ return {
         })
         lspconfig.pylsp.setup({
             settings = pylsp_config,
+            capabilities = capabilities,
+        })
+        lspconfig.clangd.setup({
             capabilities = capabilities,
         })
     end,

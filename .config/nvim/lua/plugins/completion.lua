@@ -1,8 +1,8 @@
 return {
-    { "hrsh7th/cmp-nvim-lsp", event = "LspAttach" },
     { "hrsh7th/cmp-buffer", event = "VeryLazy" },
-    { "hrsh7th/cmp-path", event = "VeryLazy" },
     { "hrsh7th/cmp-cmdline", event = "VeryLazy" },
+    { "hrsh7th/cmp-nvim-lsp", event = "LspAttach" },
+    { "hrsh7th/cmp-path", event = "VeryLazy" },
     {
         "hrsh7th/nvim-cmp",
         event = "VeryLazy",

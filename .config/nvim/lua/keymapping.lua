@@ -5,12 +5,31 @@ vim.keymap.set(
 )
 vim.keymap.set("i", "hh", "<cmd>stopi<cr>")
 vim.keymap.set("n", "x", "\"_x")
+vim.keymap.set("v", "x", "\"_d")
 
 vim.keymap.set("n", "] ", "o<Esc>")
-vim.keymap.set("n", "[ ", "ko<Esc>")
+vim.keymap.set("n", "L", "<cmd>redo<cr>")
+vim.keymap.set("n", "U", "~")
+vim.keymap.set("n", "[ ", "O<Esc>")
 
-vim.keymap.set({ "n" }, "<Space>t", "<cmd>NvimTreeOpen<cr>")
+vim.keymap.set(
+    { "n" },
+    "<Space>tr",
+    "<cmd>NvimTreeToggle<cr>"
+)
 vim.keymap.set({ "n" }, "<Space>w", "<C-W>W")
+
+vim.keymap.set({ "n", "v" }, "k", "n")
+
+vim.keymap.set({ "n", "v" }, "<Space>h", "<C-W>h")
+vim.keymap.set({ "n", "v" }, "<Space>n", "<C-W>j")
+vim.keymap.set({ "n", "v" }, "<Space>e", "<C-W>k")
+vim.keymap.set({ "n", "v" }, "<Space>i", "<C-W>l")
+
+vim.keymap.set({ "n", "v" }, "<Space>H", "<C-W>H")
+vim.keymap.set({ "n", "v" }, "<Space>N", "<C-W>J")
+vim.keymap.set({ "n", "v" }, "<Space>E", "<C-W>K")
+vim.keymap.set({ "n", "v" }, "<Space>I", "<C-W>L")
 
 vim.keymap.set({ "n", "v" }, "n", "j")
 vim.keymap.set({ "n", "v" }, "e", "k")

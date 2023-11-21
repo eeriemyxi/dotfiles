@@ -1,6 +1,6 @@
 return {
     {
-        { "dcampos/nvim-snippy", lazy = true },
-        { "dcampos/cmp-snippy", lazy = true },
+        { "dcampos/nvim-snippy", lazy = false },
+        { "dcampos/cmp-snippy", lazy = false },
     },
 }
