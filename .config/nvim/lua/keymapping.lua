@@ -31,6 +31,10 @@ vim.keymap.set({ "n" }, "<Space>w", "<C-W>W")
 
 vim.keymap.set({ "n", "v" }, "k", "n")
 
+vim.keymap.set({ "n", "v" }, "N", "<C-D>")
+vim.keymap.set({ "n", "v" }, "E", "<C-U>")
+vim.keymap.set({ "n", "v" }, "k", "n")
+vim.keymap.set({ "n" }, "d", "\"_d")
 vim.keymap.set({ "n", "v" }, "<Space>h", "<C-W>h")
 vim.keymap.set({ "n", "v" }, "<Space>n", "<C-W>j")
 vim.keymap.set({ "n", "v" }, "<Space>e", "<C-W>k")
@@ -50,3 +54,5 @@ vim.keymap.set({ "n", "v" }, "u", "i")
 
 vim.keymap.set({ "n", "v" }, "gl", "$")
 vim.keymap.set({ "n", "v" }, "gh", "0")
+
+vim.keymap.set({"i", "n"}, "<A-BS>", "<Esc>vb\"_di")
