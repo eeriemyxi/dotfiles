@@ -1,11 +1,8 @@
 local awful = require("awful")
 local gears = require("gears")
--- local posix = require("posix")
-
 local constants = require("ext.constants")
 local modkey = constants.MOD_KEY
 
--- local last_x = posix.clock_gettime()
 
 local personal_keys = gears.table.join(
     awful.key({ modkey }, "s", function()
@@ -78,12 +75,6 @@ local personal_keys = gears.table.join(
     awful.key({ modkey }, "y", function()
         awful.spawn("python /home/eeriemyxi/.config/awesome/ext/scripts/arrow_mode.py")
     end)
-    -- awful.key({}, "x", function() 
-    --     cur_x = posix.clock_gettime()
-    --     if cur_x - last_x <= 0.25 then
-    --        awful.spawn("python /home/eeriemyxi/.config/awesome/ext/scripts/arrow_mode.py")
-    --     end
-    -- end)
 )
 
 return personal_keys
