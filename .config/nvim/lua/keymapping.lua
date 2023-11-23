@@ -35,6 +35,7 @@ vim.keymap.set({ "n", "v" }, "N", "<C-D>")
 vim.keymap.set({ "n", "v" }, "E", "<C-U>")
 vim.keymap.set({ "n", "v" }, "k", "n")
 vim.keymap.set({ "n" }, "d", "\"_d")
+
 vim.keymap.set({ "n", "v" }, "<Space>h", "<C-W>h")
 vim.keymap.set({ "n", "v" }, "<Space>n", "<C-W>j")
 vim.keymap.set({ "n", "v" }, "<Space>e", "<C-W>k")
