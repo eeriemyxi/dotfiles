@@ -3,6 +3,16 @@ vim.keymap.set(
     "<Space>f",
     "<cmd>Telescope find_files<cr>"
 )
+vim.keymap.set(
+    "n",
+    "<Space>F",
+    "<cmd>Telescope buffers<cr>"
+)
+vim.keymap.set(
+    "n",
+    "<Space>d",
+    "<cmd>Telescope diagnostics<cr>"
+)
 vim.keymap.set("i", "hh", "<cmd>stopi<cr>")
 vim.keymap.set("n", "x", "\"_x")
 vim.keymap.set("v", "x", "\"_d")
