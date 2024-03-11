@@ -1,5 +1,5 @@
 ### Notes
-I use Xfce4 DE with i3wm as its window manager. My keyboard shortcuts are based on the Colemak keyboard layout.
+I use Xfce4 DE with i3wm as its window manager. My keyboard shortcuts are based on the Colemak keyboard layout. You can find my installed Spicetify plugins via the marketplace [here](assets/spicetify-marketplace-data.json).
 
 Keyboard Layout: Colemak
 
