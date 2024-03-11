@@ -1,3 +1,4 @@
 archives/
+!.config/nvim/lua/plugins/archives/
 .config/xfce4/panel/mailwatch-11.rc
 .config/xfce4/desktop

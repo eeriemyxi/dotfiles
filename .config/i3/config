@@ -5,9 +5,6 @@ focus_follows_mouse no
 
 exec_always --no-startup-id feh --bg-scale /home/myxi/Downloads/wall.jpg
 
-# class                  border   background  text     indicator  child_border
-# client.focused           #282828  #3c3836     #98971a  #282828    #282828
-# client.focused           #282828  #373737     #98971a  #282828    #282828
 client.focused           #282828  #282828     #98971a  #282828    #282828
 client.unfocused         #282828  #282828     #a89984  #282828    #282828
 client.focused_inactive  #282828  #282828     #a89984  #282828    #282828
@@ -89,11 +86,11 @@ bindsym $mod+Shift+space floating toggle
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
 
-set $ws1 "1: cmd"
-set $ws2 "2: web"
-set $ws2 "3: code"
-set $ws3 "4: music"
-set $ws4 "5: other"
+set $ws1 "1"
+set $ws2 "2"
+set $ws2 "3"
+set $ws3 "4"
+set $ws4 "5"
 set $ws5 "5"
 set $ws6 "6"
 set $ws7 "7"
