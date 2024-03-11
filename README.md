@@ -9,7 +9,7 @@ License: GPL 3.0
 
 Wallpaper: 
 ![](assets/wall.jpg)
-You can find it in the [assets](assets) directory.
+You can find it in the [assets](assets) directory. I acquired it from [this](https://github.com/AngelJumbo/gruvbox-wallpapers) repository.
 
 ### Screenshots
 ![](https://i.imgur.com/ZZaCYsg.png)
