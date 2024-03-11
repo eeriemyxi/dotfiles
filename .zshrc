@@ -36,6 +36,11 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 export ANDROID_HOME=$HOME/.android-sdk/Sdk
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 
+autoload -U compinit; compinit
+
+# fzf-powered tab completions
+source ~/Documents/tools/fzf-tab/fzf-tab.plugin.zsh
+
 # syntax highlighting like fish-shell 
 ZSH_HIGHLIGHT_HIGHLIGHTERS+=(brackets pattern cursor)
 typeset -A ZSH_HIGHLIGHT_STYLES
