@@ -1,0 +1,4 @@
+MailReader=geary
+FileManager=nautilus
+TerminalEmulator=custom-TerminalEmulator
+
