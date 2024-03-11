@@ -6,5 +6,13 @@ Wallpaper:
 You can find it in the [assets](assets) directory.
 
 Keyboard Layout: Colemak
+
 Distribution: GNU/Linux Xubuntu 22.04
+
 License: GPL 3.0
+
+### Screenshots
+![](https://i.imgur.com/ZZaCYsg.png)
+![](https://i.imgur.com/rfG5SGD.png)
+![](https://i.imgur.com/puaCkWx.png)
+![](https://i.imgur.com/MNqu3J8.png)
