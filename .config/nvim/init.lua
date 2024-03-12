@@ -1,8 +1,8 @@
-require("setup_plugin_manager")
-require("keymapping")
+require("plugin-manager")
+require("keymaps")
 
 -- use undo branches instead
--- require("ext.auto_backup")
+-- require("ext.auto-backup")
 
 if vim.g.neovide then
     require("ext.neovide")
