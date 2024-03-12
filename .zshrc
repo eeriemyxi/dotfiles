@@ -33,6 +33,8 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # Android
 export ANDROID_HOME=$HOME/.android-sdk/Sdk
 export PATH=$PATH:$ANDROID_HOME/platform-tools
+export GRADLE_USER_HOME=~/.config/gradle
+export PATH=/home/myxi/Documents/tools/gradle-8.2.1/bin:$PATH
 
 # fzf-powered tab completions
 source ~/Documents/tools/fzf-tab/fzf-tab.plugin.zsh
