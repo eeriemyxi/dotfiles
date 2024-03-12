@@ -15,14 +15,12 @@ export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
 export EDITOR="nvim"
 export SUDO_EDITOR="nvim"
-export PATH=~/.local/bin/platform-tools:$PATH
 
-alias zshconfig="$EDITOR ~/.zshrc"
-alias zshconfigref=". ~/.zshrc"
 alias py="python"
 alias poe="poetry"
 alias nvide="neovide"
-alias venv="source .venv/bin/activate"
+alias vi=nvim
+alias vim=nvim
 
 # Nim
 export PATH=~/Documents/tools/nim-2.0.2/bin:$PATH
@@ -36,8 +34,6 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 export ANDROID_HOME=$HOME/.android-sdk/Sdk
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 
-autoload -U compinit; compinit
-
 # fzf-powered tab completions
 source ~/Documents/tools/fzf-tab/fzf-tab.plugin.zsh
 
@@ -47,3 +43,32 @@ typeset -A ZSH_HIGHLIGHT_STYLES
 ZSH_HIGHLIGHT_STYLES[command]='fg=yellow,bold'
 ZSH_HIGHLIGHT_STYLES[alias]='fg=yellow,bold'
 source ~/Documents/tools/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# personal helper function
+function c {
+    if [[ $# -eq 0 ]] then
+        echo "Usage: c [z [r, e], v [v,]]"
+        return
+    fi
+
+    case $1 in
+        z)
+            case $2 in 
+                r)
+                    source ~/.zshrc
+                    ;;
+                e)
+                    $EDITOR ~/.zshrc
+                    ;;
+            esac
+            ;;
+        v)
+            case $2 in
+                p)
+                    source .venv/bin/activate
+                    ;;
+            esac
+            ;;
+
+    esac
+}
