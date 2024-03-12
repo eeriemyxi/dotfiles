@@ -90,6 +90,7 @@ vim.keymap.set(
 )
 vim.keymap.set({ "n", "v" }, ";s", vim.cmd.noh)
 vim.keymap.set("n", ";q", vim.cmd.UndotreeToggle)
+vim.keymap.set("n", ";p", ":Ag ")
 vim.keymap.set({ "i", "n" }, "<A-BS>", "<Esc>vb\"_di")
 
 vim.cmd([[
