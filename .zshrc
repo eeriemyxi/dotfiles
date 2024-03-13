@@ -37,14 +37,12 @@ export GRADLE_USER_HOME=~/.config/gradle
 export PATH=/home/myxi/Documents/tools/gradle-8.2.1/bin:$PATH
 
 # fzf-powered tab completions
+# https://github.com/Aloxaf/fzf-tab
 source ~/Documents/tools/fzf-tab/fzf-tab.plugin.zsh
 
 # syntax highlighting like fish-shell 
-ZSH_HIGHLIGHT_HIGHLIGHTERS+=(brackets pattern cursor)
-typeset -A ZSH_HIGHLIGHT_STYLES
-ZSH_HIGHLIGHT_STYLES[command]='fg=yellow,bold'
-ZSH_HIGHLIGHT_STYLES[alias]='fg=yellow,bold'
-source ~/Documents/tools/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# https://github.com/zdharma-continuum/fast-syntax-highlighting
+source /home/myxi/Documents/tools/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
 # personal helper function
 function c {

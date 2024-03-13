@@ -32,6 +32,7 @@ vim.opt.timeoutlen = 250
 vim.opt.virtualedit = "onemore"
 vim.opt.clipboard = "unnamedplus"
 vim.opt.signcolumn = "no"
+vim.opt.colorcolumn = "88"
 
 vim.cmd([[
     set iskeyword-=_

@@ -92,6 +92,8 @@ vim.keymap.set({ "n", "v" }, ";s", vim.cmd.noh)
 vim.keymap.set("n", ";q", vim.cmd.UndotreeToggle)
 vim.keymap.set("n", ";p", ":Ag ")
 vim.keymap.set({ "i", "n" }, "<A-BS>", "<Esc>vb\"_di")
+-- toggle lsp diagnostics
+vim.keymap.set({"n"}, ";u", function() vim.diagnostic.config({ virtual_text = not vim.diagnostic.config().virtual_text }) end)
 
 vim.cmd([[
     nnoremap <expr> W getline('.')[col('.') - 1:] =~# '\s\S' ? 'W' : (col('.') + 1 == col('$') ? 'W' : '$')
