@@ -19,6 +19,9 @@ return {
         lspconfig.pyright.setup({
             capabilities = capabilities,
         })
+        lspconfig.nimls.setup({
+            capabilities = capabilities,
+        })
         -- lspconfig.pylsp.setup({
         --     settings = pylsp_config,
         --     capabilities = capabilities,

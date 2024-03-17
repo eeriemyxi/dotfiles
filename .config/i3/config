@@ -27,6 +27,7 @@ assign  [class="Spotify"]                 4
 
 for_window [class="mpv"] floating_maximum_size 512 x 288
 for_window [class="mpv"] floating enable
+for_window [class="geary"] floating enable
 for_window [class="firefox"] layout tabbed
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the

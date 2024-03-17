@@ -24,6 +24,7 @@ alias vim=nvim
 
 # Nim
 export PATH=~/Documents/tools/nim-2.0.2/bin:$PATH
+export PATH=/home/myxi/.nimble/bin:$PATH
 
 # Bun
 export BUN_INSTALL="$HOME/.bun"
@@ -47,7 +48,7 @@ source /home/myxi/Documents/tools/fast-syntax-highlighting/fast-syntax-highlight
 # personal helper function
 function c {
     if [[ $# -eq 0 ]] then
-        echo "Usage: c [z [r, e], v [v,]]"
+        echo "Usage: c [z [r, e], v [v [p [d]], ]]"
         return
     fi
 
@@ -65,6 +66,12 @@ function c {
         v)
             case $2 in
                 p)
+                    case $3 in
+                        d)
+                            deactivate
+                            return
+                            ;;
+                    esac
                     source .venv/bin/activate
                     ;;
             esac
