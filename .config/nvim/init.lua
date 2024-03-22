@@ -36,4 +36,6 @@ vim.opt.colorcolumn = "88"
 
 vim.cmd([[
     set iskeyword-=_
+    set nofoldenable
+    runtime! ftplugin/man.vim
 ]])

@@ -24,6 +24,7 @@
 return {
     "rhysd/vim-operator-surround",
     dependencies = { "kana/vim-operator-user" },
+    event = "VeryLazy",
     init = function()
         vim.cmd([[
             map <silent><Space>kk <Plug>(operator-surround-append)

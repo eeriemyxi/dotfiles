@@ -25,11 +25,12 @@ alias vim=nvim
 # Nim
 export PATH=~/Documents/tools/nim-2.0.2/bin:$PATH
 export PATH=/home/myxi/.nimble/bin:$PATH
+alias nimpretty="nimpretty --indent:4"
 
-# Bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-[ -s "/home/myxi/.bun/_bun" ] && source "/home/myxi/.bun/_bun"
+# # Bun
+# export BUN_INSTALL="$HOME/.bun"
+# export PATH="$BUN_INSTALL/bin:$PATH"
+# [ -s "/home/myxi/.bun/_bun" ] && source "/home/myxi/.bun/_bun"
 
 # Android
 export ANDROID_HOME=$HOME/.android-sdk/Sdk
@@ -44,6 +45,12 @@ source ~/Documents/tools/fzf-tab/fzf-tab.plugin.zsh
 # syntax highlighting like fish-shell 
 # https://github.com/zdharma-continuum/fast-syntax-highlighting
 source /home/myxi/Documents/tools/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+
+# use nvim as manpager: https://vi.stackexchange.com/a/22822
+function my_man {
+    $EDITOR +"Man $1|on"
+}
+alias man="my_man"
 
 # personal helper function
 function c {
