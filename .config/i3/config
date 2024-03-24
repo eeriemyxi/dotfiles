@@ -23,6 +23,7 @@ exec --no-startup-id fish /home/myxi/Documents/startup-scripts/setup-i3-layout.f
 assign  [class="org.wezfurlong.wezterm"]  1
 assign  [class="neovide"]                 2
 assign  [class="firefox"]                 3
+assign  [class="Signal"]                  3
 assign  [class="Spotify"]                 4
 
 for_window [class="mpv"] floating_maximum_size 512 x 288
