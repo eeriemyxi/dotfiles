@@ -83,6 +83,13 @@ function c {
                     ;;
             esac
             ;;
-
+        tt)
+            case $2 in
+                one)
+                    command tt -words english -theme gruvbox-personal -t 60 -bold \
+                        -showwpm
+                    ;;
+            esac
+            ;;
     esac
 }

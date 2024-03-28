@@ -98,3 +98,5 @@ vim.keymap.set({"n"}, ";u", function() vim.diagnostic.config({ virtual_text = no
 vim.cmd([[
     nnoremap <expr> W getline('.')[col('.') - 1:] =~# '\s\S' ? 'W' : (col('.') + 1 == col('$') ? 'W' : '$')
 ]])
+
+vim.cmd "nnoremap :q <nop>"
