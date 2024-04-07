@@ -89,6 +89,10 @@ function c {
                     command tt -words english -theme gruvbox-personal -t 60 -bold \
                         -showwpm
                     ;;
+                two)
+                    command tt -words ten-thousand -theme gruvbox-personal -t 60 -bold \
+                        -showwpm
+                    ;;
             esac
             ;;
     esac
