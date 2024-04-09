@@ -3,3 +3,4 @@ archives/
 .config/xfce4/panel/mailwatch-11.rc
 .config/xfce4/desktop
 .tt/.errors
+/push.sh

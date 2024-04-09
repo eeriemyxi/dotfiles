@@ -42,7 +42,7 @@ return {
                 WARN = {
                     icon = " ",
                     color = "Red",
-                    alt = { "WARNING", "XXX" },
+                    alt = { "WARNING", "XXX", "FIXME" },
                 },
                 PERF = {
                     icon = " ",
