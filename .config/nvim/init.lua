@@ -32,11 +32,15 @@ vim.opt.timeoutlen = 250
 vim.opt.virtualedit = "onemore"
 vim.opt.clipboard = "unnamedplus"
 vim.opt.signcolumn = "no"
-vim.opt.wrap = true
-vim.opt.textwidth = 88
-vim.opt.linebreak = true
+-- vim.opt.wrap = true
+-- vim.opt.textwidth = 88
+-- vim.opt.linebreak = true
 -- vim.opt.breakat = "88"
 -- vim.opt.colorcolumn = "88"
+
+vim.cmd [[
+    autocmd FileType text,markdown setlocal wrap textwidth=88 linebreak
+]]
 
 vim.cmd([[
     set iskeyword-=_

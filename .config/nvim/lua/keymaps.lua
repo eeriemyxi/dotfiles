@@ -69,7 +69,7 @@ vim.keymap.set({ "n", "v" }, "u", "i")
 vim.keymap.set({ "n", "v" }, "gl", "$")
 vim.keymap.set({ "n", "v" }, "gh", "0")
 
-vim.keymap.set({ "i", "n" }, "<A-BS>", "<Esc>vb\"_d")
+-- vim.keymap.set({ "i", "n" }, "<A-BS>", "<Esc>vb\"_d")
 
 vim.keymap.set(
     { "n", "v" },
@@ -91,7 +91,13 @@ vim.keymap.set(
 vim.keymap.set({ "n", "v" }, ";s", vim.cmd.noh)
 vim.keymap.set("n", ";q", vim.cmd.UndotreeToggle)
 vim.keymap.set("n", ";p", ":Ag ")
-vim.keymap.set({ "i", "n" }, "<A-BS>", "<Esc>vb\"_di")
+
+vim.keymap.set({ "i", "n" }, "<A-BS>", "<C-w>")
+vim.keymap.set("i", "<C-H>", "<C-W>")
+vim.keymap.set("i", "<C-BS>", "<C-W>")
+
+vim.keymap.set({ "n" }, "Zz", "<cmd>:q!<cr>")
+
 -- toggle lsp diagnostics
 vim.keymap.set({ "n" }, ";u", function()
     vim.diagnostic.config({
@@ -102,5 +108,3 @@ end)
 vim.cmd([[
     nnoremap <expr> W getline('.')[col('.') - 1:] =~# '\s\S' ? 'W' : (col('.') + 1 == col('$') ? 'W' : '$')
 ]])
-
-vim.cmd("nnoremap :q <nop>")

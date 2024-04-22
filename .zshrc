@@ -19,6 +19,7 @@ export SUDO_EDITOR="nvim"
 alias py="python"
 alias poe="poetry"
 alias nvide="neovide"
+alias lg=lazygit
 alias vi=nvim
 alias vim=nvim
 
