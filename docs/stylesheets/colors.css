@@ -1,15 +1,12 @@
-// Color variables
 :root {
-  // Primary color shades
-  --md-primary-fg-color:               #fbf1c7; /* Gruvbox's bg (light) */
-  --md-primary-fg-color--light:        #f9e2c5; /* Gruvbox's bg-light */
-  --md-primary-fg-color--dark:         #964b00; /* Gruvbox's yellow-dark */
-  --md-primary-bg-color:               #3c3836; /* Gruvbox's bg-dark */
-  --md-primary-bg-color--light:        #504945; /* Gruvbox's bg-medium */
+  --md-primary-fg-color:               hsl(45,  50%,  50%);  /* or hsla(45, 50%, 50%, 1) */
+  --md-primary-fg-color--light:        hsl(55,  50%,  70%);  
+  --md-primary-fg-color--dark:         hsl(35,  50%,  30%);  
+  --md-primary-bg-color:               hsl(0,   0%,  15%);   /* matching #282828 */
+  --md-primary-bg-color--light:        hsl(0,   0%,  20%);  
 
-  // Accent color shades
-  --md-accent-fg-color:                #fe8019; /* Gruvbox's orange */
-  --md-accent-fg-color--transparent:   rgba(254, 128, 25, 0.1); /* Gruvbox's orange with 10% opacity */
-  --md-accent-bg-color:                #3c3836; /* Gruvbox's bg-dark */
-  --md-accent-bg-color--light:         #504945; /* Gruvbox's bg-medium */
+  --md-accent-fg-color:                hsl(130, 50%,  70%);  
+  --md-accent-fg-color--transparent:   hsl(130, 50%,  70%, 0.1);  
+  --md-accent-bg-color:                hsl(0,   0%,  15%);   /* matching #282828 */
+  --md-accent-bg-color--light:         hsl(0,   0%,  20%);  
 }
