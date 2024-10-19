@@ -10,3 +10,10 @@ nav:
 theme:
   name: terminal
   palette: gruvbox_dark
+  features:
+    - revision.date
+    - navigation.top.hide
+plugins:
+  - git-revision-date
+extra_css:
+  - "css/extra.css"
