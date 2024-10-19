@@ -91,6 +91,7 @@ vim.keymap.set(
 vim.keymap.set({ "n", "v" }, ";s", vim.cmd.noh)
 vim.keymap.set("n", ";q", vim.cmd.UndotreeToggle)
 vim.keymap.set("n", ";p", ":Ag ")
+vim.keymap.set("n", ";d", "<cmd>:set spell!<cr>")
 
 vim.keymap.set({ "i", "n" }, "<A-BS>", "<C-w>")
 vim.keymap.set("i", "<C-H>", "<C-W>")

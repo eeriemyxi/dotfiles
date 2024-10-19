@@ -31,6 +31,10 @@ I feel like I forgot something that could be useful.
 - `;w` LSP definitions.
 - `;u` toggle LSP diagnostics.
 - `ZZ` quit the editor.
+### Spell Checking
+- `;d` to toggle spell checking.
+- `]s` and `[s` to go to next or previous spelling error.
+- `z=` to find suggestions for the current error under cursor.
 ### Macros
 - `q` to record macros, e.g., `qq` will record it in `q` registry.
 - `@` to trigger a macro, e.g., `@q` will trigger the `q` registry.
