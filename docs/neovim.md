@@ -1,6 +1,9 @@
-Neovim is one of those apps I actively add new features to and quickly forget it. But
-when I do want to use it, I forget what the keymap is. I'd then have to go through my
-setup to find out the shortcut, which is inconvenient.
+Neovim is one of those apps I actively add new features to then forget them due to lack
+of muscle memory. But when I do want to use it, I forget what the keymap is. I'd then have to go through my
+config files to find out the shortcut, which is inconvenient.
+
+I am going to document everything I should be needing here so that I can read them when
+I feel like I forgot something that could be useful.
 
 # General
 - `U` uppercase or lowercase selection (toggles b/w the two).
