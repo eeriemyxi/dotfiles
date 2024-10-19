@@ -39,7 +39,7 @@ I feel like I forgot something that could be useful.
 ### Macros
 - `q` to record macros, e.g., `qq` will record it in `q` registry.
 - `@` to trigger a macro, e.g., `@q` will trigger the `q` registry.
-### Deleting stuff
+### Deleting Stuff
 - Visual mode
     - `x` to delete **without** copy.
     - `d` to delete **with** copy.
