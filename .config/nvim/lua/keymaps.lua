@@ -26,6 +26,7 @@ end)
 
 vim.keymap.set("n", "x", "\"_x")
 vim.keymap.set("v", "x", "\"_d")
+vim.keymap.set({ "n" }, "d", "\"_d")
 
 vim.keymap.set("n", "] ", "o<Esc>")
 vim.keymap.set("n", "L", "<cmd>redo<cr>")
@@ -45,7 +46,6 @@ vim.keymap.set({ "n", "v" }, "k", "n")
 vim.keymap.set({ "n", "v" }, "N", "<C-D>")
 vim.keymap.set({ "n", "v" }, "E", "<C-U>")
 vim.keymap.set({ "n", "v" }, "k", "n")
-vim.keymap.set({ "n" }, "d", "\"_d")
 
 vim.keymap.set({ "n", "v" }, "<Space>h", "<C-W>h")
 vim.keymap.set({ "n", "v" }, "<Space>n", "<C-W>j")
