@@ -1,4 +1,4 @@
-:root {
+[data-md-color-scheme="gruvbox"] {
   --md-primary-fg-color:               hsl(45,  50%,  50%);  /* or hsla(45, 50%, 50%, 1) */
   --md-primary-fg-color--light:        hsl(55,  50%,  70%);  
   --md-primary-fg-color--dark:         hsl(35,  50%,  30%);  
