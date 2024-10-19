@@ -1,0 +1,15 @@
+// Color variables
+:root {
+  // Primary color shades
+  --md-primary-fg-color:               #fbf1c7; /* Gruvbox's bg (light) */
+  --md-primary-fg-color--light:        #f9e2c5; /* Gruvbox's bg-light */
+  --md-primary-fg-color--dark:         #964b00; /* Gruvbox's yellow-dark */
+  --md-primary-bg-color:               #3c3836; /* Gruvbox's bg-dark */
+  --md-primary-bg-color--light:        #504945; /* Gruvbox's bg-medium */
+
+  // Accent color shades
+  --md-accent-fg-color:                #fe8019; /* Gruvbox's orange */
+  --md-accent-fg-color--transparent:   rgba(254, 128, 25, 0.1); /* Gruvbox's orange with 10% opacity */
+  --md-accent-bg-color:                #3c3836; /* Gruvbox's bg-dark */
+  --md-accent-bg-color--light:         #504945; /* Gruvbox's bg-medium */
+}
