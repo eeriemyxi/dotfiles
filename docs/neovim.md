@@ -31,6 +31,7 @@ I feel like I forgot something that could be useful.
 - `;w` LSP definitions.
 - `;u` toggle LSP diagnostics.
 - `ZZ` quit the editor.
+- `Zz` to force quit the editor.
 ### Spell Checking
 - `;d` to toggle spell checking.
 - `]s` and `[s` to go to next or previous spelling error.
