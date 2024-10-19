@@ -95,6 +95,7 @@ vim.keymap.set("n", ";p", ":Ag ")
 vim.keymap.set({ "i", "n" }, "<A-BS>", "<C-w>")
 vim.keymap.set("i", "<C-H>", "<C-W>")
 vim.keymap.set("i", "<C-BS>", "<C-W>")
+vim.keymap.set("i", "<C-v>", "<C-r>*")
 
 vim.keymap.set({ "n" }, "Zz", "<cmd>:q!<cr>")
 

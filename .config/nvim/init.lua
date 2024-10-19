@@ -8,6 +8,8 @@ if vim.g.neovide then
     require("ext.neovide")
 end
 
+-- require("ext.latex")
+
 vim.g.mkdp_echo_preview_url = 1
 
 -- Aliases
@@ -38,9 +40,9 @@ vim.opt.signcolumn = "no"
 -- vim.opt.breakat = "88"
 -- vim.opt.colorcolumn = "88"
 
-vim.cmd [[
+vim.cmd([[
     autocmd FileType text,markdown setlocal wrap textwidth=88 linebreak
-]]
+]])
 
 vim.cmd([[
     set iskeyword-=_

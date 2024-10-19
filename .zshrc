@@ -16,6 +16,7 @@ export LANG=en_US.UTF-8
 export EDITOR="nvim"
 export SUDO_EDITOR="nvim"
 
+# ease of use aliases
 alias py="python"
 alias poe="poetry"
 alias nvide="neovide"
@@ -24,7 +25,7 @@ alias vi=nvim
 alias vim=nvim
 
 # Nim
-export PATH=~/Documents/tools/nim-2.0.2/bin:$PATH
+export PATH=~/Documents/tools/nim-2.2.0/bin:$PATH
 export PATH=/home/myxi/.nimble/bin:$PATH
 alias nimpretty="nimpretty --indent:4"
 
@@ -33,11 +34,15 @@ alias nimpretty="nimpretty --indent:4"
 # export PATH="$BUN_INSTALL/bin:$PATH"
 # [ -s "/home/myxi/.bun/_bun" ] && source "/home/myxi/.bun/_bun"
 
+# Deno
+export PATH=~/.asdf/installs/deno/2.0.2/.deno/bin/:$PATH
+
 # Android
 export ANDROID_HOME=$HOME/.android-sdk/Sdk
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 export GRADLE_USER_HOME=~/.config/gradle
 export PATH=/home/myxi/Documents/tools/gradle-8.2.1/bin:$PATH
+export PATH=/home/myxi/Documents/tools/android-studio/bin:$PATH
 
 # fzf-powered tab completions
 # https://github.com/Aloxaf/fzf-tab
@@ -45,7 +50,8 @@ source ~/Documents/tools/fzf-tab/fzf-tab.plugin.zsh
 
 # syntax highlighting like fish-shell 
 # https://github.com/zdharma-continuum/fast-syntax-highlighting
-source /home/myxi/Documents/tools/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+# source /home/myxi/Documents/tools/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+source ~/Documents/tools/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
 # use nvim as manpager: https://vi.stackexchange.com/a/22822
 function my_man {

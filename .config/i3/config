@@ -28,6 +28,7 @@ assign  [class="Spotify"]                 4
 
 for_window [class="mpv"] floating_maximum_size 512 x 288
 for_window [class="mpv"] floating enable
+for_window [class="Blueman-manager"] floating enable
 for_window [class="geary"] floating enable
 for_window [class="firefox"] layout tabbed
 
@@ -134,6 +135,7 @@ bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 # bindsym $mod+Shift+Mod1+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 bindsym $mod+Shift+Mod1+e exec xfce4-session-logout
+bindsym $mod+Shift+Mod1+n exec systemctl suspend && xset dpms force off
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
