@@ -56,7 +56,8 @@ This editor's text replacement feature is accessed via `:substitute` or `:s`
 - `:%s/hello/hwello` this will replace first "hello" in every line of the file. `%`
   selects the entire file.
 - `:%s/hello/hwello/g` this will replace all "hello" of the file. `%`
-  selects the entire file. `/g` will apply it to every match rather the first one.
+  selects the entire file. `/g` will apply it to every match rather the first one in a
+  line.
 - `:%s/^/something` this will add "something" to the start of every line.
 - `:%s/$/something` this will add "something" to the end of every line.
 
