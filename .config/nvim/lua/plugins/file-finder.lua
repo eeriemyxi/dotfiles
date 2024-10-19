@@ -29,7 +29,11 @@ return {
                         preview_cutoff = 120,
                     },
                     initial_mode = "insert",
-                    -- border = false
+                    },
+            pickers = {
+                find_files = {
+                    hidden = true,
+                }
                 },
             })
             tel.load_extension("fzf")

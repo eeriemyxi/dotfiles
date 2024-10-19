@@ -1,5 +1,5 @@
 Neovim is one of those apps I actively add new features to then forget them due to lack
-of muscle memory. But when I do want to use it, I forget what the keymap is. I'd then have to go through my
+of muscle memory. But when I do want to use them, I forget what the keymap is. I'd then have to go through my
 config files to find out the shortcut, which is inconvenient.
 
 I am going to document everything I should be needing here so that I can read them when
@@ -45,7 +45,7 @@ I feel like I forgot something that could be useful.
 This editor's text replacement feature is accessed via `:substitute` or `:s`
 
 - Selecting lines then doing `:` will insert something into the command line. Those
-  charactes help the command understand that you want to execute it in only the selected
+  characters help the command understand that you want to execute it in only the selected
   area.
 - They use regular expressions to match stuff.
 - `:%s/hello/hwello` this will replace first "hello" in every line of the file. `%`
