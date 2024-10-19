@@ -12,6 +12,9 @@ jobs:
       - name: Checkout master
         uses: actions/checkout@v1
 
+      - name: Install Mkdocs Theme
+        run: pip install mkdocs-terminal
+
       - name: Deploy Documentation
         uses: mhausenblas/mkdocs-deploy-gh-pages@master
         env:
