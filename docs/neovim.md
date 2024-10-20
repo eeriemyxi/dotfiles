@@ -74,8 +74,7 @@ This editor's text replacement feature is accessed via `:substitute` or `:s`
 ### Tab Line
 Filename: `tab-line.lua`
 
-This is different from the status line, that is one at the bottom and this one is at the
-top.
+This is different from the status line, that one is at the bottom and this one is at the top.
 
 - `<space>th` move to the previous tab
 - `<space>ti` move to the next tab
