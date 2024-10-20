@@ -12,7 +12,7 @@ theme:
   palette: gruvbox_dark
   features:
     - revision.date
-    - navigation.top.hide
+    - navigation.top.cursor_animation.hide
 plugins:
   - search
   - git-revision-date
