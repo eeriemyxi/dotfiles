@@ -1,9 +1,10 @@
-Neovim is one of those apps I actively add new features to then forget them due to lack
-of muscle memory. But when I do want to use them, I forget what the keymap is. I'd then have to go through my
+# Introduction
+Neovim is one of those apps I actively add new features to then strugle to remember them due to my lack
+of muscle memory for it. But when I do want to use them I forget what the keymap is. I'd then have to go through my
 config files to find out the shortcut, which is inconvenient.
 
-I am going to document everything I should be needing here so that I can read them when
-I feel like I forgot something that could be useful.
+Here I am going to document everything I should be needing here so that I can read them when
+I get the intuition that I forgot something useful.
 
 # General
 - `U` uppercase or lowercase selection (toggles b/w the two).
@@ -32,21 +33,29 @@ I feel like I forgot something that could be useful.
 - `;u` toggle LSP diagnostics.
 - `ZZ` quit the editor.
 - `Zz` to force quit the editor.
-### Spell Checking
+
+**Spell Checking**
+
 - `;d` to toggle spell checking.
 - `]s` and `[s` to go to next or previous spelling error.
 - `z=` to find suggestions for the current error under cursor.
-### Macros
+
+**Macros**
+
 - `q` to record macros, e.g., `qq` will record it in `q` registry.
 - `@` to trigger a macro, e.g., `@q` will trigger the `q` registry.
-### Deleting Stuff
+
+**Deleting Stuff**
+
 - Visual mode
     - `x` to delete **without** copy.
     - `d` to delete **with** copy.
 - Normal mode
     - `x` to delete **without** copy.
     - `dd` to delete current line **without** copy.
-### Substitution
+
+**Substitution**
+
 This editor's text replacement feature is accessed via `:substitute` or `:s`
 
 - Selecting lines then doing `:` will insert something into the command line. Those
