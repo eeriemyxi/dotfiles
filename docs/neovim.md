@@ -34,13 +34,13 @@ I get the intuition that I forgot something useful.
 - `ZZ` quit the editor.
 - `Zz` to force quit the editor.
 
-**Spell Checking**
+### Spell Checking
 
 - `;d` to toggle spell checking.
 - `]s` and `[s` to go to next or previous spelling error.
 - `z=` to find suggestions for the current error under cursor.
 
-**Macros**
+###  Macros
 
 - `q` to record macros, e.g., `qq` will record it in `q` registry.
 - `@` to trigger a macro, e.g., `@q` will trigger the `q` registry.
@@ -54,7 +54,7 @@ I get the intuition that I forgot something useful.
     - `x` to delete **without** copy.
     - `dd` to delete current line **without** copy.
 
-**Substitution**
+### Substitution
 
 This editor's text replacement feature is accessed via `:substitute` or `:s`
 
