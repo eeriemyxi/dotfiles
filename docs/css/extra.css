@@ -3,3 +3,7 @@
 body {
     font-family: 'JetBrains Mono', monospace;
 }
+
+code {
+	padding: 1px 3px;
+}
