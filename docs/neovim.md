@@ -71,7 +71,7 @@ This editor's text replacement feature is accessed via `:substitute` or `:s`
 - `:%s/$/something` this will add "something" to the end of every line.
 
 # Plugins
-## Tab Line
+### Tab Line
 Filename: `tab-line.lua`
 
 This is different from the status line, that is one at the bottom and this one is at the
@@ -83,7 +83,7 @@ top.
 - `<space>tc` close the tab.
 - `<space>t<space>` select a tab.
 
-## Surrounder
+### Surrounder
 Filename: `surrounder.lua`
 
 This plugin helps surround/strip a character from visual selection. 
@@ -92,20 +92,20 @@ This plugin helps surround/strip a character from visual selection.
 - `<space>kr` then a symbol. To replace.
 - `<space>kd` to delete.
 
-## Bufferized File Explorer
+### Bufferized File Explorer
 Filename: `bufferized-file-explorer.lua`
 
 - `<space>tr` to trigger.
     - `g.` to toggle hidden files.
 
-## Markdown Previews
+### Markdown Previews
 Filename: `markdown-previews.md`
 
 View markdown files in a web browser as rendered.
 
 - `:MaT` is an alias to toggle the renderer.
 
-## To Title
+### To Title
 Filename: `text-enhancers.md`
 
 Convert to title-case.
