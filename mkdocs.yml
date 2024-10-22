@@ -2,19 +2,19 @@ site_name: Documentation
 site_description: All the notes that I may need for my setup time to time.
 site_author: myxi
 docs_dir: docs/
-repo_name: 'eeriemyxi/dotfiles'
-repo_url: 'https://github.com/eeriemyxi/dotfiles'
+repo_name: "eeriemyxi/dotfiles"
+repo_url: "https://github.com/eeriemyxi/dotfiles"
 nav:
     - Home: index.md
     - Neovim: neovim.md
 theme:
-  name: terminal
-  palette: gruvbox_dark
-  features:
-    - revision.date
-    - navigation.top.cursor_animation.hide
+    name: terminal
+    palette: gruvbox_dark
+    features:
+        - revision.date
+        - navigation.top.cursor_animation.hide
 plugins:
-  - search
-  - git-revision-date
+    - search
+    - git-revision-date
 extra_css:
-  - "css/extra.css"
+    - "css/extra.css"

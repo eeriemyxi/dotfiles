@@ -21,6 +21,7 @@ alias py="python"
 alias poe="poetry"
 alias nvide="neovide"
 alias lg=lazygit
+alias trsh="gio trash"
 alias vi=nvim
 alias vim=nvim
 
