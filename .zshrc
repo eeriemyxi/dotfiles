@@ -15,6 +15,7 @@ export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
 export EDITOR="nvim"
 export SUDO_EDITOR="nvim"
+export XDG_CONFIG_HOME="/home/myxi/.config/"
 
 # ease of use aliases
 alias py="python"
@@ -37,6 +38,9 @@ alias nimpretty="nimpretty --indent:4"
 
 # Deno
 export PATH=~/.asdf/installs/deno/2.0.2/.deno/bin/:$PATH
+
+# Cargo
+export PATH=/home/myxi/.cargo/bin:$PATH
 
 # Android
 export ANDROID_HOME=$HOME/.android-sdk/Sdk
