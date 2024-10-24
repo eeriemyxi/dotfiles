@@ -39,6 +39,9 @@ def update_package(name: str) -> None:
     print(f"Updating package {name}")
     return git_pull(str(AUTOLOAD_DIR / name))
 
+def list_packages(packages) -> None:
+    print("Available packages:", end="")
+    print("".join(f"\n{' ' * 4}- {name} FROM {url}" for url, name in packages))
 
 def match_package_or_exit(name):
     for package in PACKAGES:
@@ -49,8 +52,7 @@ def match_package_or_exit(name):
             return
     if name != "all":
         eprint(f"ERROR: Package {name!r} does not exist.")
-        eprint("Available options:")
-        eprint("".join(f"{' ' * 4}- {name}\n" for _, name in PACKAGES))
+        list_packages(PACKAGES)
         exit(1)
 
 
@@ -64,7 +66,7 @@ def run_shell(index, cmd, *args, **kwargs):
 def main() -> None:
     args = sys.argv[1:]
     if len(args) == 0:
-        print("Subcommands: install, update")
+        print("Subcommands: install, update, list")
         exit(1)
 
     if args[0] == "install":
@@ -92,6 +94,9 @@ def main() -> None:
             print(
                 "Update was", ("successful" if update_ec == 0 else "unsuccessful") + "."
             )
+
+    if args[0] == "list":
+        list_packages(PACKAGES)
 
 
 if __name__ == "__main__":
