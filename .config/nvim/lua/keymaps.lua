@@ -71,12 +71,12 @@ vim.keymap.set({ "n", "v" }, "gh", "0")
 
 -- vim.keymap.set({ "i", "n" }, "<A-BS>", "<Esc>vb\"_d")
 
-vim.keymap.set(
-    { "n", "v" },
-    ";w",
-    -- "<cmd>Lspsaga goto_definition<cr>"
-    "<cmd>Telescope lsp_definitions<cr>"
-)
+-- vim.keymap.set(
+--     { "n", "v" },
+--     ";w",
+--     -- "<cmd>Lspsaga goto_definition<cr>"
+--     "<cmd>Telescope lsp_definitions<cr>"
+-- )
 -- vim.keymap.set(
 --     { "n", "v" },
 --     ";d",
@@ -100,12 +100,12 @@ vim.keymap.set("i", "<C-v>", "<C-r>*")
 
 vim.keymap.set({ "n" }, "Zz", "<cmd>:q!<cr>")
 
--- toggle lsp diagnostics
-vim.keymap.set({ "n" }, ";u", function()
-    vim.diagnostic.config({
-        virtual_text = not vim.diagnostic.config().virtual_text,
-    })
-end)
+-- -- toggle lsp diagnostics
+-- vim.keymap.set({ "n" }, ";u", function()
+--     vim.diagnostic.config({
+--         virtual_text = not vim.diagnostic.config().virtual_text,
+--     })
+-- end)
 
 vim.cmd([[
     nnoremap <expr> W getline('.')[col('.') - 1:] =~# '\s\S' ? 'W' : (col('.') + 1 == col('$') ? 'W' : '$')

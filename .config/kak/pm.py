@@ -6,15 +6,25 @@ import sys
 
 SCRIPT_DIR = pathlib.Path(__file__).parent
 PACKAGES: list[list[str, str]] = [
-    ["https://github.com/danr/kakoune-easymotion", "easymotion"],
     ["https://github.com/enricozb/tabs.kak", "tabs"],
     ["https://github.com/lePerdu/kakboard", "kakboard"],
     ["https://github.com/Bodhizafa/kak-rainbow", "rainbow-parens"],
-    ["https://github.com/h-youhei/kakoune-surround", "surrounder"]
+    ["https://github.com/h-youhei/kakoune-surround", "surrounder"],
+    ["https://github.com/kkga/ui.kak", "ui.kak"],
+    ["https://github.com/kakoune-editor/kakoune-extra-filetypes", "extra-filetypes"],
+    ["https://github.com/Delapouite/kakoune-livedown", "markdown-preview"],
+    ["https://github.com/astaugaard/reasymotion", "reasymotion"],
+    ["https://github.com/andreyorst/fzf.kak", "fzf"],
 ]
-PRE_INSTALL = {"tabs": [["cargo", "install", "kak-tabs"]]}
+PRE_INSTALL = {
+    "tabs": [["cargo", "install", "kak-tabs"]],
+    "markdown-preview": [["npm", "install", "--global", "livedown"]],
+    "reasymotion": [["cargo", "install", "--path", "."]],
+    "connect": [["make", "install"]],
+}
 POST_INSTALL = {}
 AUTOLOAD_DIR = SCRIPT_DIR / "autoload"
+
 
 def eprint(*args, **kwargs):
     print(*args, **kwargs, file=sys.stderr)
@@ -39,9 +49,11 @@ def update_package(name: str) -> None:
     print(f"Updating package {name}")
     return git_pull(str(AUTOLOAD_DIR / name))
 
+
 def list_packages(packages) -> None:
     print("Available packages:", end="")
     print("".join(f"\n{' ' * 4}- {name} FROM {url}" for url, name in packages))
+
 
 def match_package_or_exit(name):
     for package in PACKAGES:
@@ -82,11 +94,11 @@ def main() -> None:
             if name in PRE_INSTALL:
                 print("INFO: Running pre-install commands")
                 for index, cmd in enumerate(PRE_INSTALL[name], 1):
-                    run_shell(index, cmd)
+                    run_shell(index, cmd, cwd=AUTOLOAD_DIR/name)
             if name in POST_INSTALL:
                 print("INFO: Running pre-install commands")
                 for index, cmd in enumerate(POST_INSTALL[name], 1):
-                    run_shell(index, cmd)
+                    run_shell(index, cmd, cwd=AUTOLOAD_DIR/name)
 
     if args[0] == "update":
         for _, name in match_package_or_exit(args[1]):

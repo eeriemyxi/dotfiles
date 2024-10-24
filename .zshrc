@@ -16,6 +16,7 @@ export LANG=en_US.UTF-8
 export EDITOR="nvim"
 export SUDO_EDITOR="nvim"
 export XDG_CONFIG_HOME="/home/myxi/.config/"
+export TERM="xterm-256color"
 
 # ease of use aliases
 alias py="python"
@@ -25,6 +26,11 @@ alias lg=lazygit
 alias trsh="gio trash"
 alias vi=nvim
 alias vim=nvim
+alias zshrc=$EDITOR ~/.zshrc
+
+# NNN file manager theme (gruvbox)
+BLK="08" CHR="0E" DIR="0C" EXE="0A" REG="0F" HARDLINK="0F" SYMLINK="0D" MISSING="09" ORPHAN="09" FIFO="0B" SOCK="0C" OTHER="0F"
+export NNN_FCOLORS="$BLK$CHR$DIR$EXE$REG$HARDLINK$SYMLINK$MISSING$ORPHAN$FIFO$SOCK$OTHER"
 
 # Nim
 export PATH=~/Documents/tools/nim-2.2.0/bin:$PATH

@@ -1,3 +1,5 @@
+# *** OPTIONS
+
 # Set theme
 colorscheme cosy-gruvbox
 
@@ -28,11 +30,43 @@ add-highlighter global/ regex \h+$ 0:Error
 # Softwrap long lines
 add-highlighter global/ wrap -word -indent
 
+# Change cursor color based on mode
+hook global ModeChange .*:normal %{ set-face window PrimaryCursor rgb:fbf1c7,red }
+hook global ModeChange .*:insert  %{ set-face window PrimaryCursor rgb:282828,rgb:fbf1c7+fg }
+
+# *** PACKAGES
+
+# Reasymotion
+set-option global reasymotion_keys sfjklodwmbuyvrgtaqpcxz
+
 # Raindow brackets
 hook global WinCreate .* %{ rainbow-enable-window }
 
-# Enable clipboard manager
+# Clipboard manager
 hook global WinCreate .* %{ kakboard-enable }
+
+# Buffered files
+define-command shell-eval %{
+    nop %sh{
+        eval "$kak_reg_dot"
+    }
+}
+
+hook global BufSetOption "filetype=%opt{files_browse_buffer}" %{
+    map buffer normal '<ret>' ': files-cd<ret>'
+    map buffer normal '<backspace>' ': files-cd-parent<ret>'
+    map buffer normal 'm' ": files-add-entry-to-selection<ret>"
+    map buffer normal 'M' ": files-add-cwd-to-selection<ret>"
+    map buffer normal '.' ": files-toggle-show_hidden<ret>"
+    map buffer normal '\' ": files-toggle-long_format<ret>"
+    map buffer normal 'r' ": files-redraw-browser<ret>"
+    map buffer normal 'S' ": files-focus-selections<ret>"
+    map buffer normal 't' ": files-open-in-terminal<ret>"
+}
+
+hook global BufSetOption "filetype=%opt{files_selection_buffer}" %{
+    map buffer normal <ret> ': shell-eval<ret>'
+}
 
 # Tabs
 set-option global tabs_modelinefmt '%val{cursor_line}:%val{cursor_char_column} {{mode_info}} '
@@ -43,6 +77,16 @@ map global tabs i ": tabs-command next<ret>" -docstring "→ next"
 map global tabs e ": tabs-command first<ret>" -docstring "↑ first"
 map global tabs n ": tabs-command last<ret>" -docstring "↓ last"
 
+# UI.kak
+hook global WinCreate .* %{
+    ui-line-numbers-toggle
+    ui-cursorline-toggle
+    ui-trailing-spaces-toggle
+    ui-matching-toggle
+    ui-search-toggle
+    ui-todos-toggle
+}
+
 # Surrounder
 declare-user-mode surround
 map global surround s ':surround<ret>' -docstring 'surround'
@@ -51,12 +95,15 @@ map global surround d ':delete-surround<ret>' -docstring 'delete'
 map global surround t ':select-surrounding-tag<ret>' -docstring 'select tag'
 
 # Custom mapping
-hook global InsertChar y %{ try %{
-  exec -draft hH <a-k>yy<ret> d
+hook global InsertChar h %{ try %{
+  exec -draft hH <a-k>hh<ret> d
   exec <esc>
+  set-face window PrimaryCursor default,red
 }}
+
 # Custom user mode (<space>)
 map global user x ":write-all-quit<ret>" -docstring "save and quit"
 map global user s ":enter-user-mode surround<ret>" -docstring "surrounder"
 map global user t ":enter-user-mode tabs<ret>" -docstring "tab manager"
+map global user f ":fzf-mode<ret>" -docstring "file nav"
 

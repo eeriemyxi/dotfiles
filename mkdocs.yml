@@ -7,6 +7,7 @@ repo_url: "https://github.com/eeriemyxi/dotfiles"
 nav:
     - Home: index.md
     - Neovim: neovim.md
+    - Kakoune: kakoune.md
 theme:
     name: terminal
     palette: gruvbox_dark
