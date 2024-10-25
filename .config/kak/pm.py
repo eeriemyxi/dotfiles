@@ -11,10 +11,8 @@ PACKAGES: list[list[str, str]] = [
     ["https://github.com/Bodhizafa/kak-rainbow", "rainbow-parens"],
     ["https://github.com/h-youhei/kakoune-surround", "surrounder"],
     ["https://github.com/kkga/ui.kak", "ui.kak"],
-    ["https://github.com/kakoune-editor/kakoune-extra-filetypes", "extra-filetypes"],
     ["https://github.com/Delapouite/kakoune-livedown", "markdown-preview"],
     ["https://github.com/astaugaard/reasymotion", "reasymotion"],
-    ["https://github.com/andreyorst/fzf.kak", "fzf"],
 ]
 PRE_INSTALL = {
     "tabs": [["cargo", "install", "kak-tabs"]],

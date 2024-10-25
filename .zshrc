@@ -26,11 +26,14 @@ alias lg=lazygit
 alias trsh="gio trash"
 alias vi=nvim
 alias vim=nvim
-alias zshrc=$EDITOR ~/.zshrc
+alias zshrc="$EDITOR $HOME/.zshrc"
 
-# NNN file manager theme (gruvbox)
+# NNN file manager 
+# theme (gruvbox)
 BLK="08" CHR="0E" DIR="0C" EXE="0A" REG="0F" HARDLINK="0F" SYMLINK="0D" MISSING="09" ORPHAN="09" FIFO="0B" SOCK="0C" OTHER="0F"
 export NNN_FCOLORS="$BLK$CHR$DIR$EXE$REG$HARDLINK$SYMLINK$MISSING$ORPHAN$FIFO$SOCK$OTHER"
+# plugins
+export NNN_PLUG='f:fzplug;k:kak_open'
 
 # Nim
 export PATH=~/Documents/tools/nim-2.2.0/bin:$PATH

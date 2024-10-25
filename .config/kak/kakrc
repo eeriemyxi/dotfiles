@@ -40,33 +40,11 @@ hook global ModeChange .*:insert  %{ set-face window PrimaryCursor rgb:282828,rg
 set-option global reasymotion_keys sfjklodwmbuyvrgtaqpcxz
 
 # Raindow brackets
+set-option global rainbow_colors rgb:FF0000 rgb:FFFFFF+b rgb:FFa500 rgb:FFFF00 rgb:00FF00 rgb:0000FF rgb:8B00FF rgb:EE42EE
 hook global WinCreate .* %{ rainbow-enable-window }
 
 # Clipboard manager
 hook global WinCreate .* %{ kakboard-enable }
-
-# Buffered files
-define-command shell-eval %{
-    nop %sh{
-        eval "$kak_reg_dot"
-    }
-}
-
-hook global BufSetOption "filetype=%opt{files_browse_buffer}" %{
-    map buffer normal '<ret>' ': files-cd<ret>'
-    map buffer normal '<backspace>' ': files-cd-parent<ret>'
-    map buffer normal 'm' ": files-add-entry-to-selection<ret>"
-    map buffer normal 'M' ": files-add-cwd-to-selection<ret>"
-    map buffer normal '.' ": files-toggle-show_hidden<ret>"
-    map buffer normal '\' ": files-toggle-long_format<ret>"
-    map buffer normal 'r' ": files-redraw-browser<ret>"
-    map buffer normal 'S' ": files-focus-selections<ret>"
-    map buffer normal 't' ": files-open-in-terminal<ret>"
-}
-
-hook global BufSetOption "filetype=%opt{files_selection_buffer}" %{
-    map buffer normal <ret> ': shell-eval<ret>'
-}
 
 # Tabs
 set-option global tabs_modelinefmt '%val{cursor_line}:%val{cursor_char_column} {{mode_info}} '
@@ -77,14 +55,13 @@ map global tabs i ": tabs-command next<ret>" -docstring "→ next"
 map global tabs e ": tabs-command first<ret>" -docstring "↑ first"
 map global tabs n ": tabs-command last<ret>" -docstring "↓ last"
 
-# UI.kak
+# # UI.kak
 hook global WinCreate .* %{
     ui-line-numbers-toggle
     ui-cursorline-toggle
     ui-trailing-spaces-toggle
     ui-matching-toggle
     ui-search-toggle
-    ui-todos-toggle
 }
 
 # Surrounder
@@ -101,9 +78,15 @@ hook global InsertChar h %{ try %{
   set-face window PrimaryCursor default,red
 }}
 
+# Custom commands
+define-command open-nnn %{ nop %sh{ KAK_SESSION=$kak_session KAK_CLIENT=$kak_client wezterm cli split-pane --horizontal -- nnn}}
+
+define-command open-fzf %{ nop %sh{ KAK_SESSION=$kak_session KAK_CLIENT=$kak_client wezterm cli split-pane --horizontal -- $SHELL -c "fzf_kak"}}
+
 # Custom user mode (<space>)
 map global user x ":write-all-quit<ret>" -docstring "save and quit"
 map global user s ":enter-user-mode surround<ret>" -docstring "surrounder"
 map global user t ":enter-user-mode tabs<ret>" -docstring "tab manager"
-map global user f ":fzf-mode<ret>" -docstring "file nav"
+map global user f ":open-nnn<ret>" -docstring "nnn file manager"
+map global user F ":open-fzf<ret>" -docstring "(fzf) fuzzy file searcher"
 
