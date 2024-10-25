@@ -80,8 +80,7 @@ hook global InsertChar h %{ try %{
 
 # Custom commands
 define-command open-nnn %{ nop %sh{ KAK_SESSION=$kak_session KAK_CLIENT=$kak_client wezterm cli split-pane --horizontal -- nnn}}
-
-define-command open-fzf %{ nop %sh{ KAK_SESSION=$kak_session KAK_CLIENT=$kak_client wezterm cli split-pane --horizontal -- $SHELL -c "fzf_kak"}}
+define-command open-fzf %{ nop %sh{ KAK_SESSION=$kak_session KAK_CLIENT=$kak_client wezterm cli split-pane --horizontal -- fzf_kak}}
 
 # Custom user mode (<space>)
 map global user x ":write-all-quit<ret>" -docstring "save and quit"
