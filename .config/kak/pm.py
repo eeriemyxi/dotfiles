@@ -9,16 +9,15 @@ PACKAGES: list[list[str, str]] = [
     ["https://github.com/enricozb/tabs.kak", "tabs"],
     ["https://github.com/lePerdu/kakboard", "kakboard"],
     ["https://github.com/Bodhizafa/kak-rainbow", "rainbow-parens"],
-    ["https://github.com/h-youhei/kakoune-surround", "surrounder"],
     ["https://github.com/kkga/ui.kak", "ui.kak"],
     ["https://github.com/Delapouite/kakoune-livedown", "markdown-preview"],
     ["https://github.com/astaugaard/reasymotion", "reasymotion"],
+    ["https://github.com/Delapouite/kakoune-mirror", "mirror"],
 ]
 PRE_INSTALL = {
     "tabs": [["cargo", "install", "kak-tabs"]],
     "markdown-preview": [["npm", "install", "--global", "livedown"]],
     "reasymotion": [["cargo", "install", "--path", "."]],
-    "connect": [["make", "install"]],
 }
 POST_INSTALL = {}
 AUTOLOAD_DIR = SCRIPT_DIR / "autoload"

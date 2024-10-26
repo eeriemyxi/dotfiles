@@ -46,6 +46,12 @@ hook global WinCreate .* %{ rainbow-enable-window }
 # Clipboard manager
 hook global WinCreate .* %{ kakboard-enable }
 
+# Reasymotion
+declare-user-mode reasymotion
+map global reasymotion s ":reasymotion-word<ret>" -docstring "jump to a word on the screen."
+map global reasymotion l ":reasymotion-line<ret>" -docstring "jump to a line on the screen."
+map global reasymotion r ":reasymotion-on-letter-to-word<ret>" -docstring "enter letter then target every word with the same initial" 
+
 # Tabs
 set-option global tabs_modelinefmt '%val{cursor_line}:%val{cursor_char_column} {{mode_info}} '
 set-option global tabs_options --minified
@@ -71,21 +77,41 @@ map global surround c ':change-surround<ret>' -docstring 'change'
 map global surround d ':delete-surround<ret>' -docstring 'delete'
 map global surround t ':select-surrounding-tag<ret>' -docstring 'select tag'
 
+# Auto-save
+hook global BufCreate /.* %{
+    hook buffer NormalIdle .* %{
+        try %{
+            eval %sh{ [ "$kak_modified" = false ] && printf 'fail' }
+            write
+        }
+    }
+}
+
+# Empty scratch pad
+hook global BufCreate '\*scratch\*' %{
+    execute-keys '%d'
+}
+
 # Custom mapping
-hook global InsertChar h %{ try %{
-  exec -draft hH <a-k>hh<ret> d
-  exec <esc>
-  set-face window PrimaryCursor default,red
-}}
+hook global WinDisplay .* %{escape_insert_setup}
+map global insert <c-s-v> "execute-keys '<esc>y<esc>" -docstring "paste content" 
 
 # Custom commands
-define-command open-nnn %{ nop %sh{ KAK_SESSION=$kak_session KAK_CLIENT=$kak_client wezterm cli split-pane --horizontal -- nnn}}
+define-command open-nnn %{ nop %sh{ KAK_SESSION=$kak_session KAK_CLIENT=$kak_client wezterm cli split-pane --horizontal -- nnn -- "$kak_buffile"}}
 define-command open-fzf %{ nop %sh{ KAK_SESSION=$kak_session KAK_CLIENT=$kak_client wezterm cli split-pane --horizontal -- fzf_kak}}
 
 # Custom user mode (<space>)
+declare-user-mode user-2
+
 map global user x ":write-all-quit<ret>" -docstring "save and quit"
-map global user s ":enter-user-mode surround<ret>" -docstring "surrounder"
+map global user r ":enter-user-mode reasymotion<ret>" -docstring "reasymotion"
 map global user t ":enter-user-mode tabs<ret>" -docstring "tab manager"
+map global user s ': enter-user-mode -lock mirror<ret>' -docstring 'mirror lock'
+map global user c ":comment-line<ret>" -docstring "comment out selection"
+map global user T ":enter-user-mode -lock tabs<ret>" -docstring "(locked) tab manager"
 map global user f ":open-nnn<ret>" -docstring "nnn file manager"
-map global user F ":open-fzf<ret>" -docstring "(fzf) fuzzy file searcher"
+map global user d ":open-fzf<ret>" -docstring "(fzf) fuzzy file searcher"
+map global user <space> ":enter-user-mode -lock user-2<ret>" -docstring "locked user mode 2"
+map global user-2 n "<pagedown>" -docstring "page down"
+map global user-2 e "<pageup>" -docstring "page up"
 
