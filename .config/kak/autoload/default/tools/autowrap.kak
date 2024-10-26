@@ -45,6 +45,10 @@ define-command autowrap-enable -docstring "Automatically wrap the lines in which
     hook -group autowrap window InsertChar [^\n] autowrap-cursor
 }
 
+define-command autowrap-buf-enable -docstring "Automatically wrap the lines in which characters are inserted" %{
+    hook -group autowrap buffer InsertChar [^\n] autowrap-cursor
+}
+
 define-command autowrap-disable -docstring "Disable automatic line wrapping" %{
     remove-hooks window autowrap
 }

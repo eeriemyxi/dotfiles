@@ -91,11 +91,11 @@ def main() -> None:
             if name in PRE_INSTALL:
                 print("INFO: Running pre-install commands")
                 for index, cmd in enumerate(PRE_INSTALL[name], 1):
-                    run_shell(index, cmd, cwd=AUTOLOAD_DIR/name)
+                    run_shell(index, cmd, cwd=AUTOLOAD_DIR / name)
             if name in POST_INSTALL:
                 print("INFO: Running pre-install commands")
                 for index, cmd in enumerate(POST_INSTALL[name], 1):
-                    run_shell(index, cmd, cwd=AUTOLOAD_DIR/name)
+                    run_shell(index, cmd, cwd=AUTOLOAD_DIR / name)
 
     if args[0] == "update":
         for _, name in match_package_or_exit(args[1]):
