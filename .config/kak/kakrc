@@ -35,7 +35,8 @@ map global reasymotion l ":reasymotion-line<ret>" -docstring "jump to a line on 
 map global reasymotion r ":reasymotion-on-letter-to-word<ret>" -docstring "enter letter then target every word with the same initial" 
 
 # Raindow brackets
-set-option global rainbow_colors rgb:000000,rgb:FF0000+Fb rgb:FFFFFF+b rgb:FFa500 rgb:FFFF00 rgb:00FF00 rgb:0000FF rgb:8B00FF rgb:EE42EE
+    # set-option global rainbow_colors rgb:000000,rgb:FF0000+b rgb:FFFFFF+b rgb:FFa500 rgb:FFFF00 rgb:00FF00 rgb:0000FF rgb:8B00FF rgb:EE42EE
+set-option global rainbow_colors rgb:FF0000+b rgb:FFFFFF+b rgb:FFa500 rgb:FFFF00 rgb:00FF00 rgb:0000FF rgb:8B00FF rgb:EE42EE
 hook global WinCreate .* %{ rainbow-enable-window }
 
 # Clipboard manager
@@ -94,6 +95,12 @@ hook global BufCreate '\*scratch\*' %{
 set-face global TodoComment bright-green,default+bF@Information
 hook global WinDisplay .* %{escape_insert_setup}
 map global insert <c-s-v> "execute-keys '<esc>y<esc>" -docstring "paste content"
+map global insert <c-s> "<esc>:phantom-selection-add-selection<ret>i"
+map global insert <a-f> "<esc>:phantom-selection-iterate-next<ret>i"
+map global insert <a-F> "<esc>:phantom-selection-iterate-prev<ret>i"
+map global insert <a-s> "<esc>:phantom-selection-select-all; phantom-selection-clear<ret>i"
+map global insert <c-w> "<esc>bdi"
+# TODO: find a way to do ctrl + backspace
 
 # Custom commands
 define-command open-nnn %{ nop %sh{ KAK_SESSION=$kak_session KAK_CLIENT=$kak_client wezterm cli split-pane --horizontal -- nnn -- "$kak_buffile"}}
@@ -101,13 +108,16 @@ define-command open-fzf %{ nop %sh{ KAK_SESSION=$kak_session KAK_CLIENT=$kak_cli
 
 # Custom user mode (<space>)
 declare-user-mode user-2
+declare-user-mode user-make
 
+map global user * '_yx10<s-j>s<c-r>"'
 map global user x ":write-all-quit<ret>" -docstring "save and quit"
 map global user r ":enter-user-mode reasymotion<ret>" -docstring "reasymotion"
 map global user w ":format<ret>" -docstring "format file"
 map global user t ":enter-user-mode tabs<ret>" -docstring "tab manager"
 map global user T ":enter-user-mode -lock tabs<ret>" -docstring "(locked) tab manager"
 map global user s ': enter-user-mode -lock mirror<ret>' -docstring 'mirror lock'
+map global user m ":enter-user-mode user-make<ret>" -docstring "wrapper for make"
 map global user c ":comment-line<ret>" -docstring "comment out selection"
 map global user f ":open-nnn<ret>" -docstring "nnn file manager"
 map global user d ":open-fzf<ret>" -docstring "(fzf) fuzzy file searcher"
@@ -116,4 +126,7 @@ map global user-2 n "<c-d>" -docstring "page (half) down"
 map global user-2 N "<pagedown>" -docstring "page down"
 map global user-2 e "<c-u>" -docstring "page (half) up"
 map global user-2 E "<pageup>" -docstring "page up"
+map global user-make n ":make-next-error<ret>" -docstring "next error"
+map global user-make e ":make<ret>" -docstring "run"
+map global user-make i ":make-previous-error<ret>" -docstring "prev error"
 

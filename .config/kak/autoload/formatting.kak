@@ -19,3 +19,13 @@ hook global BufSetOption filetype=zig %{
 hook global BufSetOption filetype=yaml %{
     set-option buffer formatcmd 'deno fmt -'
 }
+
+# sudo apt install astyle
+
+hook global BufSetOption filetype=cpp %{
+    set-option buffer formatcmd 'astyle'
+}
+
+hook global BufSetOption filetype=c %{
+    set-option buffer formatcmd 'astyle'
+}

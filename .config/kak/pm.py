@@ -13,6 +13,7 @@ PACKAGES: list[list[str, str]] = [
     ["https://github.com/Delapouite/kakoune-livedown", "markdown-preview"],
     ["https://github.com/astaugaard/reasymotion", "reasymotion"],
     ["https://github.com/Delapouite/kakoune-mirror", "mirror"],
+    ["https://github.com/occivink/kakoune-phantom-selection", "linear-selection"],
 ]
 PRE_INSTALL = {
     "tabs": [["cargo", "install", "kak-tabs"]],
