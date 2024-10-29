@@ -13,8 +13,8 @@ source $ZSH/oh-my-zsh.sh
 
 export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
-export EDITOR="nvim"
-export SUDO_EDITOR="nvim"
+export EDITOR="kak"
+export SUDO_EDITOR="kak"
 export XDG_CONFIG_HOME="/home/myxi/.config/"
 export TERM="xterm-256color"
 
@@ -67,9 +67,13 @@ source ~/Documents/tools/fzf-tab/fzf-tab.plugin.zsh
 # source /home/myxi/Documents/tools/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 source ~/Documents/tools/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
-# use nvim as manpager: https://vi.stackexchange.com/a/22822
+# # use nvim as manpager: https://vi.stackexchange.com/a/22822
+# function my_man {
+#     $EDITOR +"Man $1|on"
+# }
+# use kak as mangager
 function my_man {
-    $EDITOR +"Man $1|on"
+    $EDITOR -e "man $1"
 }
 alias man="my_man"
 

@@ -20,8 +20,9 @@ exec --no-startup-id i3 workspace 1
 exec --no-startup-id fish /home/myxi/Documents/startup-scripts/setup-i3-layout.fish
 
 # Auto assign windows
-assign  [class="org.wezfurlong.wezterm"]  1
-assign  [class="neovide"]                 2
+assign  [class="floating_editor"]         3
+assign  [class="wezterm-terminal"]        1
+assign  [class="wezterm_ide*"]                 2
 assign  [class="firefox"]                 3
 assign  [class="Signal"]                  3
 assign  [class="Spotify"]                 4
@@ -30,7 +31,12 @@ for_window [class="mpv"] floating_maximum_size 512 x 288
 for_window [class="mpv"] floating enable
 for_window [class="Blueman-manager"] floating enable
 for_window [class="geary"] floating enable
+for_window [class="floating_editor"] floating enable
 for_window [class="firefox"] layout tabbed
+for_window [class="wezterm_ide*"] layout tabbed
+
+# Custom apps
+bindsym $mod+f exec wezterm start --class "floating_editor" -- "kak"
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
