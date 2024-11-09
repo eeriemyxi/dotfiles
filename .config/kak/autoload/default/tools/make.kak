@@ -1,7 +1,7 @@
 declare-option -docstring "shell command run to build the project" \
     str makecmd make
 declare-option -docstring "pattern that describes lines containing information about errors in the output of the `makecmd` command. Capture groups must be: 1: filename 2: line number 3: optional column 4: optional error description" \
-    regex make_error_pattern "^([^:\n]+):(\d+):(?:(\d+):)? (?:fatal )?error:([^\n]+)?"
+    regex make_error_pattern "^([^:\n]+):(\d+):(?:(\d+):)? (?:fatal )?(?:error|warning|note):([^\n]+)?"
 
 provide-module make %{
 

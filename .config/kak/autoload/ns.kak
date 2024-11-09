@@ -1,6 +1,5 @@
-
-declare-option str escape_insert_first "h"
-declare-option str escape_insert_second "h"
+declare-option str escape_insert_first "n"
+declare-option str escape_insert_second "s"
 
 define-command escape_insert_setup %{
     # Remove any other hooks for the first character.
@@ -27,6 +26,7 @@ define-command -hidden escape_insert_setup_second %{
                     echo "execute-keys <backspace><backspace><esc>"
                     echo "escape_insert_setup"
                     echo "set-face window PrimaryCursor default,red"
+                    echo "set-face window PrimaryCursorEol default,red"
                     ;;
                 "$kak_opt_escape_insert_first")
                     # Got the first character,

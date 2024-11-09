@@ -1,7 +1,12 @@
+# *** Treesitter
+
+# https://github.com/hadronized/kak-tree-sitter
+eval %sh{ kak-tree-sitter -dks --init $kak_session --with-highlighting }
+
 # *** OPTIONS
 
 # Set theme
-colorscheme cosy-gruvbox
+colorscheme cosy-gruvbox-ts
 # Width of a tab
 set-option global tabstop 4
 # Indent with 4 spaces
@@ -23,7 +28,56 @@ add-highlighter global/ wrap -word -indent
 
 # Change cursor color based on mode
 hook global ModeChange .*:normal %{ set-face window PrimaryCursor rgb:fbf1c7,red }
+hook global ModeChange .*:normal %{ set-face window PrimaryCursorEol rgb:fbf1c7,red }
 hook global ModeChange .*:insert  %{ set-face window PrimaryCursor rgb:282828,rgb:fbf1c7+fg }
+hook global ModeChange .*:insert  %{ set-face window PrimaryCursorEol rgb:282828,rgb:fbf1c7+fg }
+
+# *** LSP
+
+eval %sh{kak-lsp}
+
+lsp-inlay-hints-enable global
+lsp-inlay-diagnostics-enable global
+
+# # Semantic Highlighting
+# hook global WinSetOption filetype=(?:python|c|javascript|typescript) %{
+#   hook window -group semantic-tokens BufReload .* lsp-semantic-tokens
+#   hook window -group semantic-tokens NormalIdle .* lsp-semantic-tokens
+#   hook window -group semantic-tokens InsertIdle .* lsp-semantic-tokens
+#   hook -once -always window WinSetOption filetype=.* %{
+#     remove-hooks window semantic-tokens
+#   }
+# }
+
+# remove-hooks global lsp-filetype-python
+# hook -group lsp-filetype-python global BufSetOption filetype=python %{
+#      set-option buffer lsp_servers %{
+#          [ruff]
+#          args = ["server"]
+#          root_globs = ["requirements.txt", "setup.py", "pyproject.toml", ".git", ".hg"]
+#          settings_section = "_"
+#          [ruff.settings._.globalSettings]
+#          organizeImports = true
+#          fixAll = true
+#      }
+# }
+
+remove-hooks global lsp-filetype-javascript
+hook -group lsp-filetype-javascript global BufSetOption filetype=(?:javascript|typescript) %{
+    set-option buffer lsp_servers %{
+        [deno]
+        root_globs = ["package.json", "tsconfig.json", ".git", ".hg"]
+        args = ["lsp"]
+        settings_section = "deno"
+        [deno.settings.deno]
+        enable = true
+        lint = true
+    }
+}
+
+hook global WinSetOption filetype=(rust|python|go|javascript|typescript|c|cpp) %{
+    lsp-enable-window
+}
 
 # *** PACKAGES
 
@@ -81,10 +135,10 @@ hook global BufCreate /.* %{
 #	define-command autowrap-buf-enable -docstring "Automatically wrap the lines in which characters are inserted" %{
 #	    hook -group autowrap buffer InsertChar [^\n] autowrap-cursor
 #	}
-hook global BufCreate '\*scratch\*' %{
-	set buffer autowrap_column 89
-	autowrap-buf-enable
-}
+# hook global BufCreate '\*scratch\*' %{
+# 	set buffer autowrap_column 89
+# 	autowrap-buf-enable
+# }
 
 # Empty scratch pad
 hook global BufCreate '\*scratch\*' %{
@@ -106,18 +160,23 @@ map global insert <c-w> "<esc>bdi"
 define-command open-nnn %{ nop %sh{ KAK_SESSION=$kak_session KAK_CLIENT=$kak_client wezterm cli split-pane --horizontal -- nnn -- "$kak_buffile"}}
 define-command open-fzf %{ nop %sh{ KAK_SESSION=$kak_session KAK_CLIENT=$kak_client wezterm cli split-pane --horizontal -- fzf_kak}}
 
-# Custom user mode (<space>)
+# Custom user modes
 declare-user-mode user-2
+declare-user-mode user-utils
 declare-user-mode user-make
+declare-user-mode user-spell
 
 map global user * '_yx10<s-j>s<c-r>"'
 map global user x ":write-all-quit<ret>" -docstring "save and quit"
 map global user r ":enter-user-mode reasymotion<ret>" -docstring "reasymotion"
 map global user w ":format<ret>" -docstring "format file"
+map global user p ":enter-user-mode user-spell<ret>" -docstring "spelling checker"
 map global user t ":enter-user-mode tabs<ret>" -docstring "tab manager"
 map global user T ":enter-user-mode -lock tabs<ret>" -docstring "(locked) tab manager"
 map global user s ':enter-user-mode -lock mirror<ret>' -docstring 'mirror lock'
 map global user m ":enter-user-mode user-make<ret>" -docstring "wrapper for make"
+map global user u ":enter-user-mode user-utils<ret>" -docstring "utils"
+map global user l ":enter-user-mode lsp<ret>" -docstring "LSP mode"
 map global user c ":comment-line<ret>" -docstring "comment out selection"
 map global user f ":open-nnn<ret>" -docstring "nnn file manager"
 map global user d ":open-fzf<ret>" -docstring "(fzf) fuzzy file searcher"
@@ -127,10 +186,20 @@ map global user-2 n "<c-d>" -docstring "page (half) down"
 map global user-2 N "<pagedown>" -docstring "page down"
 map global user-2 e "<c-u>" -docstring "page (half) up"
 map global user-2 E "<pageup>" -docstring "page up"
-map global user-2 t "s\h+$<ret><a-d>" -docstring "trim trailing spaces"
-map global user-2 w "|fold -sw89 -<ret>" -docstring "wrap to 89 length per column"
+
+map global user-utils t "s\h+$<ret><a-d>," -docstring "trim trailing spaces"
+map global user-utils w "|fold -sw89 -<ret>" -docstring "wrap to 89 length per column"
+# pip install titlecase
+map global user-utils e "|titlecase<ret>" -docstring "convert to title-case (intelligently)"
 
 map global user-make n ":make-next-error<ret>" -docstring "next error"
-map global user-make e ":make<ret>" -docstring "run"
+map global user-make e ":make run<ret>" -docstring "run"
+map global user-make E ":make<ret>" -docstring "run"
 map global user-make i ":make-previous-error<ret>" -docstring "prev error"
+
+map global user-spell g ":spell<ret>" -docstring "spell check the buffer"
+map global user-spell n ":spell-next<ret>" -docstring "next mistake"
+map global user-spell r ":spell-replace<ret>" -docstring "replace current mistake"
+map global user-spell c ":spell-clear<ret>" -docstring "clean spell stuff"
+
 

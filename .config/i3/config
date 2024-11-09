@@ -19,11 +19,15 @@ exec --no-startup-id i3 workspace 1
 # Startup
 exec --no-startup-id fish /home/myxi/Documents/startup-scripts/setup-i3-layout.fish
 
+# Compositor
+exec --no-startup-id picom -b
+
 # Auto assign windows
 assign  [class="floating_editor"]         3
 assign  [class="wezterm-terminal"]        1
 assign  [class="wezterm_ide*"]                 2
 assign  [class="firefox"]                 3
+assign  [class="dissent"]                 3
 assign  [class="Signal"]                  3
 assign  [class="Spotify"]                 4
 
@@ -33,6 +37,7 @@ for_window [class="Blueman-manager"] floating enable
 for_window [class="geary"] floating enable
 for_window [class="floating_editor"] floating enable
 for_window [class="firefox"] layout tabbed
+for_window [class="dissent"] layout tabbed
 for_window [class="wezterm_ide*"] layout tabbed
 
 # Custom apps

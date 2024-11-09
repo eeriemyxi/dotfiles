@@ -24,10 +24,10 @@ hook global BufSetOption filetype=zig %{
 # sudo apt install astyle
 # sudo apt install clang-format
 hook global BufSetOption filetype=cpp %{
-    set-option buffer formatcmd 'clang-format --style "{ColumnLimit: 89, IndentWidth: 4}"'
+    set-option buffer formatcmd 'clang-format --style "{ColumnLimit: 89, IndentWidth: 4, AllowShortIfStatementsOnASingleLine: true}"'
     # set-option buffer formatcmd 'astyle'
 }
 hook global BufSetOption filetype=c %{
-    set-option buffer formatcmd 'clang-format --style "{ColumnLimit: 89, IndentWidth: 4}"'
+    set-option buffer formatcmd 'clang-format --style "{ColumnLimit: 89, IndentWidth: 4, AllowShortIfStatementsOnASingleLine: true}"'
     # set-option buffer formatcmd 'astyle'
 }
