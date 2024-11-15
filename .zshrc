@@ -13,8 +13,8 @@ source $ZSH/oh-my-zsh.sh
 
 export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
-export EDITOR="kak"
-export SUDO_EDITOR="kak"
+export EDITOR="/home/myxi/.local/bin/kak"
+export SUDO_EDITOR="/home/myxi/.local/bin/kak"
 export XDG_CONFIG_HOME="/home/myxi/.config/"
 export TERM="xterm-256color"
 
@@ -26,7 +26,10 @@ alias lg=lazygit
 alias trsh="gio trash"
 alias vi=nvim
 alias vim=nvim
-alias zshrc="$EDITOR $HOME/.zshrc"
+alias zshrc="$EDITOR $HOME/.zshrc" 
+
+# Sper: https://github.com/eeriemyxi/sper
+export SPER_LICENSE_DIR="/home/myxi/Documents/licenses"
 
 # NNN file manager 
 # theme (gruvbox)

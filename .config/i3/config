@@ -1,6 +1,7 @@
 set $mod Mod4
-font pango:monospace 10
+font pango:JetBrainsMono Nerd Font Mono,JetBrainsMono NFM 10
 title_align center
+
 focus_follows_mouse no
 
 exec_always --no-startup-id feh --bg-scale /home/myxi/Downloads/wall.jpg
@@ -23,22 +24,23 @@ exec --no-startup-id fish /home/myxi/Documents/startup-scripts/setup-i3-layout.f
 exec --no-startup-id picom -b
 
 # Auto assign windows
-assign  [class="floating_editor"]         3
-assign  [class="wezterm-terminal"]        1
-assign  [class="wezterm_ide*"]                 2
-assign  [class="firefox"]                 3
-assign  [class="dissent"]                 3
-assign  [class="Signal"]                  3
-assign  [class="Spotify"]                 4
+assign     [class="floating_editor"]      3
+assign     [class="wezterm-terminal"]     1
+assign     [class="wezterm_ide*"]         2
+assign     [class="Emacs"]                2
+assign     [class="firefox"]              3
+assign     [class="dissent"]              3
+assign     [class="Signal"]               3
+assign     [class="Spotify"]              4
 
-for_window [class="mpv"] floating_maximum_size 512 x 288
-for_window [class="mpv"] floating enable
-for_window [class="Blueman-manager"] floating enable
-for_window [class="geary"] floating enable
-for_window [class="floating_editor"] floating enable
-for_window [class="firefox"] layout tabbed
-for_window [class="dissent"] layout tabbed
-for_window [class="wezterm_ide*"] layout tabbed
+for_window [class="mpv"]                  floating enable
+for_window [class="Blueman-manager"]      floating enable
+for_window [class="geary"]                floating enable
+for_window [class="floating_editor"]      floating enable
+for_window [class="firefox"]              layout tabbed
+for_window [class="dissent"]              layout tabbed
+for_window [class="wezterm_ide*"]         layout tabbed
+for_window [class="Emacs"]                layout tabbed
 
 # Custom apps
 bindsym $mod+f exec wezterm start --class "floating_editor" -- "kak"
@@ -100,10 +102,10 @@ bindsym $mod+Shift+space floating toggle
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
 
-set $ws1 "1"
-set $ws2 "2"
-set $ws2 "3"
-set $ws3 "4"
+set $ws1 "term"
+set $ws2 "code"
+set $ws2 "main"
+set $ws3 "music"
 set $ws4 "5"
 set $ws5 "5"
 set $ws6 "6"

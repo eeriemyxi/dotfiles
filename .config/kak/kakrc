@@ -34,10 +34,10 @@ hook global ModeChange .*:insert  %{ set-face window PrimaryCursorEol rgb:282828
 
 # *** LSP
 
-eval %sh{kak-lsp}
+# eval %sh{kak-lsp}
 
-lsp-inlay-hints-enable global
-lsp-inlay-diagnostics-enable global
+# lsp-inlay-hints-enable global
+# lsp-inlay-diagnostics-enable global
 
 # # Semantic Highlighting
 # hook global WinSetOption filetype=(?:python|c|javascript|typescript) %{
@@ -157,8 +157,19 @@ map global insert <c-w> "<esc>bdi"
 # TODO: find a way to do ctrl + backspace
 
 # Custom commands
+# *** https://github.com/mawww/kakoune/wiki/Integrating-Other-CLI-apps#ranger
+def for-each-line \
+    -docstring "for-each-line <command> <path to file>: run command with the value of each line in the file" \
+    -params 2 \
+    %{ evaluate-commands %sh{
+
+    while read f; do
+        printf "$1 $f\n"
+    done < "$2"
+}}
 define-command open-nnn %{ nop %sh{ KAK_SESSION=$kak_session KAK_CLIENT=$kak_client wezterm cli split-pane --horizontal -- nnn -- "$kak_buffile"}}
-define-command open-fzf %{ nop %sh{ KAK_SESSION=$kak_session KAK_CLIENT=$kak_client wezterm cli split-pane --horizontal -- fzf_kak}}
+define-command open-fzf %{ nop %sh{ KAK_SESSION=$kak_session KAK_CLIENT=$kak_client wezterm cli split-pane --horizontal -- fzf_kak}} 
+define-command open-ranger %{ nop %sh{ KAK_SESSION=$kak_session KAK_CLIENT=$kak_client wezterm cli split-pane --bottom -- ranger-kak}}
 
 # Custom user modes
 declare-user-mode user-2
@@ -178,7 +189,8 @@ map global user m ":enter-user-mode user-make<ret>" -docstring "wrapper for make
 map global user u ":enter-user-mode user-utils<ret>" -docstring "utils"
 map global user l ":enter-user-mode lsp<ret>" -docstring "LSP mode"
 map global user c ":comment-line<ret>" -docstring "comment out selection"
-map global user f ":open-nnn<ret>" -docstring "nnn file manager"
+map global user f ':open-ranger<ret>' -docstring 'select files in ranger'
+map global user F ":open-nnn<ret>" -docstring "nnn file manager"
 map global user d ":open-fzf<ret>" -docstring "(fzf) fuzzy file searcher"
 map global user <space> ":enter-user-mode -lock user-2<ret>" -docstring "locked user mode 2"
 

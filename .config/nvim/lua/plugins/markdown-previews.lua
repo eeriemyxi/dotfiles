@@ -13,9 +13,9 @@ return {
         end,
         ft = { "markdown" },
     },
-    {
-        "eeriemyxi/illumination",
-        -- dir = "~/.illumination",
-        build = "/bin/sh install.sh",
-    },
+    -- {
+    --     "eeriemyxi/illumination",
+    --     -- dir = "~/.illumination",
+    --     build = "/bin/sh install.sh",
+    -- },
 }

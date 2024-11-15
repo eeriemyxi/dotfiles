@@ -1,5 +1,5 @@
-declare-option str escape_insert_first "n"
-declare-option str escape_insert_second "s"
+declare-option str escape_insert_first "t"
+declare-option str escape_insert_second "t"
 
 define-command escape_insert_setup %{
     # Remove any other hooks for the first character.
