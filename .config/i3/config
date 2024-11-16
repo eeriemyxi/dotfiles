@@ -92,9 +92,9 @@ bindsym $mod+Mod1+v split v
 bindsym $mod+Shift+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym  $mod+Mod1+s  layout  stacking          
+bindsym  $mod+Mod1+s  layout  stacking
 bindsym  $mod+w       layout  toggle    splith  tabbed
-bindsym  $mod+Mod1+e  layout  toggle    split   
+bindsym  $mod+Mod1+e  layout  toggle    split
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
@@ -102,10 +102,10 @@ bindsym $mod+Shift+space floating toggle
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
 
-set $ws1 "term"
-set $ws2 "code"
-set $ws2 "main"
-set $ws3 "music"
+set $ws1 "1"
+set $ws2 "2"
+set $ws2 "3"
+set $ws3 "4"
 set $ws4 "5"
 set $ws5 "5"
 set $ws6 "6"
@@ -162,9 +162,9 @@ mode "resize" {
     bindsym  Up      resize  shrink     height  15  px  or  15  ppt
     bindsym  Right   resize  grow       width   15  px  or  15  ppt
 
-    bindsym  Return  mode    "default"                          
-    bindsym  Escape  mode    "default"                          
-    bindsym  $mod+r  mode    "default"                          
+    bindsym  Return  mode    "default"
+    bindsym  Escape  mode    "default"
+    bindsym  $mod+r  mode    "default"
 }
 
 bindsym $mod+r mode "resize"

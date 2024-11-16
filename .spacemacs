@@ -32,7 +32,7 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(
+   '(shell-scripts
      typescript
      python
      nim
@@ -43,11 +43,12 @@ This function should only modify configuration layer settings."
      toml
      lua
      csharp
+     emacs-lisp
      (markdown :variables markdown-live-preview-engine 'vmd)
      (c-c++ :variables c-c++-lsp-enable-semantic-highlight 'rainbow c-c++-enable-organize-includes-on-save t c-c++-enable-clang-format-on-save t)
 
      tree-sitter
-     ranger
+     ;; ranger
      debug
      evil-snipe
      ;; ----------------------------------------------------------------
@@ -55,17 +56,16 @@ This function should only modify configuration layer settings."
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     ;; auto-completion
+     (auto-completion :variables auto-completion-return-key-behavior nil)
      better-defaults
-     emacs-lisp
      git
      helm
-     lsp
+     ;; lsp
      multiple-cursors
      ;; org
-     ;; (shell :variables
-     ;;        shell-default-height 30
-     ;;        shell-default-position 'bottom)
+     (shell :variables
+            shell-default-height 30
+            shell-default-position 'bottom)
      ;; spell-checking
      syntax-checking
      ;; version-control
@@ -471,7 +471,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil, start an Emacs server if one is not already running.
    ;; (default nil)
-   dotspacemacs-enable-server nil
+   dotspacemacs-enable-server t
 
    ;; Set the emacs server socket location.
    ;; If nil, uses whatever the Emacs default is, otherwise a directory path
@@ -482,7 +482,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil, advise quit functions to keep server open when quitting.
    ;; (default nil)
-   dotspacemacs-persistent-server nil
+   dotspacemacs-persistent-server t
 
    ;; List of search tool executable names. Spacemacs uses the first installed
    ;; tool of the list. Supported tools are `rg', `ag', `pt', `ack' and `grep'.
@@ -603,8 +603,21 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+  (spacemacs/set-leader-keys
+    "on" 'evil-avy-goto-char-timer
+    )
+
+  (setq-default backup-directory-alist `(("." . "~/.saves")))
+
+  (defun my/save-buffer-if-file ()
+    (save-some-buffers t))
+
+  (add-hook 'focus-out-hook 'my/save-buffer-if-file)
+
   (evil-leader/set-key "q q" 'spacemacs/frame-killer)
-  (setq-default evil-escape-key-sequence "ne")
+
+  (setq-default evil-escape-key-sequence "kt")
+
   (spacemacs/set-leader-keys
     "wN"  'evil-window-move-very-bottom
     "wn"  'evil-window-down
@@ -612,9 +625,49 @@ before packages are loaded."
     "we"  'evil-window-up
     "wI"  'evil-window-move-far-right
     "wi"  'evil-window-right
+
+    "fn"  'dired-jump
     )
+
+  ;; https://github.com/gabesoft/evil-mc/issues/41#issuecomment-890887060
+  (setq evil-mc-custom-known-commands
+        '((custom/evil-mc-evil-escape-move-back-fake-cursors
+           (:default . evil-mc-execute-default-call))))
+  (defun custom/evil-mc-evil-escape-move-back-fake-cursors ()
+    "Move the fake cursors to the left once,
+unless they already are at the beginning of the line."
+    (unless (bolp) (backward-char)))
+  (defun custom/evil-mc-evil-escape-fix ()
+    "Prevent the first evil-escape-key-sequence key (default: f),
+from being typed at all of the fake cursors.
+And move back the fake cursors when the real insert state cursor is at the end
+of a line."
+    (when (evil-mc-has-cursors-p)
+      (evil-mc-pause-cursors)
+      (run-with-idle-timer
+       0 nil '(lambda ()
+                (evil-mc-resume-cursors)
+                (let ((evil-mc-command '((:name . custom/evil-mc-evil-escape-move-back-fake-cursors))))
+                  (evil-mc-execute-for-all))))))
+
+  (advice-add 'evil-escape-func :before 'custom/evil-mc-evil-escape-fix)
+
+  (evil-collection-define-key 'normal 'dired-mode-map
+    "n" 'dired-next-line
+    "e" 'dired-previous-line
+    "h" 'dired-up-directory
+    "i" 'dired-find-file
+    (kbd "M-C-e") 'dired-tree-up
+    (kbd "M-C-n") 'dired-tree-down
+    (kbd "M-C-h") 'dired-prev-subdir
+    (kbd "M-C-i") 'dired-next-subdir
+    (kbd "* C-e") 'dired-prev-marked-file
+    (kbd "* C-n") 'dired-next-marked-file
+    )
+
   (dirvish-override-dired-mode)
   )
+
 
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -630,7 +683,7 @@ This function is called at the very end of Spacemacs initialization."
    ;; Your init file should contain only one such instance.
    ;; If there is more than one, they won't work right.
    '(package-selected-packages
-     '(org ranger json-mode json-navigator json-reformat json-snatcher web-beautify typescript-mode web-mode dap-mode lsp-docker bui yasnippet-snippets yapfify ws-butler writeroom-mode winum which-key vundo volatile-highlights vim-powerline vi-tilde-fringe unfill undo-fu-session undo-fu treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil toc-org term-cursor symon symbol-overlay string-inflection string-edit-at-point sphinx-doc spacemacs-whitespace-cleanup spacemacs-purpose-popwin spaceline space-doc smeargle restart-emacs request rainbow-delimiters quickrun pytest pylookup pyenv-mode pydoc py-isort popwin poetry pippel pipenv pip-requirements pcre2el password-generator paradox overseer org-superstar open-junk-file nameless mwim multi-line markdown-toc macrostep lsp-ui lsp-treemacs lsp-pyright lsp-origami lorem-ipsum live-py-mode link-hint inspector info+ indent-guide importmagic hybrid-mode hungry-delete holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt helm-xref helm-themes helm-swoop helm-pydoc helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-lsp helm-ls-git helm-git-grep helm-descbinds helm-company helm-comint helm-c-yasnippet helm-ag gruvbox-theme google-translate golden-ratio gitignore-templates git-timemachine git-modes git-messenger git-link gh-md flycheck-pos-tip flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav elisp-demos elisp-def editorconfig dumb-jump drag-stuff dotenv-mode disable-mouse dired-quick-sort diminish devdocs define-word cython-mode company-anaconda column-enforce-mode code-review code-cells clean-aindent-mode centered-cursor-mode blacken auto-yasnippet auto-highlight-symbol auto-compile all-the-icons aggressive-indent ace-link ace-jump-helm-line)))
+     '(eaf tide company-shell counsel-gtags counsel swiper ivy fish-mode flycheck-bashate ggtags insert-shebang shfmt reformatter org ranger json-mode json-navigator json-reformat json-snatcher web-beautify typescript-mode web-mode dap-mode lsp-docker bui yasnippet-snippets yapfify ws-butler writeroom-mode winum which-key vundo volatile-highlights vim-powerline vi-tilde-fringe unfill undo-fu-session undo-fu treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil toc-org term-cursor symon symbol-overlay string-inflection string-edit-at-point sphinx-doc spacemacs-whitespace-cleanup spacemacs-purpose-popwin spaceline space-doc smeargle restart-emacs request rainbow-delimiters quickrun pytest pylookup pyenv-mode pydoc py-isort popwin poetry pippel pipenv pip-requirements pcre2el password-generator paradox overseer org-superstar open-junk-file nameless mwim multi-line markdown-toc macrostep lsp-ui lsp-treemacs lsp-pyright lsp-origami lorem-ipsum live-py-mode link-hint inspector info+ indent-guide importmagic hybrid-mode hungry-delete holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt helm-xref helm-themes helm-swoop helm-pydoc helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-lsp helm-ls-git helm-git-grep helm-descbinds helm-company helm-comint helm-c-yasnippet helm-ag gruvbox-theme google-translate golden-ratio gitignore-templates git-timemachine git-modes git-messenger git-link gh-md flycheck-pos-tip flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav elisp-demos elisp-def editorconfig dumb-jump drag-stuff dotenv-mode disable-mouse dired-quick-sort diminish devdocs define-word cython-mode company-anaconda column-enforce-mode code-review code-cells clean-aindent-mode centered-cursor-mode blacken auto-yasnippet auto-highlight-symbol auto-compile all-the-icons aggressive-indent ace-link ace-jump-helm-line)))
   (custom-set-faces
    ;; custom-set-faces was added by Custom.
    ;; If you edit it by hand, you could mess it up, so be careful.
