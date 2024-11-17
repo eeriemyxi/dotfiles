@@ -48,15 +48,11 @@ This function should only modify configuration layer settings."
      (c-c++ :variables c-c++-lsp-enable-semantic-highlight 'rainbow c-c++-enable-organize-includes-on-save t c-c++-enable-clang-format-on-save t)
 
      tree-sitter
-     ;; ranger
      debug
      evil-snipe
-     ;; ----------------------------------------------------------------
-     ;; Example of useful layers you may want to use right away.
-     ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
-     ;; `M-m f e R' (Emacs style) to install them.
-     ;; ----------------------------------------------------------------
-     (auto-completion :variables auto-completion-return-key-behavior nil)
+     (tabs :variables tabs-icons nil)
+
+     (auto-completion :variables auto-completion-return-key-behavior nil auto-completion-tab-key-behavior 'cycle auto-completion-complete-with-key-sequence "kr" auto-completion-idle-delay 0.0 auto-completion-complete-with-key-sequence-delay 0.2 auto-completion-enable-snippets-in-popup t)
      better-defaults
      git
      helm
@@ -81,7 +77,7 @@ This function should only modify configuration layer settings."
    ;; `dotspacemacs/user-config'. To use a local version of a package, use the
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '(gruvbox-theme dirvish)
+   dotspacemacs-additional-packages '(gruvbox-theme dirvish titlecase)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -603,8 +599,29 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+  ;; Customize Centaur Tab
+  (with-eval-after-load 'centaur-tabs
+    (custom-set-faces
+     '(centaur-tabs-default
+       ((t (:background "#282828" :foreground "#928374")))) ; Gruvbox dark background and neutral gray
+     '(centaur-tabs-unselected
+       ((t (:background "#282828" :foreground "#a89984")))) ; Medium gray and light neutral
+     '(centaur-tabs-selected
+       ((t (:background "#504945" :foreground "#ebdbb2")))) ; Dark brown and light tan
+     '(centaur-tabs-unselected-modified
+       ((t (:background "#3c3836" :foreground "#fabd2f")))) ; Same as unselected, golden foreground
+     '(centaur-tabs-selected-modified
+       ((t (:background "#504945" :foreground "#fabd2f")))))) ; Same as selected, golden foreground
+  (setq-default centaur-tabs-ace-jump-keys
+                '(?a ?r ?s ?t ?g ?m ?n ?e ?i ?c ?k ?m ?w ?y))
+  (setq-default centaur-tabs-set-bar 'right)
+  (setq-default centaur-tabs-style "slant")
+  (centaur-tabs-headline-match)
+
   (spacemacs/set-leader-keys
     "on" 'evil-avy-goto-char-timer
+    "ot" 'titlecase-region
+    "oe" 'centaur-tabs-ace-jump
     )
 
   (setq-default backup-directory-alist `(("." . "~/.saves")))
@@ -684,10 +701,4 @@ This function is called at the very end of Spacemacs initialization."
    ;; If there is more than one, they won't work right.
    '(package-selected-packages
      '(eaf tide company-shell counsel-gtags counsel swiper ivy fish-mode flycheck-bashate ggtags insert-shebang shfmt reformatter org ranger json-mode json-navigator json-reformat json-snatcher web-beautify typescript-mode web-mode dap-mode lsp-docker bui yasnippet-snippets yapfify ws-butler writeroom-mode winum which-key vundo volatile-highlights vim-powerline vi-tilde-fringe unfill undo-fu-session undo-fu treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil toc-org term-cursor symon symbol-overlay string-inflection string-edit-at-point sphinx-doc spacemacs-whitespace-cleanup spacemacs-purpose-popwin spaceline space-doc smeargle restart-emacs request rainbow-delimiters quickrun pytest pylookup pyenv-mode pydoc py-isort popwin poetry pippel pipenv pip-requirements pcre2el password-generator paradox overseer org-superstar open-junk-file nameless mwim multi-line markdown-toc macrostep lsp-ui lsp-treemacs lsp-pyright lsp-origami lorem-ipsum live-py-mode link-hint inspector info+ indent-guide importmagic hybrid-mode hungry-delete holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt helm-xref helm-themes helm-swoop helm-pydoc helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-lsp helm-ls-git helm-git-grep helm-descbinds helm-company helm-comint helm-c-yasnippet helm-ag gruvbox-theme google-translate golden-ratio gitignore-templates git-timemachine git-modes git-messenger git-link gh-md flycheck-pos-tip flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav elisp-demos elisp-def editorconfig dumb-jump drag-stuff dotenv-mode disable-mouse dired-quick-sort diminish devdocs define-word cython-mode company-anaconda column-enforce-mode code-review code-cells clean-aindent-mode centered-cursor-mode blacken auto-yasnippet auto-highlight-symbol auto-compile all-the-icons aggressive-indent ace-link ace-jump-helm-line)))
-  (custom-set-faces
-   ;; custom-set-faces was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
-   )
   )
