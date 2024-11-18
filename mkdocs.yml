@@ -8,6 +8,7 @@ nav:
     - Home: index.md
     - Neovim: neovim.md
     - Kakoune: kakoune.md
+    - Emacs: emacs.md
 theme:
     name: terminal
     palette: gruvbox_dark

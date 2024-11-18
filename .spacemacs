@@ -56,13 +56,13 @@ This function should only modify configuration layer settings."
      better-defaults
      git
      helm
-     ;; lsp
+     lsp
      multiple-cursors
      ;; org
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
-     ;; spell-checking
+     spell-checking
      syntax-checking
      ;; version-control
      (keyboard-layout :variables kl-layout 'colemak-hnei)
@@ -77,7 +77,11 @@ This function should only modify configuration layer settings."
    ;; `dotspacemacs/user-config'. To use a local version of a package, use the
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '(gruvbox-theme dirvish titlecase)
+   dotspacemacs-additional-packages '(gruvbox-theme
+                                      dirvish
+                                      titlecase
+                                      php-mode
+                                      exec-path-from-shell)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -467,7 +471,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil, start an Emacs server if one is not already running.
    ;; (default nil)
-   dotspacemacs-enable-server t
+   dotspacemacs-enable-server nil
 
    ;; Set the emacs server socket location.
    ;; If nil, uses whatever the Emacs default is, otherwise a directory path
@@ -478,7 +482,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil, advise quit functions to keep server open when quitting.
    ;; (default nil)
-   dotspacemacs-persistent-server t
+   dotspacemacs-persistent-server nil
 
    ;; List of search tool executable names. Spacemacs uses the first installed
    ;; tool of the list. Supported tools are `rg', `ag', `pt', `ack' and `grep'.
@@ -599,6 +603,9 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+  (when (daemonp)
+    (exec-path-from-shell-initialize))
+
   ;; Customize Centaur Tab
   (with-eval-after-load 'centaur-tabs
     (custom-set-faces
@@ -620,16 +627,14 @@ before packages are loaded."
 
   (spacemacs/set-leader-keys
     "on" 'evil-avy-goto-char-timer
-    "ot" 'titlecase-region
-    "oe" 'centaur-tabs-ace-jump
+    "op" 'titlecase-region
+    "ot" 'centaur-tabs-ace-jump
     )
 
-  (setq-default backup-directory-alist `(("." . "~/.saves")))
+  (setq-default backup-directory-alist `((".*" . "/home/myxi/.saves/")))
 
-  (defun my/save-buffer-if-file ()
-    (save-some-buffers t))
-
-  (add-hook 'focus-out-hook 'my/save-buffer-if-file)
+  (add-hook 'focus-out-hook (lambda ()
+                              (save-some-buffers t)))
 
   (evil-leader/set-key "q q" 'spacemacs/frame-killer)
 
@@ -652,13 +657,13 @@ before packages are loaded."
            (:default . evil-mc-execute-default-call))))
   (defun custom/evil-mc-evil-escape-move-back-fake-cursors ()
     "Move the fake cursors to the left once,
-unless they already are at the beginning of the line."
+  unless they already are at the beginning of the line."
     (unless (bolp) (backward-char)))
   (defun custom/evil-mc-evil-escape-fix ()
     "Prevent the first evil-escape-key-sequence key (default: f),
-from being typed at all of the fake cursors.
-And move back the fake cursors when the real insert state cursor is at the end
-of a line."
+  from being typed at all of the fake cursors.
+  And move back the fake cursors when the real insert state cursor is at the end
+  of a line."
     (when (evil-mc-has-cursors-p)
       (evil-mc-pause-cursors)
       (run-with-idle-timer
@@ -666,7 +671,6 @@ of a line."
                 (evil-mc-resume-cursors)
                 (let ((evil-mc-command '((:name . custom/evil-mc-evil-escape-move-back-fake-cursors))))
                   (evil-mc-execute-for-all))))))
-
   (advice-add 'evil-escape-func :before 'custom/evil-mc-evil-escape-fix)
 
   (evil-collection-define-key 'normal 'dired-mode-map
@@ -700,5 +704,15 @@ This function is called at the very end of Spacemacs initialization."
    ;; Your init file should contain only one such instance.
    ;; If there is more than one, they won't work right.
    '(package-selected-packages
-     '(eaf tide company-shell counsel-gtags counsel swiper ivy fish-mode flycheck-bashate ggtags insert-shebang shfmt reformatter org ranger json-mode json-navigator json-reformat json-snatcher web-beautify typescript-mode web-mode dap-mode lsp-docker bui yasnippet-snippets yapfify ws-butler writeroom-mode winum which-key vundo volatile-highlights vim-powerline vi-tilde-fringe unfill undo-fu-session undo-fu treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil toc-org term-cursor symon symbol-overlay string-inflection string-edit-at-point sphinx-doc spacemacs-whitespace-cleanup spacemacs-purpose-popwin spaceline space-doc smeargle restart-emacs request rainbow-delimiters quickrun pytest pylookup pyenv-mode pydoc py-isort popwin poetry pippel pipenv pip-requirements pcre2el password-generator paradox overseer org-superstar open-junk-file nameless mwim multi-line markdown-toc macrostep lsp-ui lsp-treemacs lsp-pyright lsp-origami lorem-ipsum live-py-mode link-hint inspector info+ indent-guide importmagic hybrid-mode hungry-delete holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt helm-xref helm-themes helm-swoop helm-pydoc helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-lsp helm-ls-git helm-git-grep helm-descbinds helm-company helm-comint helm-c-yasnippet helm-ag gruvbox-theme google-translate golden-ratio gitignore-templates git-timemachine git-modes git-messenger git-link gh-md flycheck-pos-tip flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav elisp-demos elisp-def editorconfig dumb-jump drag-stuff dotenv-mode disable-mouse dired-quick-sort diminish devdocs define-word cython-mode company-anaconda column-enforce-mode code-review code-cells clean-aindent-mode centered-cursor-mode blacken auto-yasnippet auto-highlight-symbol auto-compile all-the-icons aggressive-indent ace-link ace-jump-helm-line)))
+     '(lsp-mode drupal-mode geben php-auto-yasnippets php-extras php-mode phpactor composer php-runtime phpunit eaf tide company-shell counsel-gtags counsel swiper ivy fish-mode flycheck-bashate ggtags insert-shebang shfmt reformatter org ranger json-mode json-navigator json-reformat json-snatcher web-beautify typescript-mode web-mode dap-mode lsp-docker bui yasnippet-snippets yapfify ws-butler writeroom-mode winum which-key vundo volatile-highlights vim-powerline vi-tilde-fringe unfill undo-fu-session undo-fu treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil toc-org term-cursor symon symbol-overlay string-inflection string-edit-at-point sphinx-doc spacemacs-whitespace-cleanup spacemacs-purpose-popwin spaceline space-doc smeargle restart-emacs request rainbow-delimiters quickrun pytest pylookup pyenv-mode pydoc py-isort popwin poetry pippel pipenv pip-requirements pcre2el password-generator paradox overseer org-superstar open-junk-file nameless mwim multi-line markdown-toc macrostep lsp-ui lsp-treemacs lsp-pyright lsp-origami lorem-ipsum live-py-mode link-hint inspector info+ indent-guide importmagic hybrid-mode hungry-delete holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt helm-xref helm-themes helm-swoop helm-pydoc helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-lsp helm-ls-git helm-git-grep helm-descbinds helm-company helm-comint helm-c-yasnippet helm-ag gruvbox-theme google-translate golden-ratio gitignore-templates git-timemachine git-modes git-messenger git-link gh-md flycheck-pos-tip flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav elisp-demos elisp-def editorconfig dumb-jump drag-stuff dotenv-mode disable-mouse dired-quick-sort diminish devdocs define-word cython-mode company-anaconda column-enforce-mode code-review code-cells clean-aindent-mode centered-cursor-mode blacken auto-yasnippet auto-highlight-symbol auto-compile all-the-icons aggressive-indent ace-link ace-jump-helm-line)))
+  (custom-set-faces
+   ;; custom-set-faces was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(centaur-tabs-default ((t (:background "#282828" :foreground "#928374"))))
+   '(centaur-tabs-selected ((t (:background "#504945" :foreground "#ebdbb2"))))
+   '(centaur-tabs-selected-modified ((t (:background "#504945" :foreground "#fabd2f"))))
+   '(centaur-tabs-unselected ((t (:background "#282828" :foreground "#a89984"))))
+   '(centaur-tabs-unselected-modified ((t (:background "#3c3836" :foreground "#fabd2f")))))
   )
