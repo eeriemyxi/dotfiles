@@ -6,6 +6,7 @@ framework so a subset of the shortcuts listed here are from that framework.
 # General
 - `M-x s d` see the diff of the current buffer and its corresponding file
 - `M-q` wrap the content at the cursor
+  - `M-x set-fill-column` set max length. 88 recommended
 - `C-x h` select all content of the buffer
 - `C-u M-!` insert output of a shell command into buffer
 - `SPC t F` automatic word wrapping.
