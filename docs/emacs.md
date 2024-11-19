@@ -12,7 +12,7 @@ framework so a subset of the shortcuts listed here are from that framework.
 - `SPC t F` automatic word wrapping.
 ### Shell
 - `C-c-C-c` close the process
-- `C-d` send EOF, just as expected from normal terminal
+- `C-d` send EOF
 
 ## Installing Packages from Git
 #### Example
