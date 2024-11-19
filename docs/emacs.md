@@ -1,12 +1,14 @@
 # Introduction
-My primary editor as of Mon Nov 18 2024. It is great. I will document tricks
-here that I may forget due to infrequent use.
+My primary code editor as of Nov 18 2024. It is great. I will document all the
+tricks I know here that I may forget due to infrequent use. I use Spacemacs
+framework so a subset of the shortcuts listed here are from that framework.
 
 # General
 - `M-x s d` see the diff of the current buffer and its corresponding file
 - `M-q` wrap the content at the cursor
 - `C-x h` select all content of the buffer
-- `C-u M-!` insert stdout of a shell command into buffer
+- `C-u M-!` insert output of a shell command into buffer
+- `SPC t F` automatic word wrapping.
 ### Shell
 - `C-c-C-c` close the process
 - `C-d` send EOF, just as expected from normal terminal
