@@ -6,6 +6,7 @@ here that I may forget due to infrequent use.
 - `M-x s d` see the diff of the current buffer and its corresponding file
 - `M-q` wrap the content at the cursor
 - `C-x h` select all content of the buffer
+- `C-u M-!` insert stdout of a shell command into buffer
 ### Shell
 - `C-c-C-c` close the process
 - `C-d` send EOF, just as expected from normal terminal

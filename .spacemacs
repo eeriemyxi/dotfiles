@@ -603,6 +603,12 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+  (spacemacs/set-leader-keys
+    "on" 'evil-avy-goto-char-timer
+    "op" 'titlecase-region
+    "ot" 'centaur-tabs-ace-jump
+    )
+
   (when (daemonp)
     (exec-path-from-shell-initialize))
 
@@ -624,12 +630,6 @@ before packages are loaded."
   (setq-default centaur-tabs-set-bar 'right)
   (setq-default centaur-tabs-style "slant")
   (centaur-tabs-headline-match)
-
-  (spacemacs/set-leader-keys
-    "on" 'evil-avy-goto-char-timer
-    "op" 'titlecase-region
-    "ot" 'centaur-tabs-ace-jump
-    )
 
   (setq-default backup-directory-alist `((".*" . "/home/myxi/.saves/")))
 

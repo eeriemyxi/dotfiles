@@ -1,7 +1,11 @@
 ### Notes
-| DE                                       | Shell                                  | Keyboard Layout | Distribution            | License |
-|:----------------------------------------:|:--------------------------------------:|:---------------:|:-----------------------:|---------|
-| Xfce4 DE with i3wm as its window manager | `zsh` (from Ubuntu Jammy repositories) | Colemak         | GNU/Linux Xubuntu 22.04 | MIT     |
+| Header              | Description                              |
+|---------------------|------------------------------------------|
+| **DE**              | Xfce4 DE with i3wm as its window manager |
+| **Shell**           | `zsh` (from Ubuntu Jammy repositories)   |
+| **Keyboard Layout** | Colemak                                  |
+| **Distribution**    | GNU/Linux Xubuntu 22.04                  |
+| **License**         | MIT                                      |
 
 ### Wallpaper
 ![](https://gruvbox-wallpapers.pages.dev/wallpapers/anime/wall.jpg)
