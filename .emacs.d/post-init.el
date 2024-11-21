@@ -362,7 +362,7 @@ if prefix argument ARG is given, switch to it in an other, possibly new window."
   ("N" #'evil-scroll-page-down "scroll down")
   ("E" #'evil-scroll-page-up "scroll down")
   ("n" #'evil-scroll-down "scroll half down")
-  ("e" #'evil-scroll-up"scroll half down")
+  ("e" #'evil-scroll-up "scroll half down")
   ("SPC" nil "quit"))
 
 (defhydra hydra-cursors nil
@@ -405,7 +405,9 @@ if prefix argument ARG is given, switch to it in an other, possibly new window."
 (define-key evil-insert-state-map (kbd "C-v") #'simpleclip-paste)
 (define-key evil-visual-state-map (kbd "C-v") #'simpleclip-paste)
 (define-key evil-normal-state-map (kbd "<leader>p") #'helm-M-x)
-(define-key evil-normal-state-map (kbd "<leader>y") (lambda () (interactive) (find-file user-init-file)))
+(define-key evil-normal-state-map (kbd "<leader>y") (lambda ()
+                                                      (interactive)
+                                                      (find-file (concat user-emacs-directory "/post-init.el"))))
 (define-key evil-normal-state-map (kbd "<leader>Y") (lambda () (interactive) (load-file user-init-file)))
 (define-key evil-normal-state-map (kbd "<leader>Q") #'kill-emacs)
 (define-key evil-normal-state-map (kbd "<leader>q") #'evil-quit-all)
