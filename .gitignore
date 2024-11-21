@@ -4,5 +4,7 @@ archives/
 .config/xfce4/desktop
 .tt/.errors
 /.config/nnn/bookmarks/
+.emacs.d/*
+!.emacs.d/*.el
 /push.sh
 /README.html

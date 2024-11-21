@@ -55,15 +55,15 @@ This function should only modify configuration layer settings."
      (auto-completion :variables auto-completion-return-key-behavior nil auto-completion-tab-key-behavior 'cycle auto-completion-complete-with-key-sequence "kr" auto-completion-idle-delay 0.0 auto-completion-complete-with-key-sequence-delay 0.2 auto-completion-enable-snippets-in-popup t)
      better-defaults
      git
-     helm
-     lsp
+     ;; helm
+     ;; lsp
      multiple-cursors
      ;; org
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
-     spell-checking
-     syntax-checking
+     ;; spell-checking
+     ;; syntax-checking
      ;; version-control
      (keyboard-layout :variables kl-layout 'colemak-hnei)
      )
@@ -80,7 +80,7 @@ This function should only modify configuration layer settings."
    dotspacemacs-additional-packages '(gruvbox-theme
                                       dirvish
                                       titlecase
-                                      php-mode
+                                      simpleclip
                                       exec-path-from-shell)
 
    ;; A list of packages that cannot be updated.
@@ -174,7 +174,7 @@ It should only modify the values of Spacemacs settings."
    ;; with `:variables' keyword (similar to layers). Check the editing styles
    ;; section of the documentation for details on available variables.
    ;; (default 'vim)
-   dotspacemacs-editing-style 'hybrid
+   dotspacemacs-editing-style '(vim hybrid)
 
    ;; If non-nil show the version string in the Spacemacs buffer. It will
    ;; appear as (spacemacs version)@(emacs version)
@@ -415,12 +415,13 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil unicode symbols are displayed in the mode line.
    ;; If you use Emacs as a daemon and wants unicode characters only in GUI set
    ;; the value to quoted `display-graphic-p'. (default t)
-   dotspacemacs-mode-line-unicode-symbols t
+   ;; dotspacemacs-mode-line-unicode-symbols 'display-graphic-p
+   dotspacemacs-mode-line-unicode-symbols nil
 
    ;; If non-nil smooth scrolling (native-scrolling) is enabled. Smooth
    ;; scrolling overrides the default behavior of Emacs which recenters point
    ;; when it reaches the top or bottom of the screen. (default t)
-   dotspacemacs-smooth-scrolling t
+   dotspacemacs-smooth-scrolling nil
 
    ;; Show the scroll bar while scrolling. The auto hide time can be configured
    ;; by setting this variable to a number. (default t)
@@ -444,7 +445,7 @@ It should only modify the values of Spacemacs settings."
    ;;   :size-limit-kb 1000)
    ;; When used in a plist, `visual' takes precedence over `relative'.
    ;; (default nil)
-   dotspacemacs-line-numbers t
+   dotspacemacs-line-numbers nil
 
    ;; Code folding method. Possible values are `evil', `origami' and `vimish'.
    ;; (default 'evil)
@@ -457,7 +458,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil smartparens-mode will be enabled in programming modes.
    ;; (default t)
-   dotspacemacs-activate-smartparens-mode t
+   dotspacemacs-activate-smartparens-mode nil
 
    ;; If non-nil pressing the closing parenthesis `)' key in insert mode passes
    ;; over any automatically added closing parenthesis, bracket, quote, etc...
@@ -568,7 +569,7 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-home-shorten-agenda-source nil
 
    ;; If non-nil then byte-compile some of Spacemacs files.
-   dotspacemacs-byte-compile nil
+   dotspacemacs-byte-compile t
    ))
 
 (defun dotspacemacs/user-env ()
@@ -609,32 +610,37 @@ before packages are loaded."
     "ot" 'centaur-tabs-ace-jump
     )
 
+  (simpleclip-mode 1)
+
   (when (daemonp)
     (exec-path-from-shell-initialize))
 
   ;; Customize Centaur Tab
   (with-eval-after-load 'centaur-tabs
     (custom-set-faces
-     '(centaur-tabs-default
-       ((t (:background "#282828" :foreground "#928374")))) ; Gruvbox dark background and neutral gray
-     '(centaur-tabs-unselected
-       ((t (:background "#282828" :foreground "#a89984")))) ; Medium gray and light neutral
-     '(centaur-tabs-selected
-       ((t (:background "#504945" :foreground "#ebdbb2")))) ; Dark brown and light tan
-     '(centaur-tabs-unselected-modified
-       ((t (:background "#3c3836" :foreground "#fabd2f")))) ; Same as unselected, golden foreground
-     '(centaur-tabs-selected-modified
-       ((t (:background "#504945" :foreground "#fabd2f")))))) ; Same as selected, golden foreground
+      '(centaur-tabs-default
+        ((t (:background "#282828" :foreground "#928374")))) ; Gruvbox dark background and neutral gray
+      '(centaur-tabs-unselected
+        ((t (:background "#282828" :foreground "#a89984")))) ; Medium gray and light neutral
+      '(centaur-tabs-selected
+        ((t (:background "#504945" :foreground "#ebdbb2")))) ; Dark brown and light tan
+      '(centaur-tabs-unselected-modified
+        ((t (:background "#3c3836" :foreground "#fabd2f")))) ; Same as unselected, golden foreground
+      '(centaur-tabs-selected-modified
+        ((t (:background "#504945" :foreground "#fabd2f")))))) ; Same as selected, golden foreground
   (setq-default centaur-tabs-ace-jump-keys
                 '(?a ?r ?s ?t ?g ?m ?n ?e ?i ?c ?k ?m ?w ?y))
   (setq-default centaur-tabs-set-bar 'right)
   (setq-default centaur-tabs-style "slant")
   (centaur-tabs-headline-match)
 
-  (setq-default backup-directory-alist `((".*" . "/home/myxi/.saves/")))
+  (setq backup-directory-alist
+        `(("." . ,(concat user-emacs-directory ".saves"))))
 
-  (add-hook 'focus-out-hook (lambda ()
-                              (save-some-buffers t)))
+  (defun my-save-if-bufferfilename ()
+    (when (buffer-file-name)
+      (save-some-buffers t)))
+  (add-hook 'evil-insert-state-exit-hook 'my-save-if-bufferfilename)
 
   (evil-leader/set-key "q q" 'spacemacs/frame-killer)
 
@@ -654,7 +660,7 @@ before packages are loaded."
   ;; https://github.com/gabesoft/evil-mc/issues/41#issuecomment-890887060
   (setq evil-mc-custom-known-commands
         '((custom/evil-mc-evil-escape-move-back-fake-cursors
-           (:default . evil-mc-execute-default-call))))
+            (:default . evil-mc-execute-default-call))))
   (defun custom/evil-mc-evil-escape-move-back-fake-cursors ()
     "Move the fake cursors to the left once,
   unless they already are at the beginning of the line."
@@ -667,7 +673,7 @@ before packages are loaded."
     (when (evil-mc-has-cursors-p)
       (evil-mc-pause-cursors)
       (run-with-idle-timer
-       0 nil '(lambda ()
+        0 nil '(lambda ()
                 (evil-mc-resume-cursors)
                 (let ((evil-mc-command '((:name . custom/evil-mc-evil-escape-move-back-fake-cursors))))
                   (evil-mc-execute-for-all))))))
@@ -686,8 +692,7 @@ before packages are loaded."
     (kbd "* C-n") 'dired-next-marked-file
     )
 
-  (dirvish-override-dired-mode)
-  )
+  (dirvish-override-dired-mode))
 
 
 
@@ -704,7 +709,7 @@ This function is called at the very end of Spacemacs initialization."
    ;; Your init file should contain only one such instance.
    ;; If there is more than one, they won't work right.
    '(package-selected-packages
-     '(lsp-mode drupal-mode geben php-auto-yasnippets php-extras php-mode phpactor composer php-runtime phpunit eaf tide company-shell counsel-gtags counsel swiper ivy fish-mode flycheck-bashate ggtags insert-shebang shfmt reformatter org ranger json-mode json-navigator json-reformat json-snatcher web-beautify typescript-mode web-mode dap-mode lsp-docker bui yasnippet-snippets yapfify ws-butler writeroom-mode winum which-key vundo volatile-highlights vim-powerline vi-tilde-fringe unfill undo-fu-session undo-fu treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil toc-org term-cursor symon symbol-overlay string-inflection string-edit-at-point sphinx-doc spacemacs-whitespace-cleanup spacemacs-purpose-popwin spaceline space-doc smeargle restart-emacs request rainbow-delimiters quickrun pytest pylookup pyenv-mode pydoc py-isort popwin poetry pippel pipenv pip-requirements pcre2el password-generator paradox overseer org-superstar open-junk-file nameless mwim multi-line markdown-toc macrostep lsp-ui lsp-treemacs lsp-pyright lsp-origami lorem-ipsum live-py-mode link-hint inspector info+ indent-guide importmagic hybrid-mode hungry-delete holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt helm-xref helm-themes helm-swoop helm-pydoc helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-lsp helm-ls-git helm-git-grep helm-descbinds helm-company helm-comint helm-c-yasnippet helm-ag gruvbox-theme google-translate golden-ratio gitignore-templates git-timemachine git-modes git-messenger git-link gh-md flycheck-pos-tip flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav elisp-demos elisp-def editorconfig dumb-jump drag-stuff dotenv-mode disable-mouse dired-quick-sort diminish devdocs define-word cython-mode company-anaconda column-enforce-mode code-review code-cells clean-aindent-mode centered-cursor-mode blacken auto-yasnippet auto-highlight-symbol auto-compile all-the-icons aggressive-indent ace-link ace-jump-helm-line)))
+     '(simpleclip lsp-mode drupal-mode geben php-auto-yasnippets php-extras php-mode phpactor composer php-runtime phpunit eaf tide company-shell counsel-gtags counsel swiper ivy fish-mode flycheck-bashate ggtags insert-shebang shfmt reformatter org ranger json-mode json-navigator json-reformat json-snatcher web-beautify typescript-mode web-mode dap-mode lsp-docker bui yasnippet-snippets yapfify ws-butler writeroom-mode winum which-key vundo volatile-highlights vim-powerline vi-tilde-fringe unfill undo-fu-session undo-fu treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil toc-org term-cursor symon symbol-overlay string-inflection string-edit-at-point sphinx-doc spacemacs-whitespace-cleanup spacemacs-purpose-popwin spaceline space-doc smeargle restart-emacs request rainbow-delimiters quickrun pytest pylookup pyenv-mode pydoc py-isort popwin poetry pippel pipenv pip-requirements pcre2el password-generator paradox overseer org-superstar open-junk-file nameless mwim multi-line markdown-toc macrostep lsp-ui lsp-treemacs lsp-pyright lsp-origami lorem-ipsum live-py-mode link-hint inspector info+ indent-guide importmagic hybrid-mode hungry-delete holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt helm-xref helm-themes helm-swoop helm-pydoc helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-lsp helm-ls-git helm-git-grep helm-descbinds helm-company helm-comint helm-c-yasnippet helm-ag gruvbox-theme google-translate golden-ratio gitignore-templates git-timemachine git-modes git-messenger git-link gh-md flycheck-pos-tip flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav elisp-demos elisp-def editorconfig dumb-jump drag-stuff dotenv-mode disable-mouse dired-quick-sort diminish devdocs define-word cython-mode company-anaconda column-enforce-mode code-review code-cells clean-aindent-mode centered-cursor-mode blacken auto-yasnippet auto-highlight-symbol auto-compile all-the-icons aggressive-indent ace-link ace-jump-helm-line)))
   (custom-set-faces
    ;; custom-set-faces was added by Custom.
    ;; If you edit it by hand, you could mess it up, so be careful.

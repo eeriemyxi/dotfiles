@@ -13,6 +13,11 @@ framework so a subset of the shortcuts listed here are from that framework.
 ### Shell
 - `C-c-C-c` close the process
 - `C-d` send EOF
+### Save When Client Is Not Focused
+```lisp
+(add-hook 'focus-out-hook (lambda ()
+  (save-some-buffers t)))
+```
 
 ## Installing Packages from Git
 #### Example
