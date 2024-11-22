@@ -18,6 +18,9 @@
 ;; INFO: theme
 (use-package gruvbox-theme :ensure t :config (load-theme 'gruvbox-dark-medium t))
 
+;; INFO: macros
+(load-file "macros.el")
+
 ;; INFO: packages
 (use-package evil
   :ensure t
@@ -144,13 +147,14 @@
                                     '(;("ruff-lsp")
                                       ("pylsp"))))))
 
-(use-package helm
-  :ensure t
-  :config
-  (helm-mode 1)
-  (global-set-key (kbd "M-x") #'helm-M-x)
-  (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
-  (global-set-key (kbd "C-x C-f") #'helm-find-files))
+;; (use-package helm
+;;   :ensure t
+;;   :config
+;;   (helm-mode 1)
+;;   (define-key helm-map (kbd "ESC") 'helm-keyboard-quit)
+;;   (global-set-key (kbd "M-x") #'helm-M-x)
+;;   (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
+;;   (global-set-key (kbd "C-x C-f") #'helm-find-files))
 
 (use-package evil-commentary
   :ensure t
@@ -260,6 +264,34 @@
 (use-package evil-numbers
   :ensure t)
 
+(use-package counsel
+  :ensure t
+  :config
+  (setq ivy-re-builders-alist
+        '((t . ivy--regex-fuzzy)))
+  (ivy-mode 1))
+
+(use-package evil-surround
+  :after evil
+  :ensure t
+  :defer t
+  :commands global-evil-surround-mode
+  :custom
+  (evil-surround-pairs-alist
+   '((?\( . ("(" . ")"))
+     (?\[ . ("[" . "]"))
+     (?\{ . ("{" . "}"))
+     (?\8 . ("*" . "*"))
+     (?\* . ("**" . "**"))
+
+     (?\) . ("(" . ")"))
+     (?\] . ("[" . "]"))
+     (?\} . ("{" . "}"))
+
+     (?< . ("<" . ">"))
+     (?> . ("<" . ">"))))
+  :hook (after-init . global-evil-surround-mode))
+
 (use-package evil-colemak-basics
   :after evil evil-snipe
   :demand t
@@ -341,14 +373,16 @@
 
 (defun sort-words (reverse beg end)
   "Sort words in region alphabetically, in REVERSE if negative.
-  Prefixed with negative \\[universal-argument], sorts in reverse.
+Prefixed with negative \\[universal-argument], sorts in reverse.
 
-  The variable `sort-fold-case' determines whether alphabetic case
-  affects the sort order.
+The variable `sort-fold-case' determines whether alphabetic case
+affects the sort order.
 
-  See `sort-regexp-fields'."
+See `sort-regexp-fields'."
   (interactive "*P\nr")
-  (sort-regexp-fields reverse "\\w+" "\\&" beg end))
+  (save-excursion
+    (let ((sort-fold-case t))
+      (sort-regexp-fields reverse "\\w+" "\\&" beg end))))
 
 (defun sort-symbols (reverse beg end)
   "Sort symbols in region alphabetically, in REVERSE if negative.
@@ -400,6 +434,8 @@
 (defhydra hydra-cursors nil
   "cursors"
   ("h" evil-mc-make-cursor-here "make here")
+  ("l" evil-mc-make-cursor-move-next-line "make next line")
+  ("y" evil-mc-make-cursor-move-prev-line "make prev line")
   ("n" evil-mc-make-and-goto-next-match "make and next")
   ("e" evil-mc-make-and-goto-prev-match "make and prev")
   ("N" evil-mc-skip-and-goto-next-match "skip and next")
@@ -423,11 +459,11 @@
 (evil-set-leader 'normal (kbd "SPC"))
 (evil-set-leader 'visual (kbd "SPC"))
 
-;; INFO: OCCUPIED: Q, SPC, T, Y, a, c, f, h, l, n, N, p, q, s, ', t, u, w, y, z
+;; INFO: OCCUPIED: [I, N, Q, SPC, T, Y, a, c, d, f, h, i, l, n, p, q, s, ', t, u, w, y, z]
 (define-key evil-normal-state-map (kbd "<leader>N")   #'avy-goto-char-timer)
 (define-key evil-normal-state-map (kbd "<leader>n")   #'avy-goto-char-2)
 (define-key evil-normal-state-map (kbd "<leader>f")   #'dired-jump)
-(define-key evil-normal-state-map (kbd "<leader>a")   #'helm-do-grep-ag)
+(define-key evil-normal-state-map (kbd "<leader>a")   #'counsel-grep-or-swiper)
 (define-key evil-normal-state-map (kbd "<leader>'")   #'shell-pop)
 (define-key evil-normal-state-map (kbd "<leader>TAB") #'mode-line-other-buffer)
 (define-key evil-normal-state-map (kbd "C-<left>")    #'centaur-tabs-backward)
@@ -437,12 +473,14 @@
 (define-key evil-visual-state-map (kbd "C-v")         #'simpleclip-paste)
 (define-key evil-insert-state-map (kbd "C-,")         #'my-duplicate-line)
 (define-key evil-normal-state-map (kbd "C-,")         #'my-duplicate-line)
-(define-key evil-normal-state-map (kbd "<leader>p")   #'helm-M-x)
+(define-key evil-normal-state-map (kbd "<leader>p")   #'counsel-M-x)
 (define-key evil-normal-state-map (kbd "<leader>y") (lambda () (interactive)
                                                       (find-file (concat user-emacs-directory "/post-init.el"))))
 (define-key evil-normal-state-map (kbd "<leader>Y") (lambda () (interactive) (load-file user-init-file)))
 (define-key evil-normal-state-map (kbd "<leader>Q")   #'kill-emacs)
 (define-key evil-normal-state-map (kbd "<leader>q")   #'evil-quit-all)
+(define-key evil-normal-state-map (kbd "<leader>i")   #'counsel-file-jump)
+(define-key evil-normal-state-map (kbd "<leader>I")   #'swiper-isearch)
 (define-key evil-normal-state-map (kbd "<leader>t")   #'centaur-tabs-ace-jump)
 (define-key evil-normal-state-map (kbd "<leader>z")   #'hydra-zoom/body)
 (define-key evil-normal-state-map (kbd "<leader>s")   #'hydra-cursors/body)
@@ -478,10 +516,17 @@
 (define-key evil-normal-state-map (kbd "<leader>cu") #'spacemacs/switch-to-compilation-buffer)
 
 (define-key evil-normal-state-map (kbd "<leader>hp") #'kill-buffer-and-window)
-(define-key evil-normal-state-map (kbd "<leader>ht") #'helm-filtered-bookmarks)
-(define-key evil-normal-state-map (kbd "<leader>hf") #'helm-buffers-list)
+(define-key evil-normal-state-map (kbd "<leader>ht") #'counsel-bookmark)
+(define-key evil-normal-state-map (kbd "<leader>hf") #'counsel-buffer-or-recentf)
 (define-key evil-normal-state-map (kbd "<leader>hm") #'spacemacs/switch-to-messages-buffer)
 (define-key evil-normal-state-map (kbd "<leader>hs") #'spacemacs/switch-to-scratch-buffer)
+
+(define-key evil-normal-state-map (kbd "<leader>ds") #'evil-surround-region)
+(define-key evil-normal-state-map (kbd "<leader>dc") #'evil-surround-change)
+(define-key evil-normal-state-map (kbd "<leader>dd") #'evil-surround-delete)
+(define-key evil-visual-state-map (kbd "<leader>ds") #'evil-surround-region)
+(define-key evil-visual-state-map (kbd "<leader>dc") #'evil-surround-change)
+(define-key evil-visual-state-map (kbd "<leader>dd") #'evil-surround-delete)
 
 (define-key evil-normal-state-map (kbd "<leader>uu") #'delete-trailing-whitespace)
 (define-key evil-visual-state-map (kbd "<leader>ua") #'align-regexp)
@@ -502,7 +547,10 @@
  '(evil-undo-system 'undo-redo)
  '(helm-minibuffer-history-key "M-p")
  '(package-selected-packages
-   '(aggressive-indent-mode elisp-format company markdown-mode dirvish hl-todo fic-mode pulsar shell-pop simpleclip hydra exec-path-from-shell evil-escape centaur-tabs evil-commentary helm titlecase evil-colemak-basics evil-mode gruvbox-theme))
+   '(aggressive-indent-mode elisp-format company markdown-mode
+                            dirvish hl-todo fic-mode pulsar shell-pop simpleclip hydra
+                            exec-path-from-shell evil-escape centaur-tabs evil-commentary
+                            titlecase evil-colemak-basics evil-mode gruvbox-theme))
  '(shell-pop-shell-type
    '("terminal" "*terminal*"
      (lambda nil
