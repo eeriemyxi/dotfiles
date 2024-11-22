@@ -19,7 +19,7 @@
 (use-package gruvbox-theme :ensure t :config (load-theme 'gruvbox-dark-medium t))
 
 ;; INFO: macros
-(load-file "macros.el")
+(load-file (concat user-emacs-directory "/macros.el"))
 
 ;; INFO: packages
 (use-package evil
