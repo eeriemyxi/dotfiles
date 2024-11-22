@@ -1,28 +1,27 @@
 ;;; post-init.el --- DESCRIPTION -*- no-byte-compile: t; lexical-binding: t; -*-
 
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+(setq-default show-trailing-whitespace t)
+(setq display-line-numbers-type 'relative)
+(setq indent-line-function 'insert-tab)
+(setq evil-want-keybinding nil)
+(setq default-frame-alist '((font . "JetBrainsMono Nerd Font Mono 13")))
+(global-display-line-numbers-mode)
+(global-auto-revert-mode t)
+(add-hook 'after-init-hook #'dired-jump)
 (add-hook 'after-init-hook #'global-auto-revert-mode)
 (add-hook 'after-init-hook #'recentf-mode)
 (add-hook 'after-init-hook #'savehist-mode)
 (add-hook 'after-init-hook #'save-place-mode)
-(setq display-line-numbers-type 'relative)
-(global-display-line-numbers-mode)
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-(setq-default show-trailing-whitespace t)
-(setq indent-line-function 'insert-tab)
-(setq evil-want-keybinding nil)
-(setq default-frame-alist '((font . "JetBrainsMono Nerd Font Mono 13")))
-(global-auto-revert-mode t)
-(add-hook 'after-init-hook #'dired-jump)
 
-;; theme
+;; INFO: theme
 (use-package gruvbox-theme :ensure t :config (load-theme 'gruvbox-dark-medium t))
 
-;; packages
+;; INFO: packages
 (use-package evil
   :ensure t
   :init
-  (setq evil-undo-system 'undo-fu)
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
   :custom
@@ -48,46 +47,28 @@
     (kbd "* C-e") 'dired-prev-marked-file
     (kbd "* C-n") 'dired-next-marked-file))
 
-;; INFO: breaks when multiple cursors are used
-;; (use-package undo-fu
-;;   :ensure t
-;;   :commands (undo-fu-only-undo
-;;              undo-fu-only-redo
-;;              undo-fu-only-redo-all
-;;              undo-fu-disable-checkpoint)
-;;   :custom
-;;   ;; 3 times the default values
-;;   (undo-limit (* 3 160000))
-;;   (undo-strong-limit (* 3 240000)))
-
-;; (use-package undo-fu-session
-;;   :ensure t
-;;   :config
-;;   (undo-fu-session-global-mode))
-
-;; tree-sitter
+;; INFO: tree-sitter
 (require 'treesit)
 
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
 (setq major-mode-remap-alist
-      '((bash-mode . bash-ts-mode)
-        (c-or-c++-mode . c-or-c++-ts-mode)
-        (c-mode . c-ts-mode)
-        (c++-mode . c++-ts-mode)
-        (cmake-mode . cmake-ts-mode)
-        (csharp-mode . csharp-ts-mode)
-        (css-mode . css-ts-mode)
+      '((bash-mode       . bash-ts-mode)
+        (c-or-c++-mode   . c-or-c++-ts-mode)
+        (c-mode          . c-ts-mode)
+        (c++-mode        . c++-ts-mode)
+        (cmake-mode      . cmake-ts-mode)
+        (csharp-mode     . csharp-ts-mode)
+        (css-mode        . css-ts-mode)
         (dockerfile-mode . dockerfile-ts-mode)
-        (yaml-mode . yaml-ts-mode)
-        (js2-mode . js-ts-mode)
-        (tsx-mode . tsx-ts-mode)
-        (json-mode . json-ts-mode)
-        (python-mode . python-ts-mode)
-        (ruby-mode . ruby-ts-mode)
-        (rust-mode . rust-ts-mode)
-        (toml-mode . toml-ts-mode)
-        (go-mode . go-ts-mode)
-        ))
+        (yaml-mode       . yaml-ts-mode)
+        (js2-mode        . js-ts-mode)
+        (tsx-mode        . tsx-ts-mode)
+        (json-mode       . json-ts-mode)
+        (python-mode     . python-ts-mode)
+        (ruby-mode       . ruby-ts-mode)
+        (rust-mode       . rust-ts-mode)
+        (toml-mode       . toml-ts-mode)
+        (go-mode         . go-ts-mode)))
 
 (use-package magit :ensure t)
 (use-package titlecase :ensure t)
@@ -98,7 +79,7 @@
   :config
   (global-evil-mc-mode 1)
 
-  ;; https://github.com/gabesoft/evil-mc/issues/41#issuecomment-890887060
+  ;; INFO: https://github.com/gabesoft/evil-mc/issues/41#issuecomment-890887060
   (setq evil-mc-custom-known-commands
         '((custom/evil-mc-evil-escape-move-back-fake-cursors
            (:default . evil-mc-execute-default-call))))
@@ -144,15 +125,20 @@
   :config
   (dirvish-override-dired-mode))
 
-;; (use-package ethan-wspace
-;;   :ensure t
-;;   :config
-;;   (setq mode-require-final-newline nil)
-;;   (global-ethan-wspace-mode 1))
-
 (use-package eglot
   :ensure t
+  :defer t
+  :commands (eglot
+             eglot-rename
+             eglot-format-buffer
+             eglot-shutdown
+             eglot-reconnect
+             eglot-code-action-organize-import)
+  :custom
+  (eglot-report-progress nil)
   :config
+  (fset #'jsonrpc--log-event #'ignore)
+  (setq jsonrpc-event-hook nil)
   (add-to-list 'eglot-server-programs
                `(python-ts-mode . ,(eglot-alternatives
                                     '(;("ruff-lsp")
@@ -234,11 +220,29 @@
 ;;   :ensure t
 ;;   :config (ac-config-default) (setq ac-use-fuzzy t) (setq ac-auto-show-menu 0.4) (global-auto-complete-mode))
 
+(use-package yasnippet
+  :ensure t
+  :init
+  (use-package yasnippet-snippets
+    :ensure t)
+  :config
+  (yas-reload-all)
+  (add-hook 'prog-mode-hook #'yas-minor-mode))
+
 (use-package company
   :ensure t
   :config
   (setq company-idle-delay 0)
+  (setq company-dabbrev-minimum-length 1)
   (setq company-selection-wrap-around t)
+  (setq company-transformers '(delete-consecutive-dups
+                               company-sort-by-occurrence))
+  (setq company-backends '((company-capf
+                            company-dabbrev-code
+                            company-files
+                            company-tempo
+                            company-keywords
+                            company-yasnippet)))
   (global-company-mode)
   (company-tng-configure-default))
 
@@ -253,6 +257,9 @@
   (avy-style 'de-bruijn)
   (avy-keys (string-to-list "arstneiofu")))
 
+(use-package evil-numbers
+  :ensure t)
+
 (use-package evil-colemak-basics
   :after evil evil-snipe
   :demand t
@@ -263,7 +270,7 @@
   :config
   (global-evil-colemak-basics-mode))
 
-;; startup stuff
+;; INFO: startup stuff
 (when (daemonp)
   (exec-path-from-shell-initialize))
 
@@ -272,6 +279,11 @@
 
 (setq backup-directory-alist
       `(("." . ,(concat user-emacs-directory ".saves"))))
+
+;; INFO: emacs keybinds in insert mode
+(setq evil-insert-state-map (make-sparse-keymap))
+(define-key evil-insert-state-map (kbd "<escape>") 'evil-normal-state)
+(define-key evil-insert-state-map (kbd "C-o") 'evil-execute-in-normal-state)
 
 (defun my-save-if-bufferfilename ()
   (when (buffer-file-name)
@@ -293,7 +305,7 @@
 
 (defun spacemacs/switch-to-scratch-buffer (&optional arg)
   "Switch to the `*scratch*' buffer, creating it first if needed.
-if prefix argument ARG is given, switch to it in an other, possibly new window."
+  if prefix argument ARG is given, switch to it in an other, possibly new window."
   (interactive "P")
   (let ((scratch (spacemacs//get-scratch-buffer-create)))
     (if arg
@@ -302,7 +314,7 @@ if prefix argument ARG is given, switch to it in an other, possibly new window."
 
 (defun spacemacs/switch-to-messages-buffer (&optional arg)
   "Switch to the `*Messages*' buffer.
-if prefix argument ARG is given, switch to it in an other, possibly new window."
+  if prefix argument ARG is given, switch to it in an other, possibly new window."
   (interactive "P")
   (with-current-buffer (messages-buffer)
     (goto-char (point-max))
@@ -344,10 +356,24 @@ if prefix argument ARG is given, switch to it in an other, possibly new window."
   (interactive "*P\nr")
   (sort-regexp-fields reverse "\\(\\sw\\|\\s_\\)+" "\\&" beg end))
 
+(defun my-duplicate-line ()
+  "Duplicate current line"
+  (interactive)
+  (interactive)
+  (let ((column (- (point) (point-at-bol)))
+        (line (let ((s (thing-at-point 'line t)))
+                (if s (string-remove-suffix "\n" s) ""))))
+    (move-end-of-line 1)
+    (newline)
+    (insert line)
+    (move-beginning-of-line 1)
+    (forward-char column)))
+
 (defhydra hydra-zoom nil
   "zoom"
   ("n" text-scale-increase "in")
-  ("e" text-scale-decrease "out"))
+  ("e" text-scale-decrease "out")
+  ("SPC" nil "quit"))
 
 (defhydra hydra-todo nil
   "todo"
@@ -355,6 +381,12 @@ if prefix argument ARG is given, switch to it in an other, possibly new window."
   ("e" hl-todo-previous "previous")
   ("o" hl-todo-occur "occur")
   ("i" hl-todo-insert "insert")
+  ("SPC" nil "quit"))
+
+(defhydra hydra-numbers nil
+  "numbers"
+  ("n" evil-numbers/inc-at-pt "increase")
+  ("e" evil-numbers/dec-at-pt "decrease")
   ("SPC" nil "quit"))
 
 (defhydra hydra-paging nil
@@ -387,38 +419,39 @@ if prefix argument ARG is given, switch to it in an other, possibly new window."
   (add-to-list 'pulsar-pulse-functions #'hydra-paging/evil-avy-goto-char-timer)
   (add-to-list 'pulsar-pulse-functions #'hydra-paging/evil-scroll-down))
 
-;; keymaps
+;; INFO: keymaps
 (evil-set-leader 'normal (kbd "SPC"))
 (evil-set-leader 'visual (kbd "SPC"))
 
-;; INFO: OCCUPIED: Q, SPC, T, Y, a, c, f, h, l, n, p, q, s, ', t, u, w, y, z
-(define-key evil-normal-state-map (kbd "<leader>n") #'avy-goto-char-timer)
-(define-key evil-normal-state-map (kbd "<leader>f") #'dired-jump)
-(define-key evil-normal-state-map (kbd "<leader>a") #'helm-do-grep-ag)
-(define-key evil-normal-state-map (kbd "<leader>'") #'shell-pop)
-;; TODO: do it
-;; FIXME:
-;; (define-key evil-normal-state-map (kbd "<leader>TAB") #'previous-buffer)
-(define-key evil-normal-state-map (kbd "C-<left>") #'centaur-tabs-backward)
-(define-key evil-normal-state-map (kbd "C-<right>") #'centaur-tabs-forward)
-(define-key evil-normal-state-map (kbd "C-v") #'simpleclip-paste)
-(define-key evil-insert-state-map (kbd "C-v") #'simpleclip-paste)
-(define-key evil-visual-state-map (kbd "C-v") #'simpleclip-paste)
-(define-key evil-normal-state-map (kbd "<leader>p") #'helm-M-x)
-(define-key evil-normal-state-map (kbd "<leader>y") (lambda ()
-                                                      (interactive)
+;; INFO: OCCUPIED: Q, SPC, T, Y, a, c, f, h, l, n, N, p, q, s, ', t, u, w, y, z
+(define-key evil-normal-state-map (kbd "<leader>N")   #'avy-goto-char-timer)
+(define-key evil-normal-state-map (kbd "<leader>n")   #'avy-goto-char-2)
+(define-key evil-normal-state-map (kbd "<leader>f")   #'dired-jump)
+(define-key evil-normal-state-map (kbd "<leader>a")   #'helm-do-grep-ag)
+(define-key evil-normal-state-map (kbd "<leader>'")   #'shell-pop)
+(define-key evil-normal-state-map (kbd "<leader>TAB") #'mode-line-other-buffer)
+(define-key evil-normal-state-map (kbd "C-<left>")    #'centaur-tabs-backward)
+(define-key evil-normal-state-map (kbd "C-<right>")   #'centaur-tabs-forward)
+(define-key evil-normal-state-map (kbd "C-v")         #'simpleclip-paste)
+(define-key evil-insert-state-map (kbd "C-v")         #'simpleclip-paste)
+(define-key evil-visual-state-map (kbd "C-v")         #'simpleclip-paste)
+(define-key evil-insert-state-map (kbd "C-,")         #'my-duplicate-line)
+(define-key evil-normal-state-map (kbd "C-,")         #'my-duplicate-line)
+(define-key evil-normal-state-map (kbd "<leader>p")   #'helm-M-x)
+(define-key evil-normal-state-map (kbd "<leader>y") (lambda () (interactive)
                                                       (find-file (concat user-emacs-directory "/post-init.el"))))
 (define-key evil-normal-state-map (kbd "<leader>Y") (lambda () (interactive) (load-file user-init-file)))
-(define-key evil-normal-state-map (kbd "<leader>Q") #'kill-emacs)
-(define-key evil-normal-state-map (kbd "<leader>q") #'evil-quit-all)
-(define-key evil-normal-state-map (kbd "<leader>t") #'centaur-tabs-ace-jump)
-(define-key evil-normal-state-map (kbd "<leader>z") #'hydra-zoom/body)
-(define-key evil-normal-state-map (kbd "<leader>s") #'hydra-cursors/body)
+(define-key evil-normal-state-map (kbd "<leader>Q")   #'kill-emacs)
+(define-key evil-normal-state-map (kbd "<leader>q")   #'evil-quit-all)
+(define-key evil-normal-state-map (kbd "<leader>t")   #'centaur-tabs-ace-jump)
+(define-key evil-normal-state-map (kbd "<leader>z")   #'hydra-zoom/body)
+(define-key evil-normal-state-map (kbd "<leader>s")   #'hydra-cursors/body)
 (define-key evil-normal-state-map (kbd "<leader>SPC") #'hydra-paging/body)
-(define-key evil-normal-state-map (kbd "<leader>T") #'titlecase-region)
-(define-key evil-visual-state-map (kbd "<leader>T") #'titlecase-region)
+(define-key evil-normal-state-map (kbd "<leader>T")   #'titlecase-region)
+(define-key evil-visual-state-map (kbd "<leader>T")   #'titlecase-region)
 
 (define-key evil-normal-state-map (kbd "<leader>ll") #'eglot)
+(define-key evil-normal-state-map (kbd "<leader>L")  #'eglot)
 (define-key evil-normal-state-map (kbd "<leader>ls") #'eglot-shutdown)
 (define-key evil-normal-state-map (kbd "<leader>ld") #'eldoc)
 (define-key evil-normal-state-map (kbd "<leader>lr") #'eglot-rename)
@@ -451,9 +484,16 @@ if prefix argument ARG is given, switch to it in an other, possibly new window."
 (define-key evil-normal-state-map (kbd "<leader>hs") #'spacemacs/switch-to-scratch-buffer)
 
 (define-key evil-normal-state-map (kbd "<leader>uu") #'delete-trailing-whitespace)
+(define-key evil-visual-state-map (kbd "<leader>ua") #'align-regexp)
+(define-key evil-normal-state-map (kbd "<leader>un") #'hydra-numbers/body)
+(define-key evil-visual-state-map (kbd "<leader>un") #'hydra-numbers/body)
 (define-key evil-normal-state-map (kbd "<leader>ut") #'hydra-todo/body)
+(define-key evil-normal-state-map (kbd "<leader>uh") #'evil-ex-nohighlight)
+(define-key evil-normal-state-map (kbd "<leader>uc") #'comment-or-uncomment-region)
+(define-key evil-visual-state-map (kbd "<leader>us") (lambda () (interactive) (evil-ex "'<,'>s/")))
+(define-key evil-visual-state-map (kbd "<leader>uS") #'query-replace)
 
-;; Emacs stuff
+;; INFO: Emacs stuff
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -462,7 +502,7 @@ if prefix argument ARG is given, switch to it in an other, possibly new window."
  '(evil-undo-system 'undo-redo)
  '(helm-minibuffer-history-key "M-p")
  '(package-selected-packages
-   '(aggressive-indent-mode elisp-format company markdown-mode dirvish hl-todo fic-mode undo-tree pulsar shell-pop simpleclip hydra exec-path-from-shell evil-escape centaur-tabs evil-commentary helm titlecase evil-colemak-basics evil-mode gruvbox-theme))
+   '(aggressive-indent-mode elisp-format company markdown-mode dirvish hl-todo fic-mode pulsar shell-pop simpleclip hydra exec-path-from-shell evil-escape centaur-tabs evil-commentary helm titlecase evil-colemak-basics evil-mode gruvbox-theme))
  '(shell-pop-shell-type
    '("terminal" "*terminal*"
      (lambda nil
