@@ -136,7 +136,7 @@
              eglot-format-buffer
              eglot-shutdown
              eglot-reconnect
-             eglot-code-action-organize-import)
+             eglot-code-action-organize-imports)
   :custom
   (eglot-report-progress nil)
   :config
@@ -495,7 +495,7 @@ See `sort-regexp-fields'."
 (define-key evil-normal-state-map (kbd "<leader>lr") #'eglot-rename)
 (define-key evil-normal-state-map (kbd "<leader>lR") #'eglot-reconnect)
 (define-key evil-normal-state-map (kbd "<leader>lf") #'eglot-format-buffer)
-(define-key evil-normal-state-map (kbd "<leader>li") #'eglot-code-action-organize-import)
+(define-key evil-normal-state-map (kbd "<leader>li") #'eglot-code-action-organize-imports)
 
 (define-key evil-normal-state-map (kbd "<leader>wn") #'windmove-down)
 (define-key evil-visual-state-map (kbd "<leader>wn") #'windmove-down)
@@ -515,8 +515,9 @@ See `sort-regexp-fields'."
 (define-key evil-normal-state-map (kbd "<leader>cy") #'spacemacs/show-hide-compilation-window)
 (define-key evil-normal-state-map (kbd "<leader>cu") #'spacemacs/switch-to-compilation-buffer)
 
-(define-key evil-normal-state-map (kbd "<leader>hp") #'kill-buffer-and-window)
+(define-key evil-normal-state-map (kbd "<leader>hp") #'kill-buffer)
 (define-key evil-normal-state-map (kbd "<leader>ht") #'counsel-bookmark)
+(define-key evil-normal-state-map (kbd "<leader>hT") #'bookmark-delete)
 (define-key evil-normal-state-map (kbd "<leader>hf") #'counsel-buffer-or-recentf)
 (define-key evil-normal-state-map (kbd "<leader>hm") #'spacemacs/switch-to-messages-buffer)
 (define-key evil-normal-state-map (kbd "<leader>hs") #'spacemacs/switch-to-scratch-buffer)
