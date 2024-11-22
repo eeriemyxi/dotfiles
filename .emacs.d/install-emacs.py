@@ -1,5 +1,6 @@
 """Opionated automated compilation of Emacs using Python
    CAUTION: Do not run it with Python optimization flags.
+   STATUS: NOT COMPLETE!
 """
 
 import pathlib
@@ -72,6 +73,9 @@ def main() -> None:
     assert EMACS_DIR.exists(), "Invalid zip file. Recheck your config."
 
     log.debug("Tree of %s: %s", TEMP_COMP_PATH, _get_dir_tree(TEMP_COMP_PATH))
+    # TODO: checkout git version branch
+    # TODO: call ./configure with specified config flags
+    # TODO: compile emacs, with -j (`os.cpu_count()`)
 
 
 def cleanup() -> None:
