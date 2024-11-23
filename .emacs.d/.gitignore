@@ -8,7 +8,7 @@
 /etc/
 /history
 /ielm-history.eld
-/lisp/
+*.elc
 # /post-early-init*.el
 # /post-init.el
 # /pre-early-init*.el

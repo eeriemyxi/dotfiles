@@ -1,8 +1,8 @@
 ;;; post-init.el --- DESCRIPTION -*- no-byte-compile: t; lexical-binding: t; -*-
 
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-(setq-default show-trailing-whitespace t)
+(setq indent-tabs-mode nil)
+(setq tab-width 4)
+(setq show-trailing-whitespace t)
 (setq display-line-numbers-type 'relative)
 (setq indent-line-function 'insert-tab)
 (setq evil-want-keybinding nil)
@@ -25,6 +25,16 @@
 (require 'macros)
 
 ;; INFO: packages
+(use-package compile-angel
+  :ensure t
+  :demand t
+  :custom
+  (compile-angel-verbose nil)
+  :config
+  (setq compile-angel-excluded-files-regexps '("lisps/hydras\.el$"))
+  (compile-angel-on-load-mode)
+  (add-hook 'emacs-lisp-mode-hook #'compile-angel-on-save-local-mode))
+
 (use-package evil
   :ensure t
   :init
@@ -80,7 +90,13 @@
         (go-mode         . go-ts-mode)))
 
 (use-package magit :ensure t)
-(use-package titlecase :ensure t)
+
+(use-package titlecase
+  :ensure t
+  :bind (:map evil-normal-state-map
+              ("<leader>T" . titlecase-region))
+  :bind (:map evil-visual-state-map
+              ("<leader>T" . titlecase-region)))
 
 (use-package evil-mc
   :ensure t
@@ -124,19 +140,32 @@
   :custom-face
   (evil-snipe-matches-face ((t (:inherit lazy-highlight)))))
 
-(use-package shell-pop :ensure t)
+(use-package shell-pop
+  :ensure t
+  :bind (:map evil-normal-state-map
+              ("<leader>'" . shell-pop)))
 
 (use-package rainbow-delimiters :ensure t :config (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
 (use-package dirvish
   :after evil-colemak-basics
   :ensure t
+  :bind (:map evil-normal-state-map
+              ("<leader>f" . dired-jump))
   :config
   (dirvish-override-dired-mode))
 
 (use-package eglot
   :ensure t
-  :defer t
+  :bind (:map evil-normal-state-map
+              ("<leader>ll" . eglot)
+              ("<leader>L"  . eglot)
+              ("<leader>s"  . eglot-shutdown)
+              ("<leader>ld" . eldoc)
+              ("<leader>lr" . eglot-rename)
+              ("<leader>lR" . eglot-reconnect)
+              ("<leader>lf" . eglot-format-buffer)
+              ("<leader>li" . eglot-code-action-organize-imports))
   :commands (eglot
              eglot-rename
              eglot-format-buffer
@@ -173,6 +202,10 @@
 (use-package centaur-tabs
   :ensure t
   :demand
+  :bind (:map evil-normal-state-map
+              ("<leader>t" . centaur-tabs-ace-jump)
+              ("C-<left>" . centaur-tabs-backward)
+              ("C-<right>" . centaur-tabs-forward))
   :config
   (centaur-tabs-mode t)
   (with-eval-after-load 'centaur-tabs
@@ -195,7 +228,15 @@
 
 (use-package hydra :ensure t)
 
-(use-package simpleclip :ensure t :config (simpleclip-mode 1))
+(use-package simpleclip
+  :ensure t
+  :bind (:map evil-normal-state-map
+              ("C-v" . simpleclip-paste))
+  :bind (:map evil-visual-state-map
+              ("C-v" . simpleclip-paste))
+  :bind (:map evil-insert-state-map
+              ("C-v" . simpleclip-paste))
+  :config (simpleclip-mode 1))
 
 (use-package hl-todo
   :ensure t
@@ -214,11 +255,6 @@
   :hook (prog-mode . snap-indent-mode)
   :custom ((snap-indent-format 'untabify)
            (snap-indent-on-save t)))
-
-;; INFO: alternative to company
-;; (use-package auto-complete
-;;   :ensure t
-;;   :config (ac-config-default) (setq ac-use-fuzzy t) (setq ac-auto-show-menu 0.4) (global-auto-complete-mode))
 
 (use-package yasnippet
   :ensure t
@@ -250,6 +286,9 @@
 
 (use-package avy
   :ensure t
+  :bind (:map evil-normal-state-map
+              ("<leader>N" . avy-goto-char-timer)
+              ("<leader>n" . avy-goto-char-2))
   :custom
   (avy-all-windows nil)
   (avy-all-windows-alt t)
@@ -267,6 +306,13 @@
 (use-package counsel
   :ensure t
   :after flx
+  :bind (:map evil-normal-state-map
+              ("<leader>a" . counsel-grep-or-swiper)
+              ("<leader>p" . counsel-M-x)
+              ("<leader>i" . counsel-file-jump)
+              ("<leader>I" . swiper-isearch)
+              ("<leader>ht" . counsel-bookmark)
+              ("<leader>hf" . counsel-buffer-or-recentf))
   :config
   (setq ivy-re-builders-alist
         '((ivy-switch-buffer . ivy--regex-plus)
@@ -276,7 +322,15 @@
 (use-package evil-surround
   :after evil
   :ensure t
-  :defer t
+  :bind (:map evil-normal-state-map
+              ("<leader>ds" . evil-surround-region)
+              ("<leader>dc" . evil-surround-change)
+              ("<leader>dd" . evil-surround-delete))
+  :bind (:map evil-visual-state-map
+              ("<leader>ds" . evil-surround-region)
+              ("<leader>dc" . evil-surround-change)
+              ("<leader>dd" . evil-surround-delete))
+
   :commands global-evil-surround-mode
   :custom
   (evil-surround-pairs-alist
@@ -339,42 +393,17 @@
 (evil-set-leader 'visual (kbd "SPC"))
 
 ;; INFO: OCCUPIED: [I, L, N, Q, SPC, T, TAB, Y, a, c, d, f, h, i, l, n, p, q, ', s, t, u, w, y, z]
-(define-key evil-normal-state-map (kbd "<leader>N")   #'avy-goto-char-timer)
-(define-key evil-normal-state-map (kbd "<leader>n")   #'avy-goto-char-2)
-(define-key evil-normal-state-map (kbd "<leader>f")   #'dired-jump)
-(define-key evil-normal-state-map (kbd "<leader>a")   #'counsel-grep-or-swiper)
-(define-key evil-normal-state-map (kbd "<leader>'")   #'shell-pop)
 (define-key evil-normal-state-map (kbd "<leader>TAB") #'mode-line-other-buffer)
-(define-key evil-normal-state-map (kbd "C-<left>")    #'centaur-tabs-backward)
-(define-key evil-normal-state-map (kbd "C-<right>")   #'centaur-tabs-forward)
-(define-key evil-normal-state-map (kbd "C-v")         #'simpleclip-paste)
-(define-key evil-insert-state-map (kbd "C-v")         #'simpleclip-paste)
-(define-key evil-visual-state-map (kbd "C-v")         #'simpleclip-paste)
 (define-key evil-insert-state-map (kbd "C-,")         #'my-duplicate-line)
 (define-key evil-normal-state-map (kbd "C-,")         #'my-duplicate-line)
-(define-key evil-normal-state-map (kbd "<leader>p")   #'counsel-M-x)
 (define-key evil-normal-state-map (kbd "<leader>y") (lambda () (interactive)
                                                       (find-file (concat user-emacs-directory "/post-init.el"))))
 (define-key evil-normal-state-map (kbd "<leader>Y") (lambda () (interactive) (load-file user-init-file)))
 (define-key evil-normal-state-map (kbd "<leader>Q")   #'kill-emacs)
 (define-key evil-normal-state-map (kbd "<leader>q")   #'evil-quit-all)
-(define-key evil-normal-state-map (kbd "<leader>i")   #'counsel-file-jump)
-(define-key evil-normal-state-map (kbd "<leader>I")   #'swiper-isearch)
-(define-key evil-normal-state-map (kbd "<leader>t")   #'centaur-tabs-ace-jump)
 (define-key evil-normal-state-map (kbd "<leader>z")   #'hydra-zoom/body)
 (define-key evil-normal-state-map (kbd "<leader>s")   #'hydra-cursors/body)
 (define-key evil-normal-state-map (kbd "<leader>SPC") #'hydra-paging/body)
-(define-key evil-normal-state-map (kbd "<leader>T")   #'titlecase-region)
-(define-key evil-visual-state-map (kbd "<leader>T")   #'titlecase-region)
-
-(define-key evil-normal-state-map (kbd "<leader>ll") #'eglot)
-(define-key evil-normal-state-map (kbd "<leader>L")  #'eglot)
-(define-key evil-normal-state-map (kbd "<leader>ls") #'eglot-shutdown)
-(define-key evil-normal-state-map (kbd "<leader>ld") #'eldoc)
-(define-key evil-normal-state-map (kbd "<leader>lr") #'eglot-rename)
-(define-key evil-normal-state-map (kbd "<leader>lR") #'eglot-reconnect)
-(define-key evil-normal-state-map (kbd "<leader>lf") #'eglot-format-buffer)
-(define-key evil-normal-state-map (kbd "<leader>li") #'eglot-code-action-organize-imports)
 
 (define-key evil-normal-state-map (kbd "<leader>wn") #'windmove-down)
 (define-key evil-visual-state-map (kbd "<leader>wn") #'windmove-down)
@@ -396,18 +425,9 @@
 
 (define-key evil-normal-state-map (kbd "<leader>hp") #'kill-this-buffer)
 (define-key evil-normal-state-map (kbd "<leader>hP") #'kill-buffer)
-(define-key evil-normal-state-map (kbd "<leader>ht") #'counsel-bookmark)
 (define-key evil-normal-state-map (kbd "<leader>hT") #'bookmark-delete)
-(define-key evil-normal-state-map (kbd "<leader>hf") #'counsel-buffer-or-recentf)
 (define-key evil-normal-state-map (kbd "<leader>hm") #'spacemacs/switch-to-messages-buffer)
 (define-key evil-normal-state-map (kbd "<leader>hs") #'spacemacs/switch-to-scratch-buffer)
-
-(define-key evil-normal-state-map (kbd "<leader>ds") #'evil-surround-region)
-(define-key evil-visual-state-map (kbd "<leader>ds") #'evil-surround-region)
-(define-key evil-normal-state-map (kbd "<leader>dc") #'evil-surround-change)
-(define-key evil-visual-state-map (kbd "<leader>dc") #'evil-surround-change)
-(define-key evil-normal-state-map (kbd "<leader>dd") #'evil-surround-delete)
-(define-key evil-visual-state-map (kbd "<leader>dd") #'evil-surround-delete)
 
 (define-key evil-normal-state-map (kbd "<leader>uu") #'delete-trailing-whitespace)
 (define-key evil-visual-state-map (kbd "<leader>ua") #'align-regexp)
