@@ -1,0 +1,1 @@
+../.config/minimal-emacs.d/init.el
