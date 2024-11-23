@@ -1,4 +1,4 @@
-;;; post-init.el --- DESCRIPTION -*- no-byte-compile: t; lexical-binding: t; -*-
+;;; post-init.el --- [core init file] -*- no-byte-compile: t; lexical-binding: t; -*-
 
 (setq indent-tabs-mode nil)
 (setq tab-width 4)
