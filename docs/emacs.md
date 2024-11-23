@@ -39,6 +39,15 @@ Update (20 November 2024): I switched to my own config, ditching Spacemacs.
 - `<leader>t` switch tabs with `centaur-tabs-ace-jump`
 - `<leader>z` adjust zoom with `hydra-zoom/body`
 
+### LSP Client
+- `ll` | `L` open eglot (lsp client)
+- `ls` shutdown client
+- `lr` rename a symbol
+- `lR` restart client
+- `ld` show documentation at point
+- `li` format imports
+- `lf` format currrent buffer
+
 ### Window Management
 - `<leader>wn` move to the window below
 - `<leader>we` move to the window above
@@ -57,6 +66,7 @@ Update (20 November 2024): I switched to my own config, ditching Spacemacs.
 
 ### Buffers and Bookmarks
 - `<leader>hp` kill the current buffer
+- `<leader>hP` kill a buffer
 - `<leader>ht` open a bookmark
 - `<leader>hT` delete a bookmark
 - `<leader>hf` open recent buffers or files
@@ -68,10 +78,10 @@ Update (20 November 2024): I switched to my own config, ditching Spacemacs.
 - `<leader>dc` change surrounding text
 - `<leader>dd` delete surrounding text
 - `<leader>ua` align text with regex
-- `<leader>un` manage numbers with `hydra-numbers/body`
 
 ### Code Cleanup
 - `<leader>uu` delete trailing whitespace
+- `<leader>un` inc/dec numbers (n, v)
 - `<leader>ut` manage TODOs with `hydra-todo/body`
 - `<leader>uh` clear search highlights
 - `<leader>uc` toggle comment region

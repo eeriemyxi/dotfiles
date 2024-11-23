@@ -18,8 +18,11 @@
 ;; INFO: theme
 (use-package gruvbox-theme :ensure t :config (load-theme 'gruvbox-dark-medium t))
 
+;; INFO: custom files
+(add-to-list 'load-path (concat user-emacs-directory "/lisps"))
+
 ;; INFO: macros
-(load-file (concat user-emacs-directory "/macros.el"))
+(require 'macros)
 
 ;; INFO: packages
 (use-package evil
@@ -54,6 +57,9 @@
 (require 'treesit)
 
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-ts-mode))
+
 (setq major-mode-remap-alist
       '((bash-mode       . bash-ts-mode)
         (c-or-c++-mode   . c-or-c++-ts-mode)
@@ -146,16 +152,6 @@
                `(python-ts-mode . ,(eglot-alternatives
                                     '(;("ruff-lsp")
                                       ("pylsp"))))))
-
-;; (use-package helm
-;;   :ensure t
-;;   :config
-;;   (helm-mode 1)
-;;   (define-key helm-map (kbd "ESC") 'helm-keyboard-quit)
-;;   (global-set-key (kbd "M-x") #'helm-M-x)
-;;   (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
-;;   (global-set-key (kbd "C-x C-f") #'helm-find-files))
-
 (use-package evil-commentary
   :ensure t
   :config
@@ -264,11 +260,17 @@
 (use-package evil-numbers
   :ensure t)
 
+(use-package flx
+  :ensure t
+  :config)
+
 (use-package counsel
   :ensure t
+  :after flx
   :config
   (setq ivy-re-builders-alist
-        '((t . ivy--regex-fuzzy)))
+        '((ivy-switch-buffer . ivy--regex-plus)
+          (t . ivy--regex-fuzzy)))
   (ivy-mode 1))
 
 (use-package evil-surround
@@ -302,6 +304,11 @@
   :config
   (global-evil-colemak-basics-mode))
 
+(use-package pulsar
+  :ensure t
+  :config
+  (pulsar-global-mode 1))
+
 ;; INFO: startup stuff
 (when (daemonp)
   (exec-path-from-shell-initialize))
@@ -317,149 +324,21 @@
 (define-key evil-insert-state-map (kbd "<escape>") 'evil-normal-state)
 (define-key evil-insert-state-map (kbd "C-o") 'evil-execute-in-normal-state)
 
-(defun my-save-if-bufferfilename ()
-  (when (buffer-file-name)
-    (save-some-buffers t)))
-(add-hook 'evil-insert-state-exit-hook 'my-save-if-bufferfilename)
+;; INFO: additional code
+(require 'funcs)
+(require 'hydras)
 
-(defun spacemacs//get-scratch-buffer-create ()
-  (or (get-buffer "*scratch*")
-      (let ((scratch (get-buffer-create "*scratch*")))
-        (with-current-buffer scratch
-          (add-hook 'kill-buffer-hook
-                    #'spacemacs//confirm-kill-buffer
-                    nil t)
-          (when (and (not (eq major-mode dotspacemacs-scratch-mode))
-                     (fboundp dotspacemacs-scratch-mode))
-            (funcall dotspacemacs-scratch-mode)
-            (run-hooks 'spacemacs-scratch-mode-hook)))
-        scratch)))
-
-(defun spacemacs/switch-to-scratch-buffer (&optional arg)
-  "Switch to the `*scratch*' buffer, creating it first if needed.
-  if prefix argument ARG is given, switch to it in an other, possibly new window."
-  (interactive "P")
-  (let ((scratch (spacemacs//get-scratch-buffer-create)))
-    (if arg
-        (switch-to-buffer-other-window scratch)
-      (switch-to-buffer scratch))))
-
-(defun spacemacs/switch-to-messages-buffer (&optional arg)
-  "Switch to the `*Messages*' buffer.
-  if prefix argument ARG is given, switch to it in an other, possibly new window."
-  (interactive "P")
-  (with-current-buffer (messages-buffer)
-    (goto-char (point-max))
-    (if arg
-        (switch-to-buffer-other-window (current-buffer))
-      (switch-to-buffer (current-buffer)))
-    (when (evil-evilified-state-p)
-      (evil-normal-state))))
-
-(defun spacemacs/show-hide-compilation-window ()
-  "Show/Hide the window containing the compilation buffer."
-  (interactive)
-  (when-let* ((buffer next-error-last-buffer))
-    (if (get-buffer-window buffer 'visible)
-        (delete-windows-on buffer)
-      (spacemacs/switch-to-compilation-buffer))))
-
-(defun spacemacs/switch-to-compilation-buffer ()
-  "Go to last compilation buffer."
-  (interactive)
-  (if (buffer-live-p next-error-last-buffer)
-      (pop-to-buffer next-error-last-buffer)
-    (user-error "There is no compilation buffer")))
-
-(defun sort-words (reverse beg end)
-  "Sort words in region alphabetically, in REVERSE if negative.
-Prefixed with negative \\[universal-argument], sorts in reverse.
-
-The variable `sort-fold-case' determines whether alphabetic case
-affects the sort order.
-
-See `sort-regexp-fields'."
-  (interactive "*P\nr")
-  (save-excursion
-    (let ((sort-fold-case t))
-      (sort-regexp-fields reverse "\\w+" "\\&" beg end))))
-
-(defun sort-symbols (reverse beg end)
-  "Sort symbols in region alphabetically, in REVERSE if negative.
-  See `sort-words'."
-  (interactive "*P\nr")
-  (sort-regexp-fields reverse "\\(\\sw\\|\\s_\\)+" "\\&" beg end))
-
-(defun my-duplicate-line ()
-  "Duplicate current line"
-  (interactive)
-  (interactive)
-  (let ((column (- (point) (point-at-bol)))
-        (line (let ((s (thing-at-point 'line t)))
-                (if s (string-remove-suffix "\n" s) ""))))
-    (move-end-of-line 1)
-    (newline)
-    (insert line)
-    (move-beginning-of-line 1)
-    (forward-char column)))
-
-(defhydra hydra-zoom nil
-  "zoom"
-  ("n" text-scale-increase "in")
-  ("e" text-scale-decrease "out")
-  ("SPC" nil "quit"))
-
-(defhydra hydra-todo nil
-  "todo"
-  ("n" hl-todo-next "next")
-  ("e" hl-todo-previous "previous")
-  ("o" hl-todo-occur "occur")
-  ("i" hl-todo-insert "insert")
-  ("SPC" nil "quit"))
-
-(defhydra hydra-numbers nil
-  "numbers"
-  ("n" evil-numbers/inc-at-pt "increase")
-  ("e" evil-numbers/dec-at-pt "decrease")
-  ("SPC" nil "quit"))
-
-(defhydra hydra-paging nil
-  "paging"
-  ("N" #'evil-scroll-page-down "scroll down")
-  ("E" #'evil-scroll-page-up "scroll down")
-  ("n" #'evil-scroll-down "scroll half down")
-  ("e" #'evil-scroll-up "scroll half down")
-  ("SPC" nil "quit"))
-
-(defhydra hydra-cursors nil
-  "cursors"
-  ("h" evil-mc-make-cursor-here "make here")
-  ("l" evil-mc-make-cursor-move-next-line "make next line")
-  ("y" evil-mc-make-cursor-move-prev-line "make prev line")
-  ("n" evil-mc-make-and-goto-next-match "make and next")
-  ("e" evil-mc-make-and-goto-prev-match "make and prev")
-  ("N" evil-mc-skip-and-goto-next-match "skip and next")
-  ("E" evil-mc-skip-and-goto-prev-match "skip and prev")
-  ("a" evil-mc-make-all-cursors "make all")
-  ("u" evil-mc-undo-all-cursors "undo all")
-  ("U" evil-mc-undo-last-added-cursor "undo last added")
-  ("SPC" nil "quit"))
-
-(use-package pulsar
-  :ensure t
-  :config
-  (pulsar-global-mode 1)
-  (add-to-list 'pulsar-pulse-functions #'hydra-paging/evil-scroll-page-up)
-  (add-to-list 'pulsar-pulse-functions #'hydra-paging/evil-scroll-page-down)
-  (add-to-list 'pulsar-pulse-functions #'hydra-paging/evil-scroll-up)
-  (add-to-list 'pulsar-pulse-functions #'hydra-paging/evil-avy-goto-char-timer)
-  (add-to-list 'pulsar-pulse-functions #'hydra-paging/evil-scroll-down))
+(add-to-list 'pulsar-pulse-functions #'hydra-paging/evil-scroll-page-up)
+(add-to-list 'pulsar-pulse-functions #'hydra-paging/evil-scroll-page-down)
+(add-to-list 'pulsar-pulse-functions #'hydra-paging/evil-scroll-up)
+(add-to-list 'pulsar-pulse-functions #'hydra-paging/evil-avy-goto-char-timer)
+(add-to-list 'pulsar-pulse-functions #'hydra-paging/evil-scroll-down)
 
 ;; INFO: keymaps
 (evil-set-leader 'normal (kbd "SPC"))
 (evil-set-leader 'visual (kbd "SPC"))
 
-;; INFO: OCCUPIED: [I, N, Q, SPC, T, Y, a, c, d, f, h, i, l, n, p, q, s, ', t, u, w, y, z]
+;; INFO: OCCUPIED: [I, L, N, Q, SPC, T, TAB, Y, a, c, d, f, h, i, l, n, p, q, ', s, t, u, w, y, z]
 (define-key evil-normal-state-map (kbd "<leader>N")   #'avy-goto-char-timer)
 (define-key evil-normal-state-map (kbd "<leader>n")   #'avy-goto-char-2)
 (define-key evil-normal-state-map (kbd "<leader>f")   #'dired-jump)
@@ -515,7 +394,8 @@ See `sort-regexp-fields'."
 (define-key evil-normal-state-map (kbd "<leader>cy") #'spacemacs/show-hide-compilation-window)
 (define-key evil-normal-state-map (kbd "<leader>cu") #'spacemacs/switch-to-compilation-buffer)
 
-(define-key evil-normal-state-map (kbd "<leader>hp") #'kill-buffer)
+(define-key evil-normal-state-map (kbd "<leader>hp") #'kill-this-buffer)
+(define-key evil-normal-state-map (kbd "<leader>hP") #'kill-buffer)
 (define-key evil-normal-state-map (kbd "<leader>ht") #'counsel-bookmark)
 (define-key evil-normal-state-map (kbd "<leader>hT") #'bookmark-delete)
 (define-key evil-normal-state-map (kbd "<leader>hf") #'counsel-buffer-or-recentf)
@@ -523,10 +403,10 @@ See `sort-regexp-fields'."
 (define-key evil-normal-state-map (kbd "<leader>hs") #'spacemacs/switch-to-scratch-buffer)
 
 (define-key evil-normal-state-map (kbd "<leader>ds") #'evil-surround-region)
-(define-key evil-normal-state-map (kbd "<leader>dc") #'evil-surround-change)
-(define-key evil-normal-state-map (kbd "<leader>dd") #'evil-surround-delete)
 (define-key evil-visual-state-map (kbd "<leader>ds") #'evil-surround-region)
+(define-key evil-normal-state-map (kbd "<leader>dc") #'evil-surround-change)
 (define-key evil-visual-state-map (kbd "<leader>dc") #'evil-surround-change)
+(define-key evil-normal-state-map (kbd "<leader>dd") #'evil-surround-delete)
 (define-key evil-visual-state-map (kbd "<leader>dd") #'evil-surround-delete)
 
 (define-key evil-normal-state-map (kbd "<leader>uu") #'delete-trailing-whitespace)
