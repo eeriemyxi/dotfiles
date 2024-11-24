@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+# file_path=$(fzf)
+
+# echo "evaluate-commands -client $KAK_CLIENT %{ edit -existing -- ${file_path} }" | kak -p $KAK_SESSION
+fzf |
+xargs printf "evaluate-commands -client '$kak_client' -verbatim -- edit -existing -- '%s';" |
+kak -p "$kak_session"

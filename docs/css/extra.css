@@ -1,0 +1,28 @@
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap");
+
+body {
+    font-family: "JetBrains Mono", monospace;
+}
+
+code {
+    padding: 1px 3px;
+}
+
+.terminal h1 {
+    font-size: 2rem;
+}
+.terminal h2 {
+    font-size: 1.5rem;
+}
+.terminal h3 {
+    font-size: 1.25rem;
+}
+.terminal h4 {
+    font-size: 1rem;
+}
+.terminal h5 {
+    font-size: 0.875rem;
+}
+.terminal h6 {
+    font-size: 0.75rem;
+}

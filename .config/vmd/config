@@ -1,0 +1,2 @@
+highlight.theme = "gruvbox-dark"
+styles.main = "/home/myxi/.config/vmd/main.css"

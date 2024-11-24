@@ -1,0 +1,13 @@
+configuration {
+    display-ssh:    "";
+    display-run:    "";
+    display-drun:   "";
+    display-window: "";
+    display-combi:  "";
+    show-icons:     false;
+    sort: true;
+    levenshtein-sort: false;
+    matching: "fuzzy";
+}
+
+@theme "~/.config/rofi/gruvbox-material.rasi"

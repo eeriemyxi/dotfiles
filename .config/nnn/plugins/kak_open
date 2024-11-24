@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+file_path=$2/$1
+
+echo "evaluate-commands -client $KAK_CLIENT %{ edit ${file_path} }" | kak -p $KAK_SESSION
+
+

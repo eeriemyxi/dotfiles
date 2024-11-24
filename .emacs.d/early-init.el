@@ -1,0 +1,1 @@
+/home/myxi/.config/minimal-emacs.d/early-init.el

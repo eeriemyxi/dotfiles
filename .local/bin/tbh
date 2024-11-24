@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+# Define the Bluetooth device address
+DEVICE_ADDRESS="41:42:17:AD:C8:72"
+
+# Check if the device is connected
+IS_CONNECTED=$(bluetoothctl info $DEVICE_ADDRESS | grep -q "Connected: yes" && echo true || echo false)
+
+if [ $IS_CONNECTED = true ]; then
+  echo "Disconnecting $DEVICE_ADDRESS..."
+  bluetoothctl disconnect $DEVICE_ADDRESS
+else
+  echo "Connecting to $DEVICE_ADDRESS..."
+  bluetoothctl connect $DEVICE_ADDRESS
+fi
