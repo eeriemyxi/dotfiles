@@ -1,10 +1,7 @@
 ;;; post-init.el --- [core init file] -*- no-byte-compile: t; lexical-binding: t; -*-
 
-(setq indent-tabs-mode nil)
-(setq tab-width 4)
 (setq show-trailing-whitespace t)
 (setq display-line-numbers-type 'relative)
-(setq indent-line-function 'insert-tab)
 (setq default-frame-alist '((font . "JetBrainsMono Nerd Font Mono 13")))
 (setq backup-directory-alist
       `(("." . ,(expand-file-name ".backups/" user-emacs-directory))))
@@ -58,8 +55,6 @@
     (meow-tree-sitter-register-defaults)
     (provide 'meow-tree-sitter-configured)))
 
-(require 'unbound)
-
 (require 'emacs-surround)
 (add-to-list 'emacs-surround-alist '("*" . ("**" . "**")))
 (add-to-list 'emacs-surround-alist '("8" . ("*" . "**")))
@@ -83,14 +78,8 @@
 
 (use-package dtrt-indent
   :ensure t
-  :commands (dtrt-indent-global-mode
-             dtrt-indent-mode
-             dtrt-indent-adapt
-             dtrt-indent-undo
-             dtrt-indent-diagnosis
-             dtrt-indent-highlight)
   :config
-  (dtrt-indent-global-mode))
+  (dtrt-indent-global-mode t))
 
 (use-package titlecase
   :bind ("C-c C-SPC T" . titlecase-region)
@@ -100,7 +89,10 @@
   :bind ("C-c C-SPC '" . shell-pop)
   :ensure t)
 
-(use-package rainbow-delimiters :ensure t :config (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+(use-package rainbow-delimiters
+  :ensure t
+  :config (add-hook
+           'prog-mode-hook #'rainbow-delimiters-mode))
 
 (use-package dirvish
   :ensure t
@@ -130,8 +122,7 @@
   (setq jsonrpc-event-hook nil)
   (add-to-list 'eglot-server-programs
                `(python-ts-mode . ,(eglot-alternatives
-                                    '(;("ruff-lsp")
-                                      ("pylsp"))))))
+                                    '(("pylsp"))))))
 (use-package aggressive-indent
   :ensure t
   :config
@@ -142,6 +133,11 @@
   :ensure t
   :bind ("C-c C-SPC C-k t" . centaur-tabs-ace-jump)
   :demand
+  :custom
+  (setq-default centaur-tabs-ace-jump-keys
+                '(?a ?r ?s ?t ?g ?m ?n ?e ?i ?c ?k ?m ?w ?y))
+  (setq-default centaur-tabs-set-bar 'right)
+  (setq-default centaur-tabs-style "slant")
   :config
   (centaur-tabs-mode t)
   (custom-set-faces
@@ -155,15 +151,12 @@
      ((t (:background "#3c3836" :foreground "#fabd2f"))))
    '(centaur-tabs-selected-modified
      ((t (:background "#504945" :foreground "#fabd2f")))))
-  (setq-default centaur-tabs-ace-jump-keys
-                '(?a ?r ?s ?t ?g ?m ?n ?e ?i ?c ?k ?m ?w ?y))
-  (setq-default centaur-tabs-set-bar 'right)
-  (setq-default centaur-tabs-style "slant")
   (centaur-tabs-headline-match))
 
 (use-package hydra :ensure t)
 
 (use-package simpleclip
+  :disabled
   :ensure t
   :bind (("s-c" . simpleclip-copy)
          ("s-x" . simpleclip-cut)
@@ -183,12 +176,14 @@
   (global-hl-todo-mode 1))
 
 (use-package snap-indent
+  :disabled
   :ensure t
   :hook (prog-mode . snap-indent-mode)
   :custom ((snap-indent-format 'untabify)
            (snap-indent-on-save t)))
 
 (use-package yasnippet
+  :disabled
   :ensure t
   :init
   (use-package yasnippet-snippets
@@ -276,7 +271,6 @@
 
 (add-hook 'focus-out-hook (lambda ()
                             (save-some-buffers t)))
-
 (add-hook 'meow-insert-exit-hook (lambda ()
                                    (save-some-buffers t)))
 
@@ -317,6 +311,7 @@
  '("C-SPC C-c y" . spacemacs/show-hide-compilation-window)
  '("C-SPC C-c s" . spacemacs/switch-to-compilation-buffer)
  '("C-SPC C-c c" . compile)
+ '("C-SPC C-c r" . recompile)
  '("C-SPC C-c n" . next-error)
  '("C-SPC C-c e" . previous-error)
  '("C-SPC C-c k" . kill-compilation)
