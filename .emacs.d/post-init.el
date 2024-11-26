@@ -19,6 +19,12 @@
 ;; INFO: macros
 (require 'my-macros)
 
+;; INFO: settings
+(add-hook 'prog-mode-hook
+          (lambda () 
+            (whitespace-newline-mode t)))
+(global-visual-line-mode t)
+
 ;; INFO: tree-sitter
 (require 'treesit)
 
@@ -68,7 +74,7 @@
   :config (global-undo-tree-mode)
   :custom
   (undo-tree-visualizer-diff t)
-  (undo-tree-history-directory-alist `(("." . ,(expand-file-name "undo-tree/" user-emacs-directory))))
+  (undo-tree-history-directory-alist `(("." . ,(expand-file-name ".undo-tree/" user-emacs-directory))))
   (undo-tree-visualizer-timestamps t))
 
 ;; INFO: language-specific

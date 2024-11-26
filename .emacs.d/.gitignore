@@ -1,6 +1,5 @@
 /auto-save-list/
 /autosave
-/custom.el
 /easysession
 /eln-cache/
 /elpa/
@@ -20,7 +19,7 @@
 /straight/
 /themes/
 /transient/
-/undo-tree/
+/.undo-tree/
 /.auto-saves
 /.backups
 # /tree-sitter/

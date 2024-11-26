@@ -37,7 +37,7 @@ export PATH=/home/myxi/.nimble/bin:$PATH
 alias nimpretty="nimpretty --indent:4"
 
 # Deno
-export PATH=~/.asdf/installs/deno/2.0.2/.deno/bin/:$PATH
+export PATH=~/.asdf/installs/deno/2.1.1/.deno/bin/:$PATH
 
 # Cargo
 export PATH=/home/myxi/.cargo/bin:$PATH
