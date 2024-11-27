@@ -4,7 +4,7 @@ title_align center
 
 focus_follows_mouse no
 
-exec_always --no-startup-id feh --bg-scale /home/myxi/Downloads/wall.jpg
+exec_always --no-startup-id feh --bg-scale /home/myxi/Pictures/Wallpapers/gruvbox.jpg
 
 client.focused           #282828  #282828     #98971a  #282828    #282828
 client.unfocused         #282828  #282828     #a89984  #282828    #282828
@@ -41,6 +41,7 @@ for_window [class="firefox"]              layout tabbed
 for_window [class="dissent"]              layout tabbed
 for_window [class="wezterm_ide*"]         layout tabbed
 for_window [class="Emacs"]                layout tabbed
+for_window [class="wezterm"]              layout tabbed
 
 # Custom apps
 bindsym $mod+f exec wezterm start --class "floating_editor" -- "kak"

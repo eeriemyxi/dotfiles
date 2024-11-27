@@ -15,9 +15,15 @@ repository.
 ### [Documentation](https://myxi-dotfiles.pages.dev/)
 Visit [this site](https://myxi-dotfiles.pages.dev/) for some documentation on my
 setup. Do keep in mind that I made the documentation for myself; there will be
-notes there that would make no sense to other people.
+notes there that would make no sense to other people. _But_ you'll likely want to
+read at least the Xfce section if you choose to install my dotfiles on your system.
+
+### Rest of the Things
+- Browser: Mozilla Firefox
+- New Tab: [nightTab](https://addons.mozilla.org/de/firefox/addon/nighttab/ "nightTab")
+- nightTab Configuration: [LINK](https://files.catbox.moe/ar4ua6.json)
 
 ### Screenshots
 ![Emacs](https://files.catbox.moe/xv5f1k.png "Emacs")
 ![](https://i.imgur.com/ZZaCYsg.png) ![](https://i.imgur.com/rfG5SGD.png)
-![](https://i.imgur.com/puaCkWx.png) ![](https://i.imgur.com/MNqu3J8.png)
+![](https://files.catbox.moe/uzmv9a.png) ![](https://i.imgur.com/MNqu3J8.png)

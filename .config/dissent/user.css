@@ -1,0 +1,19 @@
+.window-chatpage {
+  font-size: 16px;
+}
+
+.message-cozy .message-cozy-header {
+  margin-top: 30px;
+}
+
+.message-cozy .message-cozy-avatar {
+  margin-top: 30px;
+}
+
+.message-content-box .message-reply-content {
+  font-size: 16px;
+}
+
+.message-normalembed .message-normalembed-body {
+  font-size: 16px;
+}

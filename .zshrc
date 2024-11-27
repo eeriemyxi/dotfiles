@@ -11,7 +11,7 @@ source $ZSH/oh-my-zsh.sh
 export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
 export EDITOR="/home/myxi/.local/bin/em"
-export SUDO_EDITOR="/home/myxi/.local/bin/kak"
+export SUDO_EDITOR="/home/myxi/.local/bin/nvim"
 export XDG_CONFIG_HOME="/home/myxi/.config/"
 export TERM="xterm-256color"
 
@@ -30,6 +30,9 @@ BLK="08" CHR="0E" DIR="0C" EXE="0A" REG="0F" HARDLINK="0F" SYMLINK="0D" MISSING=
 export NNN_FCOLORS="$BLK$CHR$DIR$EXE$REG$HARDLINK$SYMLINK$MISSING$ORPHAN$FIFO$SOCK$OTHER"
 # plugins
 export NNN_PLUG='f:fzplug;n:kak_open'
+
+# Distrobox
+export PATH=/home/myxi/.distrobox/bin:$PATH
 
 # Nim
 export PATH=~/Documents/tools/nim-2.2.0/bin:$PATH

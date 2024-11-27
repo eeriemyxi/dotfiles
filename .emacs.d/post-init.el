@@ -20,12 +20,24 @@
 (require 'my-macros)
 
 ;; INFO: settings
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+(setq indent-line-function 'insert-tab)
+(setq c-default-style "linux") 
+(setq c-basic-offset 4) 
+(c-set-offset 'comment-intro 0)
+(add-hook 'python-ts-mode-hook (lambda () 
+                                 (require 'sane-indent)
+                                 ;; indent level 4 is hard-coded
+                                 (define-key global-map (kbd "RET") 'ey/sane-newline-and-indent)))
+
 (add-hook 'prog-mode-hook
           (lambda () 
             (whitespace-newline-mode t)))
-(global-visual-line-mode t)
+(setq-default word-wrap t)
 
 ;; INFO: tree-sitter
+
 (require 'treesit)
 
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
@@ -83,6 +95,7 @@
 (use-package magit :ensure t)
 
 (use-package dtrt-indent
+  :disabled
   :ensure t
   :config
   (dtrt-indent-global-mode t))
@@ -329,9 +342,11 @@
  '("C-SPC C-u h" . evil-ex-nohighlight)
  '("C-SPC C-u s" . query-replace)
  '("C-SPC C-u S" . query-replace-regexp)
+ '("C-SPC C-u z" . hydra-zoom/body)
  '("C-SPC C-k p" . kill-this-buffer)
  '("C-SPC C-k P" . kill-buffer)
  '("C-SPC C-k T" . bookmark-delete)
  '("C-SPC C-k m" . spacemacs/switch-to-messages-buffer)
  '("C-SPC C-k s" . spacemacs/switch-to-scratch-buffer)
  )
+
