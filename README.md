@@ -12,6 +12,18 @@
 I acquired it from [this](https://github.com/AngelJumbo/gruvbox-wallpapers)
 repository.
 
+### How To Install
+You'll have to figure out the dependencies yourself, but I can at least help you 
+to properly copy the configuration files.
+```bash
+git clone --depth 1 --branch main --single-branch \
+    https://github.com/eeriemyxi/dotfiles \ 
+    ~/.dotfiles
+cd ~/.dotfiles
+stow .
+```
+You'll need to install GNU Stow on your system.
+
 ### [Documentation](https://myxi-dotfiles.pages.dev/)
 Visit [this site](https://myxi-dotfiles.pages.dev/) for some documentation on my
 setup. Do keep in mind that I made the documentation for myself; there will be
