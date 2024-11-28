@@ -5,4 +5,10 @@
 (use-package xonsh-mode
   :ensure t)
 
+(use-package kotlin-mode
+  :ensure t)
+
+(use-package lua-mode
+  :ensure t)
+
 (provide 'languages)

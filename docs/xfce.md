@@ -54,3 +54,6 @@ I don't know what exactly the cause is but the fix is tweaking your session star
 Configure your startup session as shown and then login. It should work.
 
 **NOTE**: You might also need to switch to "Xfce" from "Xubuntu" in the login manager before doing this.
+
+## Exit TTY
+Press `CTRL + ALT + F7`.

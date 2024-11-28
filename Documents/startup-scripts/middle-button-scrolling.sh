@@ -1,3 +1,5 @@
+#!/bin/bash
+
 export ID=14
 
 xinput set-prop $ID "libinput Scroll Method Enabled" 0, 0, 1  

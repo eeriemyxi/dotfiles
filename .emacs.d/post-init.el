@@ -25,6 +25,7 @@
 (setq indent-line-function 'insert-tab)
 (setq c-default-style "linux") 
 (setq c-basic-offset 4) 
+(setq recentf-max-saved-items 200)
 (c-set-offset 'comment-intro 0)
 (add-hook 'python-ts-mode-hook (lambda () 
                                  (require 'sane-indent)
@@ -104,9 +105,9 @@
   :bind ("C-c C-SPC T" . titlecase-region)
   :ensure t)
 
-(use-package shell-pop
-  :bind ("C-c C-SPC '" . shell-pop)
-  :ensure t)
+(use-package company-prescient
+  :ensure t
+  :config (company-prescient-mode))
 
 (use-package rainbow-delimiters
   :ensure t

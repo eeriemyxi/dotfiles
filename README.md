@@ -33,7 +33,8 @@ read at least the Xfce section if you choose to install my dotfiles on your syst
 ### Rest of the Things
 - Browser: Mozilla Firefox
 - New Tab: [nightTab](https://addons.mozilla.org/de/firefox/addon/nighttab/ "nightTab")
-- nightTab Configuration: [LINK](https://files.catbox.moe/ar4ua6.json)
+- nightTab Configuration: [link](https://files.catbox.moe/ar4ua6.json)
+- Vimium C Configuration: [link](https://files.catbox.moe/zg7hgc.json)
 
 ### Screenshots
 ![Emacs](https://files.catbox.moe/xv5f1k.png "Emacs")
