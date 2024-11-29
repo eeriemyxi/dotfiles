@@ -20,22 +20,23 @@ def parse_tag(tag):
     return tag.split("/")[1].lstrip("v")
 
 
-def parse_platform(platform):
-    pl = platform
+def trans_platform(platform):
     match platform:
         case "linux":
-            pl = "linux"
+            return "linux"
         case "win32":
-            pl = "windows"
+            return "windows"
         case "darwin":
-            pl = "macos"
-    return pl
+            return "macos"
 
 
 def download_libs(author, repo, tag, platform, outdir):
     flname = f"{outdir}/release.tar.gz"
     with open(flname, "wb") as file:
-        url = f"https://github.com/{author}/{repo}/releases/download/{tag}/tree-sitter-grammars-{platform}-{tag}.tar.gz"
+        url = (
+            f"https://github.com/{author}/{repo}/releases/download/{tag}/"
+            "tree-sitter-grammars-{platform}-{tag}.tar.gz"
+        )
         resp = urllib.request.urlopen(url)
         assert resp.status == 200
         file.write(resp.read())
@@ -48,8 +49,8 @@ def main() -> None:
         print(f"Usage: {sys.argv[0]} <where to extract>", file=sys.stderr)
         exit(1)
 
-    location = pathlib.Path(sys.argv[1]).resolve()
-    location.mkdir(exist_ok=True)
+    dest_dir = pathlib.Path(sys.argv[1]).resolve()
+    dest_dir.mkdir(exist_ok=True)
     tag = get_latest_tag("emacs-tree-sitter", "tree-sitter-langs")
     parsed_tag = parse_tag(tag)
 
@@ -60,7 +61,7 @@ def main() -> None:
             "emacs-tree-sitter",
             "tree-sitter-langs",
             parsed_tag,
-            parse_platform(sys.platform),
+            trans_platform(sys.platform),
             tempdir,
         )
 
@@ -71,7 +72,7 @@ def main() -> None:
             if not file.suffix:
                 continue
             filename = f"libtree-sitter-{file.name}"
-            dest = location / filename
+            dest = dest_dir / filename
             shutil.copy(file, dest)
             print(f"{file} -> {dest}")
 

@@ -18,14 +18,16 @@
 
 ;; INFO: macros
 (require 'my-macros)
+
+;; INFO: settings
 (defun apply-sane-indent () 
   (require 'sane-indent)
   ;; indent level 4 is hard-coded
   (define-key global-map (kbd "RET") 'ey/sane-newline-and-indent))
-
-;; INFO: settings
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
+(setq-default word-wrap t)
+(setq-default truncate-lines nil)
 (setq indent-line-function 'insert-tab)
 (setq c-default-style "linux") 
 (setq c-basic-offset 4) 
@@ -38,7 +40,6 @@
 (add-hook 'prog-mode-hook
           (lambda () 
             (whitespace-newline-mode t)))
-(setq-default word-wrap t)
 
 ;; INFO: packages
 (require 'my-meow)
