@@ -18,6 +18,10 @@
 
 ;; INFO: macros
 (require 'my-macros)
+(defun apply-sane-indent () 
+  (require 'sane-indent)
+  ;; indent level 4 is hard-coded
+  (define-key global-map (kbd "RET") 'ey/sane-newline-and-indent))
 
 ;; INFO: settings
 (setq-default indent-tabs-mode nil)
@@ -27,42 +31,14 @@
 (setq c-basic-offset 4) 
 (setq recentf-max-saved-items 200)
 (c-set-offset 'comment-intro 0)
-(add-hook 'python-ts-mode-hook (lambda () 
-                                 (require 'sane-indent)
-                                 ;; indent level 4 is hard-coded
-                                 (define-key global-map (kbd "RET") 'ey/sane-newline-and-indent)))
+(add-hook 'python-ts-mode-hook 'apply-sane-indent)
+(add-hook 'lua-mode-hook 'apply-sane-indent)
+(add-hook 'fish-mode-hook 'apply-sane-indent)
 
 (add-hook 'prog-mode-hook
           (lambda () 
             (whitespace-newline-mode t)))
 (setq-default word-wrap t)
-
-;; INFO: tree-sitter
-
-(require 'treesit)
-
-(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-ts-mode))
-
-(setq major-mode-remap-alist
-      '((bash-mode       . bash-ts-mode)
-        (c-or-c++-mode   . c-or-c++-ts-mode)
-        (c-mode          . c-ts-mode)
-        (c++-mode        . c++-ts-mode)
-        (cmake-mode      . cmake-ts-mode)
-        (csharp-mode     . csharp-ts-mode)
-        (css-mode        . css-ts-mode)
-        (dockerfile-mode . dockerfile-ts-mode)
-        (yaml-mode       . yaml-ts-mode)
-        (js2-mode        . js-ts-mode)
-        (tsx-mode        . tsx-ts-mode)
-        (json-mode       . json-ts-mode)
-        (python-mode     . python-ts-mode)
-        (ruby-mode       . ruby-ts-mode)
-        (rust-mode       . rust-ts-mode)
-        (toml-mode       . toml-ts-mode)
-        (go-mode         . go-ts-mode)))
 
 ;; INFO: packages
 (require 'my-meow)
@@ -93,10 +69,16 @@
 ;; INFO: language-specific
 (require 'languages)
 
+(use-package treesit-auto
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
+
 (use-package magit :ensure t)
 
 (use-package dtrt-indent
-  :disabled
   :ensure t
   :config
   (dtrt-indent-global-mode t))
@@ -175,14 +157,6 @@
 
 (use-package hydra :ensure t)
 
-(use-package simpleclip
-  :disabled
-  :ensure t
-  :bind (("s-c" . simpleclip-copy)
-         ("s-x" . simpleclip-cut)
-         ("C-v" . simpleclip-paste))
-  :config (simpleclip-mode 1))
-
 (use-package hl-todo
   :ensure t
   :config
@@ -196,21 +170,10 @@
   (global-hl-todo-mode 1))
 
 (use-package snap-indent
-  :disabled
   :ensure t
   :hook (prog-mode . snap-indent-mode)
   :custom ((snap-indent-format 'untabify)
            (snap-indent-on-save t)))
-
-(use-package yasnippet
-  :disabled
-  :ensure t
-  :init
-  (use-package yasnippet-snippets
-    :ensure t)
-  :config
-  (yas-reload-all)
-  (add-hook 'prog-mode-hook #'yas-minor-mode))
 
 (use-package company
   :ensure t
@@ -224,10 +187,9 @@
                             company-dabbrev-code
                             company-files
                             company-tempo
-                            company-keywords
-                            company-yasnippet)))
-  (global-company-mode)
-  (company-tng-configure-default))
+                            company-keywords)))
+  (global-company-mode))
+;; (company-tng-configure-default))
 
 (use-package exec-path-from-shell
   :ensure t
@@ -247,6 +209,9 @@
   (avy-background t)
   (avy-style 'de-bruijn)
   (avy-keys (string-to-list "arstneiofu")))
+
+(use-package conf-mode
+  :bind (:map conf-space-mode-map ("C-c SPC" . nil)))
 
 (use-package shift-number
   :ensure t)

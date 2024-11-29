@@ -11,4 +11,7 @@
 (use-package lua-mode
   :ensure t)
 
+(use-package fish-mode
+  :ensure t)
+
 (provide 'languages)
