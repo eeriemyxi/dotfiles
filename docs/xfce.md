@@ -18,7 +18,8 @@ resolve them by manually copying the relevant files to these locations:
 - `/usr/share/wallpapers`
 - `/usr/share/lightdm/avatars`
 
-**NOTE**: The last directory does not exist by default so you will have to manually make it.
+**NOTE**: The last directory does not exist by default so you will have to
+manually make it.
 
 **EXAMPLE**: `sudo cp ~/.themes/gruvbox-theme/ /usr/share/themes/gruvbox-theme/ -r`
 
@@ -47,13 +48,23 @@ how I resolve them:
 - Apply.
 
 ## Log out Menu Not Following GTK Theme Under i3 WM
-I don't know what exactly the cause is but the fix is tweaking your session startup apps.
+I don't know what exactly the cause is but the fix is tweaking your session
+startup apps.
 
 ![](https://files.catbox.moe/fwkp7h.png)
 
 Configure your startup session as shown and then login. It should work.
 
-**NOTE**: You might also need to switch to "Xfce" from "Xubuntu" in the login manager before doing this.
+**NOTE**: You might also need to switch to "Xfce" from "Xubuntu" in the login
+manager before doing this.
 
 ## Exit TTY
 Press `CTRL + ALT + F7`.
+
+## Flameshot Not Copying to Clipboard
+See [this issue](https://github.com/flameshot-org/flameshot/discussions/3131)
+for more information.
+
+The fix is to make sure a flameshot daemon is running whenever you take a
+screenshot. To run a daemon you can simply execute `flameshot`. You can, for
+example, put it in the startup list in the _Session and Startup_ settings.

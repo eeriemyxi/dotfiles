@@ -58,6 +58,10 @@
 
 (use-package goto-chg :ensure t)
 
+(use-package expand-region
+  :ensure t
+  :bind ("C-;" . 'er/expand-region))
+
 (use-package undo-tree
   :defer t
   :diminish undo-tree-mode
@@ -124,8 +128,15 @@
   (fset #'jsonrpc--log-event #'ignore)
   (setq jsonrpc-event-hook nil)
   (add-to-list 'eglot-server-programs
+               ;; pip install python-lsp-server[all]
                `(python-ts-mode . ,(eglot-alternatives
-                                    '(("pylsp"))))))
+                                    '(("pylsp")))))
+  (setq-default eglot-workspace-configuration
+                `(:pylsp (:plugins
+                          (
+                           ;; pip install python-lsp-{isort,black}
+                           :isort (:enabled t)
+                           :black (:enabled t))))))
 (use-package aggressive-indent
   :ensure t
   :config

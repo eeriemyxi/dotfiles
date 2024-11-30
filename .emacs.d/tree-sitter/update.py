@@ -1,26 +1,26 @@
 #!/bin/python3
 
-import tempfile
-import shutil
-import tarfile
-import sys
 import json
 import pathlib
+import shutil
+import sys
+import tarfile
+import tempfile
 import urllib.request
 
 
-def get_latest_tag(author, repo):
+def get_latest_tag(author: str, repo: str) -> str:
     resp = urllib.request.urlopen(f"https://api.github.com/repos/{author}/{repo}/tags")
     assert resp.status == 200, f"Repository {author}/{repo} probably doesn't exist"
     resp_json = json.loads(resp.read())
     return resp_json[0]["name"]
 
 
-def parse_tag(tag):
+def parse_tag(tag: str) -> str:
     return tag.split("/")[1].lstrip("v")
 
 
-def trans_platform(platform):
+def trans_platform(platform: str) -> str:
     match platform:
         case "linux":
             return "linux"
@@ -30,23 +30,32 @@ def trans_platform(platform):
             return "macos"
 
 
-def download_libs(author, repo, tag, platform, outdir):
-    flname = f"{outdir}/release.tar.gz"
+def download_libs(
+    author: str, repo: str, tag: str, platform: str, outdir: pathlib.Path
+):
+    flname = outdir / "release.tar.gz"
     with open(flname, "wb") as file:
         url = (
             f"https://github.com/{author}/{repo}/releases/download/{tag}/"
-            "tree-sitter-grammars-{platform}-{tag}.tar.gz"
+            f"tree-sitter-grammars-{platform}-{tag}.tar.gz"
         )
         resp = urllib.request.urlopen(url)
-        assert resp.status == 200
+        assert (
+            resp.status == 200
+        ), "tag probably doesn't exist, for various reasons, IDC."
         file.write(resp.read())
 
     return flname
 
 
 def main() -> None:
-    if len(sys.argv) == 1:
-        print(f"Usage: {sys.argv[0]} <where to extract>", file=sys.stderr)
+    if (
+        len(sys.argv) == 1
+        or len(sys.argv) > 2
+        or sys.argv[1].startswith(("--help", "-h", "help"))
+    ):
+        print(f"Usage: {sys.argv[0]} <dest_dir>", file=sys.stderr)
+        print(f"Note: <dest_dir> will be created if it doesn't exist.", file=sys.stderr)
         exit(1)
 
     dest_dir = pathlib.Path(sys.argv[1]).resolve()
