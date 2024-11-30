@@ -39,4 +39,4 @@ read at least the Xfce section if you choose to install my dotfiles on your syst
 ### Screenshots
 ![Emacs](https://files.catbox.moe/xv5f1k.png "Emacs")
 ![](https://i.imgur.com/ZZaCYsg.png) ![](https://i.imgur.com/rfG5SGD.png)
-![](https://files.catbox.moe/uzmv9a.png) ![](https://i.imgur.com/MNqu3J8.png)
+![](https://files.catbox.moe/fkaub8.png) ![](https://i.imgur.com/MNqu3J8.png)
