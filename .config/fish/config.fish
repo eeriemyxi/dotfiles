@@ -1,7 +1,7 @@
 fenv source ~/.zprofile
 
 set fish_greeting
- 
+
 alias py "python"
 alias nvide "neovide"
 alias lg "lazygit"
@@ -30,7 +30,7 @@ function c
                             deactivate
                             return
                         case '*'
-                            source .venv/bin/activate
+                            source .venv/bin/activate.fish
                     end
             end
         case tt

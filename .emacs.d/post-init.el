@@ -289,7 +289,8 @@
  '("C-<left>"  . centaur-tabs-backward)
  '("C-<right>" . centaur-tabs-forward)
  '("C-i"       . goto-last-change)
- '("C-S-i"     . goto-last-change-reverse))
+ '("C-S-i"     . goto-last-change-reverse)
+ '("V"         . call-last-kbd-macro))
 
 (meow-leader-define-key
  '("C-SPC y"     . (lambda () (interactive)
