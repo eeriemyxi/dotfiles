@@ -9,11 +9,13 @@
    ;; Use e to move up, n to move down.
    ;; Since special modes usually use n to move down, we only overwrite e here.
    '("e" . meow-prev)
+   '("n" . meow-next)
    '("<escape>" . ignore))
   (meow-leader-define-key
    '("?" . meow-cheatsheet)
    ;; To execute the originally e in MOTION state, use SPC e.
    '("e" . "H-e")
+   '("n" . "H-n")
    '("1" . meow-digit-argument)
    '("2" . meow-digit-argument)
    '("3" . meow-digit-argument)

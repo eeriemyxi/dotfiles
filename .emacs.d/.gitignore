@@ -6,6 +6,8 @@
 /elpaca/
 /etc/
 /history
+/projects
+/projectile.*
 /ielm-history.eld
 /url/
 *.elc

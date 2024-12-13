@@ -9,6 +9,7 @@
 (setq auto-save-file-name-transforms `(("\\`.*\\'" ,(expand-file-name ".auto-saves/" user-emacs-directory))))
 (global-display-line-numbers-mode)
 (global-auto-revert-mode t)
+(auto-save-visited-mode)
 
 ;; INFO: theme
 (use-package gruvbox-theme :ensure t :config (load-theme 'gruvbox-dark-medium t))
@@ -65,14 +66,16 @@
 (use-package undo-tree
   :defer t
   :diminish undo-tree-mode
-  :config (global-undo-tree-mode)
+  :config
+  (global-undo-tree-mode)
   :custom
+  (undo-tree-auto-save-history nil)
   (undo-tree-visualizer-diff t)
   (undo-tree-history-directory-alist `(("." . ,(expand-file-name ".undo-tree/" user-emacs-directory))))
   (undo-tree-visualizer-timestamps t))
 
 ;; INFO: language-specific
-(require 'languages)
+(load-file (expand-file-name "lisp/languages.el" user-emacs-directory))
 
 (use-package treesit-auto
   :custom
@@ -92,8 +95,20 @@
   :bind ("C-c C-SPC T" . titlecase-region)
   :ensure t)
 
+(use-package prescient
+  :custom
+  (setq prescient-history-length 1000)
+  :config
+  (prescient-persist-mode))
+
+(use-package ivy-prescient
+  :ensure t
+  :after ivy
+  :config (ivy-prescient-mode))
+
 (use-package company-prescient
   :ensure t
+  :after company
   :config (company-prescient-mode))
 
 (use-package rainbow-delimiters
@@ -137,6 +152,7 @@
                            ;; pip install python-lsp-{isort,black}
                            :isort (:enabled t)
                            :black (:enabled t))))))
+
 (use-package aggressive-indent
   :ensure t
   :config
@@ -147,12 +163,11 @@
   :ensure t
   :bind ("C-c C-SPC C-k t" . centaur-tabs-ace-jump)
   :demand
-  :custom
-  (setq-default centaur-tabs-ace-jump-keys
-                '(?a ?r ?s ?t ?g ?m ?n ?e ?i ?c ?k ?m ?w ?y))
+  :config
   (setq-default centaur-tabs-set-bar 'right)
   (setq-default centaur-tabs-style "slant")
-  :config
+  (setq-default centaur-tabs-ace-jump-keys
+                '(?a ?r ?s ?t ?g ?m ?n ?e ?i ?c ?k ?m ?w ?y))
   (centaur-tabs-mode t)
   (custom-set-faces
    '(centaur-tabs-default
@@ -187,6 +202,7 @@
   :custom ((snap-indent-format 'untabify)
            (snap-indent-on-save t)))
 
+
 (use-package company
   :ensure t
   :config
@@ -201,12 +217,11 @@
                             company-tempo
                             company-keywords)))
   (global-company-mode))
-;; (company-tng-configure-default))
 
 (use-package exec-path-from-shell
   :ensure t
-  :init
-  (setq exec-path-from-shell-arguments nil)
+  ;; :init
+  ;; (setq exec-path-from-shell-arguments nil)
   :config
   (when (daemonp)
     (exec-path-from-shell-initialize)))
@@ -227,6 +242,21 @@
 
 (use-package shift-number
   :ensure t)
+
+(use-package projectile
+  :ensure t
+  :diminish projectile-mode
+  :demand t
+  :custom
+  (projectile-completion-system 'ivy)
+  :config
+  (projectile-mode +1)
+  :bind (:map projectile-mode-map
+              ("M-'" . projectile-command-map)))
+
+(use-package zoom
+  :ensure t
+  :config (zoom-mode))
 
 (use-package flx
   :ensure t
@@ -268,10 +298,26 @@
 (add-hook 'after-init-hook #'savehist-mode)
 (add-hook 'after-init-hook #'save-place-mode)
 
+;; load history when loading a buffer
+(add-hook 'find-file-hook (lambda ()
+                            (undo-tree-load-history nil t)))
+
+;; save history on exit
+(add-hook 'kill-emacs-query-functions (lambda ()
+                                        (undo-tree-save-history nil 'overwrite)))
+
+(add-hook 'server-kill-emacs-query-function (lambda ()
+                                              (undo-tree-save-history nil 'overwrite)))
+
+;; save history when focus out, save the buffer as well
 (add-hook 'focus-out-hook (lambda ()
-                            (save-some-buffers t)))
+                            (save-some-buffers t)
+                            (undo-tree-save-history nil 'overwrite)))
+;; 
+;; save buffer when leaving insert mode
 (add-hook 'meow-insert-exit-hook (lambda ()
                                    (save-some-buffers t)))
+
 
 ;; INFO: additional code
 (require 'funcs)
@@ -285,11 +331,24 @@
 ;; INFO: keymaps
 (define-key global-map (kbd "C-,") 'my-duplicate-line)
 
+(defun my/backward-delete-word ()
+  "Delete the previous word without saving to the kill ring."
+  (interactive)
+  (let ((start (point))
+        (end (progn (backward-word) (point))))
+    (delete-region start end)))
+
+(meow-define-keys
+    'insert
+  '("C-<backspace>" . my/backward-delete-word)
+  '("M-;" . avy-goto-char-2))
+
 (meow-normal-define-key
  '("C-<left>"  . centaur-tabs-backward)
  '("C-<right>" . centaur-tabs-forward)
  '("C-i"       . goto-last-change)
  '("C-S-i"     . goto-last-change-reverse)
+ '("M-;"       . avy-goto-char-2)
  '("V"         . call-last-kbd-macro))
 
 (meow-leader-define-key

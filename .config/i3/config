@@ -6,7 +6,7 @@ focus_follows_mouse no
 
 exec_always --no-startup-id feh --bg-scale /home/myxi/Pictures/Wallpapers/gruvbox.jpg
 
-client.focused           #282828  #282828     #98971a  #282828    #282828
+client.focused           #363636  #363636     #98971a  #282828    #282828
 client.unfocused         #282828  #282828     #a89984  #282828    #282828
 client.focused_inactive  #282828  #282828     #a89984  #282828    #282828
 
@@ -19,6 +19,7 @@ exec --no-startup-id i3 workspace 1
 
 # Startup
 exec --no-startup-id fish /home/myxi/Documents/startup-scripts/setup-i3-layout.fish
+# exec uv run -s /home/myxi/Documents/startup-scripts/i3-smart-titlebar.py
 
 # Compositor
 exec --no-startup-id picom -b
@@ -28,6 +29,7 @@ assign     [class="floating_editor"]      3
 assign     [class="wezterm-terminal"]     1
 assign     [class="wezterm_ide*"]         2
 assign     [class="Emacs"]                2
+assign     [class="Code"]                 2
 assign     [class="firefox"]              3
 assign     [class="dissent"]              3
 assign     [class="Signal"]               3

@@ -14,4 +14,7 @@
 (use-package fish-mode
   :ensure t)
 
+(use-package haskell-mode
+  :ensure t)
+
 (provide 'languages)

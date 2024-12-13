@@ -4,7 +4,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(expand-region xonsh-mode undo-tree treesit-auto titlecase snap-indent shift-number shell-pop rainbow-delimiters pulsar mistty meow-tree-sitter markdown-mode magit lua-mode kotlin-mode hydra hl-todo gruvbox-theme goto-chg flx fish-mode exec-path-from-shell dtrt-indent dirvish counsel company-prescient centaur-tabs avy aggressive-indent)))
+   '(flx-ido xonsh-mode undo-tree treesit-auto titlecase snap-indent shift-number shell-pop rainbow-delimiters pulsar mistty meow-tree-sitter markdown-mode magit lua-mode kotlin-mode hydra hl-todo haskell-mode gruvbox-theme goto-chg flx fish-mode expand-region exec-path-from-shell dtrt-indent dirvish counsel company-prescient centaur-tabs avy aggressive-indent)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

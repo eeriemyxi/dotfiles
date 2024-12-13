@@ -68,3 +68,9 @@ for more information.
 The fix is to make sure a flameshot daemon is running whenever you take a
 screenshot. To run a daemon you can simply execute `flameshot`. You can, for
 example, put it in the startup list in the _Session and Startup_ settings.
+
+## Bluetooth Icon Missing
+```bash
+sudo apt install bluetooth blueman
+```
+Set `blueman-applet` in the startup list.

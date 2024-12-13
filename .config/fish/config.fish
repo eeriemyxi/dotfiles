@@ -7,6 +7,8 @@ alias nvide "neovide"
 alias lg "lazygit"
 alias trsh "gio trash"
 alias amyxi "distrobox enter amyxi"
+alias ain "sudo apt install"
+alias aun "sudo apt remove"
 
 function c
     if test (count $argv) -eq 0

@@ -5,9 +5,20 @@ export SUDO_EDITOR="$HOME/.local/bin/nvim"
 export XDG_CONFIG_HOME="$HOME/.config/"
 export TERM="xterm-256color"
 
+# A shitty thing that makes startup time
+# EIGHT TIMES slower.
 # https://github.com/asdf-vm/asdf
-export PATH=$HOME/.asdf/shims:$PATH
-export PATH=$HOME/.asdf/bin:$PATH
+# export PATH=$HOME/.asdf/shims:$PATH
+# export PATH=$HOME/.asdf/bin:$PATH
+
+# Okay-ish faster alt to asdf, mise
+# https://mise.jdx.dev/installing-mise.html
+export PATH=$HOME/.local/share/mise/shims:$PATH
+
+# Nim
+# https://nim-lang.org/install.html
+export PATH=$HOME/Documents/tools/nim/bin:$PATH
+export PATH=$HOME/.nimble/bin:$PATH
 
 # https://github.com/eeriemyxi/sper
 export SPER_LICENSE_DIR="$HOME/Documents/licenses"
@@ -21,19 +32,10 @@ export NNN_PLUG='f:fzplug;n:kak_open'
 # Distrobox
 export PATH=$HOME/.distrobox/bin:$PATH
 
-# Nim
-export PATH=$HOME/Documents/tools/nim-2.2.0/bin:$PATH
-export PATH=$HOME/.nimble/bin:$PATH
-
-# Deno
-export PATH=$HOME/.asdf/installs/deno/2.1.1/.deno/bin/:$PATH
-
-# Cargo
-export PATH=$HOME/.cargo/bin:$PATH
-
 # Android
 export ANDROID_HOME=$HOME/.android-sdk/Sdk
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 export GRADLE_USER_HOME=$HOME/.config/gradle
 export PATH=$HOME/Documents/tools/gradle-8.2.1/bin:$PATH
 export PATH=$HOME/Documents/tools/android-studio/bin:$PATH
+export PATH=$PATH:$ANDROID_HOME/ndk/28.0.12674087/toolchains/llvm/prebuilt/linux-x86_64/bin

@@ -10,6 +10,7 @@ nav:
     - Kakoune: kakoune.md
     - Emacs: emacs.md
     - Xfce 4: xfce.md
+    - Linux: linux.md
 theme:
     name: terminal
     palette: gruvbox_dark

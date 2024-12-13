@@ -20,6 +20,6 @@
 	"text/code-highlight-style": "",
 	"text/collapsed-codeblock-height": 200,
 	"text/expanded-codeblock-height": 400,
-	"text/fixed-codeblock": true,
+	"text/fixed-codeblock": false,
 	"text/tab-width": 4
 }

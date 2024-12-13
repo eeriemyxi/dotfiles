@@ -26,3 +26,5 @@ i3 exec wezterm
 i3 exec firefox
 i3 exec dissent
 # i3 exec spotify
+
+uv run -s /home/myxi/Documents/startup-scripts/i3-smart-titlebar.py &

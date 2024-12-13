@@ -1,4 +1,4 @@
-declare-option str escape_insert_first "t"
+declare-option str escape_insert_first "k"
 declare-option str escape_insert_second "t"
 
 define-command escape_insert_setup %{
