@@ -2,7 +2,9 @@
 
 (setq show-trailing-whitespace t)
 (setq display-line-numbers-type 'relative)
-(setq default-frame-alist '((font . "JetBrainsMono Nerd Font Mono 13")))
+;; (setq default-frame-alist '((font . "FiraCode Nerd Font Mono 13")))
+;; (setq default-frame-alist '((font . "JetBrainsMono Nerd Font Mono 13")))
+(setq default-frame-alist '((font . "Maple Mono NF 13")))
 (setq backup-directory-alist
       `(("." . ,(expand-file-name ".backups/" user-emacs-directory))))
 (setq auto-save-list-file-prefix (expand-file-name ".auto-saves/" user-emacs-directory))
@@ -59,9 +61,33 @@
 
 (use-package goto-chg :ensure t)
 
+(use-package dumb-jump
+  :ensure t
+  :config
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
+  (setq xref-show-definitions-function #'xref-show-definitions-completing-read))
+
 (use-package expand-region
   :ensure t
   :bind ("C-;" . 'er/expand-region))
+
+(use-package ligature
+  :config
+  (ligature-set-ligatures 't '("www"))
+  (ligature-set-ligatures 'eww-mode '("ff" "fi" "ffi"))
+  (ligature-set-ligatures 'prog-mode '("{{" "}}" "{{--" "--}}" "{|" "|}" "[|" "|]" "//" "///" "/*" "/**"
+                                       "++" "+++" ".?" ".." "..." "..<" "<!--" "<<-" "<-" "<#--" "<>" "<:"
+                                       "<:<" ">:>" "<=>" "<->" "<|||" "<||" "<|" "<|>" "||>" "|>" "-|" "->>"
+                                       "-->" "->" ">=" "<=" "<<=" "<==" "!=" "!!" "!==" "=!=" "=>" "==" "=:="
+                                       ":=:" ":=" ":>" ":<" "::" ";;" ";;;" ":?" ":?>" "::=" "||-" "||=" "|-"
+                                       "|=" "||" "--" "---" "<--" "??" "???" "?:" "?." "&&" "__" "=/=" "<-<"
+                                       "<=<" "<==>" "==>" "=>>" ">=>" ">>=" ">>-" "-<" "-<<" "<-|" "<=|" "|=>"
+                                       ">-" "<~" "~~" "<~>" "<~~" "-~" "~~>" "~>" "~-" "~@" "<+>" "<+" "+>"
+                                       "<*>" "<*" "*>" "</>" "</" "/>" "<<" "<<<" ">>" ">>>" "#{" "#[" "#("
+                                       "#?" "#_" "#__" "#:" "#=" "#_(" "]#" "0x12" "[TRACE]" "[DEBUG]" "[INFO]"
+                                       "[WARN]" "[ERROR]" "[FATAL]" "[TODO]" "todo))" "[FIXME]" "fixme))" 
+                                       "########" "<!---->" "\\\\"))
+  (global-ligature-mode t))
 
 (use-package undo-tree
   :defer t
@@ -187,13 +213,14 @@
 (use-package hl-todo
   :ensure t
   :config
+  (setq hl-todo-require-punctuation t)
+  (setq hl-todo-highlight-punctuation ":")
   (setq hl-todo-keyword-faces
-        '(("TODO"   . "#fb4934")
-          ("FIXME"  . "#fb4934")
-          ("DEBUG"  . "#d3869b")
-          ("GOTCHA" . "#fe8019")
-          ("INFO"   . "#83a598")
-          ("STUB"   . "#83a598")))
+        '(("TODO"  . "#fb4934")
+          ("FIXME" . "#fb4934")
+          ("DEBUG" . "#d3869b")
+          ("WARN"  . "#d3869b")
+          ("INFO"  . "#83a598")))
   (global-hl-todo-mode 1))
 
 (use-package snap-indent

@@ -17,4 +17,7 @@
 (use-package haskell-mode
   :ensure t)
 
+(use-package nim-mode
+  :ensure t)
+
 (provide 'languages)
