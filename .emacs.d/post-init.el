@@ -67,6 +67,8 @@
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
   (setq xref-show-definitions-function #'xref-show-definitions-completing-read))
 
+(use-package ag :ensure t)
+
 (use-package expand-region
   :ensure t
   :bind ("C-;" . 'er/expand-region))
@@ -337,9 +339,12 @@
                                               (undo-tree-save-history nil 'overwrite)))
 
 ;; save history when focus out, save the buffer as well
-(add-hook 'focus-out-hook (lambda ()
-                            (save-some-buffers t)
-                            (undo-tree-save-history nil 'overwrite)))
+(add-hook 'focus-out-hook
+          (lambda ()
+            (save-some-buffers t)
+            (when (and (buffer-file-name) undo-tree-mode)
+              (undo-tree-save-history nil 'overwrite))))
+
 ;; 
 ;; save buffer when leaving insert mode
 (add-hook 'meow-insert-exit-hook (lambda ()

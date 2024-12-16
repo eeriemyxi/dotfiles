@@ -3,7 +3,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(package-selected-packages
+   '(ag zoom xonsh-mode undo-tree treesit-auto titlecase snap-indent shift-number rainbow-delimiters pulsar projectile nim-mode meow-tree-sitter markdown-mode magit lua-mode ligature kotlin-mode ivy-prescient hydra hl-todo haskell-mode gruvbox-theme goto-chg flx fish-mode expand-region exec-path-from-shell dumb-jump dtrt-indent dirvish counsel company-prescient centaur-tabs avy aggressive-indent)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -13,6 +14,4 @@
  '(centaur-tabs-selected ((t (:background "#504945" :foreground "#ebdbb2"))))
  '(centaur-tabs-selected-modified ((t (:background "#504945" :foreground "#fabd2f"))))
  '(centaur-tabs-unselected ((t (:background "#282828" :foreground "#a89984"))))
- '(centaur-tabs-unselected-modified ((t (:background "#3c3836" :foreground "#fabd2f"))))
- '(font-lock-comment-face ((t (:foreground "#7c6f64" :slant italic))))
- '(font-lock-doc-face ((t (:inherit font-lock-string-face :slant italic)))))
+ '(centaur-tabs-unselected-modified ((t (:background "#3c3836" :foreground "#fabd2f")))))
