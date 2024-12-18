@@ -385,6 +385,10 @@
 
 ;; INFO: keymaps
 (define-key boon-x-map "x" 'counsel-M-x)
+;; (define-key boon-x-map "'" (kbd "M-'"))
+
+(defun foo () (interactive) (execute-kbd-macro (kbd "M-' ")))
+(global-set-key (kbd "C-`") 'foo)
 
 (define-key global-map (kbd "C-<backspace>") 'my/backward-delete-word)
 (define-key global-map (kbd "C-,") 'my-duplicate-line)
