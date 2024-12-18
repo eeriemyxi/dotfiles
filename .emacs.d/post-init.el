@@ -24,7 +24,7 @@
 (require 'my-macros)
 
 ;; INFO: settings
-(defun apply-sane-indent () 
+(defun apply-sane-indent ()
   (require 'sane-indent)
   ;; indent level 4 is hard-coded
   (define-key global-map (kbd "RET") 'ey/sane-newline-and-indent))
@@ -33,8 +33,8 @@
 (setq-default word-wrap t)
 (setq-default truncate-lines nil)
 (setq indent-line-function 'insert-tab)
-(setq c-default-style "linux") 
-(setq c-basic-offset 4) 
+(setq c-default-style "linux")
+(setq c-basic-offset 4)
 (setq recentf-max-saved-items 200)
 (c-set-offset 'comment-intro 0)
 (add-hook 'python-ts-mode-hook 'apply-sane-indent)
@@ -42,7 +42,7 @@
 (add-hook 'fish-mode-hook 'apply-sane-indent)
 
 (add-hook 'prog-mode-hook
-          (lambda () 
+          (lambda ()
             (whitespace-newline-mode t)))
 
 (global-unset-key (kbd "M-'"))
@@ -59,8 +59,15 @@
 
 (use-package which-key :ensure t :config (which-key-mode))
 
-(use-package boon 
-  :ensure t 
+(use-package simpleclip
+  :after boon
+  :ensure t
+  :commands (simpleclip-paste simpleclip-cut simpleclip-copy)
+  :bind (:map boon-command-map ("C-v" . simpleclip-paste))
+  :config (simpleclip-mode 1))
+
+(use-package boon
+  :ensure t
   :config
   (require 'boon-colemak-hnei)
   (boon-mode)
@@ -115,7 +122,7 @@
                                        ">-" "<~" "~~" "<~>" "<~~" "-~" "~~>" "~>" "~-" "~@" "<+>" "<+" "+>"
                                        "<*>" "<*" "*>" "</>" "</" "/>" "<<" "<<<" ">>" ">>>" "#{" "#[" "#("
                                        "#?" "#_" "#__" "#:" "#=" "#_(" "]#" "0x12" "[TRACE]" "[DEBUG]" "[INFO]"
-                                       "[WARN]" "[ERROR]" "[FATAL]" "[TODO]" "todo))" "[FIXME]" "fixme))" 
+                                       "[WARN]" "[ERROR]" "[FATAL]" "[TODO]" "todo))" "[FIXME]" "fixme))"
                                        "########" "<!---->" "\\\\"))
   (global-ligature-mode t))
 
@@ -215,29 +222,6 @@
   (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
   (add-hook 'css-mode-hook #'aggressive-indent-mode))
 
-;; (use-package centaur-tabs
-;;   :ensure t
-;;   :bind ("C-c C-SPC C-k t" . centaur-tabs-ace-jump)
-;;   :demand
-;;   :config
-;;   (setq-default centaur-tabs-set-bar 'right)
-;;   (setq-default centaur-tabs-style "slant")
-;;   (setq-default centaur-tabs-ace-jump-keys
-;;                 '(?a ?r ?s ?t ?g ?m ?n ?e ?i ?c ?k ?m ?w ?y))
-;;   (centaur-tabs-mode t)
-;;   (custom-set-faces
-;;    '(centaur-tabs-default
-;;      ((t (:background "#282828" :foreground "#928374"))))
-;;    '(centaur-tabs-unselected
-;;      ((t (:background "#282828" :foreground "#a89984"))))
-;;    '(centaur-tabs-selected
-;;      ((t (:background "#504945" :foreground "#ebdbb2"))))
-;;    '(centaur-tabs-unselected-modified
-;;      ((t (:background "#3c3836" :foreground "#fabd2f"))))
-;;    '(centaur-tabs-selected-modified
-;;      ((t (:background "#504945" :foreground "#fabd2f")))))
-;;   (centaur-tabs-headline-match))
-
 (use-package hydra :ensure t)
 
 (use-package hl-todo
@@ -284,7 +268,7 @@
   :ensure t
   :bind (:map boon-command-map
               ("o" . my/avy-goto-char-2-end)
-              ("O" . avy-goto-char))        
+              ("O" . avy-goto-char))
   :custom
   (avy-all-windows nil)
   (avy-all-windows-alt t)
@@ -328,6 +312,7 @@
 (use-package counsel
   :ensure t
   :after flx
+  :bind (:map ivy-mode-map ("<escape>" . 'minibuffer-keyboard-quit))
   :bind (("M-' n a" . counsel-grep-or-swiper)
          ("M-' n i" . counsel-file-jump)
          ("M-' n n" . counsel-bookmark)
@@ -399,10 +384,13 @@
     (delete-region start end)))
 
 ;; INFO: keymaps
+(define-key boon-x-map "x" 'counsel-M-x)
+
 (define-key global-map (kbd "C-<backspace>") 'my/backward-delete-word)
 (define-key global-map (kbd "C-,") 'my-duplicate-line)
 
 (define-key global-map (kbd "M-' q") #'quit-window)
+(define-key global-map (kbd "M-' M-f") #'delete-indentation)
 (define-key global-map (kbd "M-' s") #'boon-enclose)
 (define-key global-map (kbd "M-' TAB") #'mode-line-other-buffer)
 (define-key global-map (kbd "M-' f") #'dired-jump)
@@ -414,7 +402,7 @@
 (define-key global-map (kbd "M-' u S") #'query-replace-regexp)
 
 (define-key global-map (kbd "M-' w n") #'windmove-down)
-(define-key global-map (kbd "M-' w e") #'windmove-up) 
+(define-key global-map (kbd "M-' w e") #'windmove-up)
 (define-key global-map (kbd "M-' w h") #'windmove-right)
 (define-key global-map (kbd "M-' w i") #'windmove-left)
 (define-key global-map (kbd "M-' w y") #'windmove-left)
@@ -429,6 +417,7 @@
 
 (define-key global-map (kbd "M-' u u") #'delete-trailing-whitespace)
 (define-key global-map (kbd "M-' u a") #'align-regexp)
+(define-key global-map (kbd "M-' u h") 'boon-unhighlight)
 
 (define-key global-map (kbd "M-' k p") #'kill-this-buffer)
 (define-key global-map (kbd "M-' k P") #'kill-buffer)
