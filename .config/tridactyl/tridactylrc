@@ -220,8 +220,8 @@ bind ;c hint -c [class*="expand"],[class*="togg"]
 bind tc hint -c [class*="expand"],[class*="togg"]
 
 " swap ; and :
-keymap ; :
-keymap : ;
+" keymap ; :
+" keymap : ;
 
 " instead of first input, pick input
 bind gi hint -c input,textarea

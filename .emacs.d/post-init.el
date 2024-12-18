@@ -1,6 +1,7 @@
 ;;; post-init.el --- [core init file] -*- no-byte-compile: t; lexical-binding: t; -*-
 
 (setq show-trailing-whitespace t)
+(setq tramp-default-method "ssh")
 (setq display-line-numbers-type 'relative)
 ;; (setq default-frame-alist '((font . "FiraCode Nerd Font Mono 13")))
 ;; (setq default-frame-alist '((font . "JetBrainsMono Nerd Font Mono 13")))
