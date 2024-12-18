@@ -8,3 +8,4 @@ archives/
 /push.sh
 /README.html
 *.bk/
+/.meow.d/
