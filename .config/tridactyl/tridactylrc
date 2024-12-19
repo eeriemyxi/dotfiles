@@ -4,9 +4,6 @@ Yoinked from: https://github.com/noctuid/dotfiles/blob/master/browsing/.config/t
 " tridactyllocal is more important (clear keybindings for example)
 sanitize tridactylsync tridacytllocal
 
-" * About:config and user.js
-" see ../../.mozilla/firefox/noctuid.normal/user-overrides.js
-
 set modeindicatorshowkeys true
 
 " https://github.com/tridactyl/tridactyl/issues/1212
@@ -45,18 +42,6 @@ set hintchars arstdhneiowfpluy
 " hintfiltermode
 " default
 " set hintnames short
-
-" ** Quickmarks
-source ~/.config/tridactyl/quickmarks
-
-" ** Search Engines
-source ~/.config/tridactyl/searchengines
-
-" ** Tabs
-" TODO
-" set newtab ~/src/homepage/home.html
-" set homepages ["file:~/src/homepage/home.html"]
-" TODO containers
 
 " default tabopenpos (next) and relatedopenpos (related) - open new tabs after
 " current tab or after tabs already opened from current tab
@@ -99,7 +84,6 @@ unbind t
 bind t. source ~/.config/tridactyl/tridactylrc
 
 " ** Colemak Swaps
-" TODO consider scrollpage 0.2
 bind n scrollline 15
 bind e scrollline -15
 bind <left> scrollpx -30
@@ -162,23 +146,6 @@ bind k findnext
 bind K findnext --reverse 1
 bind <esc> nohlsearch
 
-" old workaround when things were completely broken
-" unbind <c-f>
-" bind / exclaim_quiet xdotool key "ctrl+f"
-" bind k exclaim_quiet xdotool key "ctrl+g"
-" bind K exclaim_quiet xdotool key "ctrl+shift+g"
-
-" ** Yanking and Pasting
-" unbind yy
-" unbind ys
-" unbind yc
-" unbind ym
-" unbind yt
-" " bind y clipboard yankshort
-" bind y clipboard yank
-" bind ty hint -p
-" bind Y composite js window.getSelection().toString() | yank
-
 " swap p and P
 bind p clipboard tabopen
 bind P clipboard open
@@ -218,10 +185,6 @@ bind ge followpage next
 " comment toggler for reddit and hacker news (suggested in example config)
 bind ;c hint -c [class*="expand"],[class*="togg"]
 bind tc hint -c [class*="expand"],[class*="togg"]
-
-" swap ; and :
-" keymap ; :
-" keymap : ;
 
 " instead of first input, pick input
 bind gi hint -c input,textarea
@@ -344,16 +307,10 @@ bindurl youtu((\.be)|(be\.com)) f hint -J
 bindurl youtu((\.be)|(be\.com)) F hint -b -J
 bindurl youtu((\.be)|(be\.com)) tf hint -t -J
 
-" ** Reddit
-autocmd DocStart ^http(s?)://www\.reddit\.com(?!/poll) urlmodify -t www old
-
 " ** Twitter
 " so I don't have to login to view things
 " https://github.com/glacambre/.dotfiles/blob/ce464f5dee258a912d3ab319857aaaea838f7e7d/default/.config/tridactyl/tridactylrc#L11
 autocmd DocStart ^http(s?)://twitter\.com urlmodify -t twitter.com nitter.net
-
-" * Local Config
-source ~/.config/tridactyl/local
 
 " Local Variables:
 " mode: vimrc

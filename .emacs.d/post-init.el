@@ -405,7 +405,7 @@
 (define-key global-map (kbd "M-' w e") #'windmove-up)
 (define-key global-map (kbd "M-' w h") #'windmove-right)
 (define-key global-map (kbd "M-' w i") #'windmove-left)
-(define-key global-map (kbd "M-' w y") #'windmove-left)
+(define-key global-map (kbd "M-' w y") #'delete-window)
 
 (define-key global-map (kbd "M-' c y") #'spacemacs/show-hide-compilation-window)
 (define-key global-map (kbd "M-' c s") #'spacemacs/switch-to-compilation-buffer)
