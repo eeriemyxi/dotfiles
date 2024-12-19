@@ -63,7 +63,7 @@
   :after boon
   :ensure t
   :commands (simpleclip-paste simpleclip-cut simpleclip-copy)
-  :bind (:map boon-command-map ("C-v" . simpleclip-paste))
+  :bind ("C-v" . simpleclip-paste)
   :config (simpleclip-mode 1))
 
 (use-package boon
@@ -298,9 +298,9 @@
   :bind (:map projectile-mode-map
               ("M-' p" . projectile-command-map)))
 
-(use-package zoom
-  :ensure t
-  :config (zoom-mode))
+;; (use-package zoom
+;;   :ensure t
+;;   :config (zoom-mode))
 
 (use-package flx
   :ensure t

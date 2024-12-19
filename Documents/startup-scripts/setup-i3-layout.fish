@@ -23,7 +23,7 @@
 i3 exec wezterm
 i3 exec wezterm
 i3 exec wezterm
-i3 exec firefox
+i3 exec chromium
 i3 exec dissent
 # i3 exec spotify
 
