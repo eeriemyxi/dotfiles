@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="generator" content="mkdocs-1.5.3, mkdocs-terminal-4.7.0">
+    
+    <meta name="description" content="All the notes that I may need for my setup time to time."> 
+    
+    <meta name="author" content="myxi"> 
+    <link rel="icon" type="image/png" sizes="192x192" href="../img/android-chrome-192x192.png" />
+<link rel="icon" type="image/png" sizes="512x512" href="../img/android-chrome-512x512.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../img/apple-touch-icon.png" />
+<link rel="shortcut icon" type="image/png" sizes="48x48" href="../img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="../img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32x32.png" />
+
+
+    
+ 
+<title>Emacs - Documentation</title>
+
+
+<link href="../css/fontawesome/css/fontawesome.min.css" rel="stylesheet">
+<link href="../css/fontawesome/css/solid.min.css" rel="stylesheet">
+<link href="../css/normalize.css" rel="stylesheet">
+<link href="../css/terminal.css" rel="stylesheet">
+<link href="../css/theme.css" rel="stylesheet">
+<link href="../css/theme.tile_grid.css" rel="stylesheet">
+<link href="../css/theme.footer.css" rel="stylesheet">
+<!-- gruvbox_dark color palette -->
+<link href="../css/palettes/gruvbox_dark.css" rel="stylesheet">
+
+<!-- page layout -->
+<style>
+/* initially set page layout to a one column grid */
+.terminal-mkdocs-main-grid {
+    display: grid;
+    grid-column-gap: 1.4em;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+}
+
+/*  
+*   when side navigation is not hidden, use a two column grid.  
+*   if the screen is too narrow, fall back to the initial one column grid layout.
+*   in this case the main content will be placed under the navigation panel. 
+*/
+@media only screen and (min-width: 70em) {
+    .terminal-mkdocs-main-grid {
+        grid-template-columns: 4fr 9fr;
+    }
+}</style>
+
+<!-- cursor_animation override -->
+<style>
+  #mkdocs-terminal-site-name.terminal-prompt::after {
+      display: none;
+  }
+</style>
+
+    
+    <link href="../css/extra.css" rel="stylesheet">  
+    
+    
+
+    
+    <!-- search css support -->
+<link href="../css/search/bootstrap-modal.css" rel="stylesheet">
+<!-- search scripts -->
+<script>
+    var base_url = "..",
+    shortcuts = "{}";
+</script>
+<script src="../js/jquery/jquery-1.10.1.min.js" defer></script>
+<script src="../js/bootstrap/bootstrap.min.js" defer></script>
+<script src="../js/mkdocs/base.js" defer></script>
+    
+    
+    
+    
+    <script src="../search/main.js"></script>
+    
+
+    
+</head>
+
+<body class="terminal"><div class="container">
+    <div class="terminal-nav">
+        <header class="terminal-logo">
+            <div id="mkdocs-terminal-site-name" class="logo terminal-prompt"><a href="/" class="no-style">Documentation</a></div>
+        </header>
+        
+        <nav class="terminal-menu">
+            
+            <ul vocab="https://schema.org/" typeof="BreadcrumbList">
+                
+                
+                <li property="itemListElement" typeof="ListItem">
+                    <a href=".." class="menu-item " property="item" typeof="WebPage">
+                        <span property="name">Home</span>
+                    </a>
+                    <meta property="position" content="0">
+                </li>
+                
+                
+                <li property="itemListElement" typeof="ListItem">
+                    <a href="../neovim/" class="menu-item " property="item" typeof="WebPage">
+                        <span property="name">Neovim</span>
+                    </a>
+                    <meta property="position" content="1">
+                </li>
+                
+                
+                <li property="itemListElement" typeof="ListItem">
+                    <a href="../kakoune/" class="menu-item " property="item" typeof="WebPage">
+                        <span property="name">Kakoune</span>
+                    </a>
+                    <meta property="position" content="2">
+                </li>
+                
+                
+                <li property="itemListElement" typeof="ListItem">
+                    <a href="./" class="menu-item active" property="item" typeof="WebPage">
+                        <span property="name">Emacs</span>
+                    </a>
+                    <meta property="position" content="3">
+                </li>
+                
+                
+                <li property="itemListElement" typeof="ListItem">
+                    <a href="../xfce/" class="menu-item " property="item" typeof="WebPage">
+                        <span property="name">Xfce 4</span>
+                    </a>
+                    <meta property="position" content="4">
+                </li>
+                
+                
+                <li property="itemListElement" typeof="ListItem">
+                    <a href="../linux/" class="menu-item " property="item" typeof="WebPage">
+                        <span property="name">Linux</span>
+                    </a>
+                    <meta property="position" content="5">
+                </li>
+                
+                    
+                    
+
+
+<li property="itemListElement" typeof="ListItem">
+    <a href="#" class="menu-item" data-toggle="modal" data-target="#mkdocs_search_modal" property="item" typeof="SearchAction">
+        <i aria-hidden="true" class="fa fa-search"></i> <span property="name">Search</span>
+    </a>
+    <meta property="position" content="6">
+</li>
+                    
+            </ul>
+            
+        </nav>
+    </div>
+</div>
+        
+    <div class="container">
+        <div class="terminal-mkdocs-main-grid"><aside id="terminal-mkdocs-side-panel"><nav>
+  
+    <ul class="terminal-mkdocs-side-nav-items">
+        
+          
+
+
+
+<li class="terminal-mkdocs-side-nav-li">
+    
+    
+    
+        
+        
+            <a class="
+
+    terminal-mkdocs-side-nav-item" href="..">Home</a>
+        
+    
+    
+    
+  </li>
+        
+          
+
+
+
+<li class="terminal-mkdocs-side-nav-li">
+    
+    
+    
+        
+        
+            <a class="
+
+    terminal-mkdocs-side-nav-item" href="../neovim/">Neovim</a>
+        
+    
+    
+    
+  </li>
+        
+          
+
+
+
+<li class="terminal-mkdocs-side-nav-li">
+    
+    
+    
+        
+        
+            <a class="
+
+    terminal-mkdocs-side-nav-item" href="../kakoune/">Kakoune</a>
+        
+    
+    
+    
+  </li>
+        
+          
+
+
+
+<li class="terminal-mkdocs-side-nav-li">
+    
+    
+    
+        
+        <span class="
+
+    terminal-mkdocs-side-nav-item--active">Emacs</span>
+    
+    
+    
+  </li>
+        
+          
+
+
+
+<li class="terminal-mkdocs-side-nav-li">
+    
+    
+    
+        
+        
+            <a class="
+
+    terminal-mkdocs-side-nav-item" href="../xfce/">Xfce 4</a>
+        
+    
+    
+    
+  </li>
+        
+          
+
+
+
+<li class="terminal-mkdocs-side-nav-li">
+    
+    
+    
+        
+        
+            <a class="
+
+    terminal-mkdocs-side-nav-item" href="../linux/">Linux</a>
+        
+    
+    
+    
+  </li>
+        
+    </ul>
+  
+</nav><hr>
+<nav>
+    <ul>
+        <li><a href="#introduction">Introduction</a></li>
+        <li><a href="#general">General</a></li>
+        <li><a href="#editing-and-surrounding">Editing and Surrounding</a></li>
+        <li><a href="#navigation">Navigation</a></li>
+        <li><a href="#file-and-buffer-management">File and Buffer Management</a></li>
+        <li><a href="#window-management">Window Management</a></li>
+        <li><a href="#compilation-and-error-navigation">Compilation and Error Navigation</a></li>
+        <li><a href="#language-server-protocol-lsp">Language Server Protocol (LSP)</a></li>
+        <li><a href="#custom-and-miscellaneous-commands">Custom and Miscellaneous Commands</a></li>
+        
+    </ul>
+</nav>
+</aside>
+            <main id="terminal-mkdocs-main-content">
+    
+    
+    
+    
+    
+
+<section id="mkdocs-terminal-content">
+    <h1 id="introduction">Introduction</h1>
+<p>My primary code editor as of Nov 18 2024. It is great. I will document all the
+tricks I know here that I may forget due to infrequent use. I use Spacemacs
+framework so a subset of the shortcuts listed here are from that framework.</p>
+<ul>
+<li>Update (20 November 2024): I switched to my own config, ditching Spacemacs.</li>
+<li>Update (24 November 2024): I switched from <a href="https://github.com/emacs-evil/evil" title="Evil Modal Editing">Evil
+Mode</a> to <a href="https://github.com/meow-edit/meow" title="Meow Modal Editing">Meow
+Mode</a>.</li>
+<li>Update (18 November 2024): I switched from <a href="https://github.com/meow-edit/meow">Meow Mode</a> to <a href="https://github.com/jyp/boon">Boon Mode</a>.</li>
+</ul>
+<h1 id="general">General</h1>
+<ul>
+<li><code>M-x s d</code> see the diff of the current buffer and its corresponding file</li>
+<li><code>M-q</code> wrap the content at the cursor</li>
+<li><code>M-x set-fill-column</code> set max length. 88 recommended</li>
+<li><code>C-x h</code> select all content of the buffer</li>
+<li><code>C-u M-!</code> insert output of a shell command into buffer</li>
+</ul>
+<h1 id="editing-and-surrounding">Editing and Surrounding</h1>
+<ul>
+<li><code>M-' s</code> add or remove surrounding text</li>
+<li><code>M-' T</code> apply title case to a region</li>
+<li><code>M-' u u</code> remove trailing whitespace</li>
+<li><code>M-' u a</code> align by regular expression</li>
+<li><code>M-' u s</code> perform a find-and-replace</li>
+<li><code>M-' u S</code> perform a regex find-and-replace</li>
+</ul>
+<h1 id="navigation">Navigation</h1>
+<ul>
+<li><code>M-' n t</code> jump to a character pair using <code>avy</code></li>
+<li><code>M-' n T</code> jump with a character timer using <code>avy</code></li>
+<li><code>M-' n I</code> search text using <code>swiper</code></li>
+<li><code>M-' n a</code> search or grep using <code>counsel</code></li>
+<li><code>M-' n i</code> jump to files using <code>counsel</code></li>
+<li><code>M-' n n</code> manage bookmarks using <code>counsel</code></li>
+<li><code>M-' n f</code> open recent files or buffers using <code>counsel</code></li>
+</ul>
+<h1 id="file-and-buffer-management">File and Buffer Management</h1>
+<ul>
+<li><code>M-' f</code> open file in Dired</li>
+<li><code>M-' y</code> edit <code>post-init.el</code> file</li>
+<li><code>M-' Y</code> reload configuration</li>
+<li><code>M-' q</code> quit window</li>
+<li><code>M-' Q</code> exit Emacs</li>
+<li><code>M-' TAB</code> switch to the previous buffer</li>
+<li><code>M-' k p</code> close current buffer</li>
+<li><code>M-' k P</code> kill another buffer</li>
+<li><code>M-' k T</code> delete a bookmark</li>
+<li><code>M-' k m</code> open messages buffer</li>
+<li><code>M-' k s</code> switch to scratch buffer</li>
+</ul>
+<h1 id="window-management">Window Management</h1>
+<ul>
+<li><code>M-' w n</code> move window focus downward</li>
+<li><code>M-' w e</code> move window focus upward</li>
+<li><code>M-' w h</code> move window focus rightward</li>
+<li><code>M-' w i</code> move window focus leftward</li>
+<li><code>M-' w y</code> delete window</li>
+</ul>
+<h1 id="compilation-and-error-navigation">Compilation and Error Navigation</h1>
+<ul>
+<li><code>M-' c y</code> toggle compilation window</li>
+<li><code>M-' c s</code> switch to compilation buffer</li>
+<li><code>M-' c c</code> compile</li>
+<li><code>M-' c n</code> jump to the next error</li>
+<li><code>M-' c e</code> jump to the previous error</li>
+<li><code>M-' c k</code> kill compilation</li>
+</ul>
+<h1 id="language-server-protocol-lsp">Language Server Protocol (LSP)</h1>
+<ul>
+<li><code>M-' l l</code> start the <code>eglot</code> LSP client</li>
+<li><code>M-' l s</code> stop <code>eglot</code></li>
+<li><code>M-' l d</code> show documentation with <code>eldoc</code></li>
+<li><code>M-' l r</code> rename using <code>eglot</code></li>
+<li><code>M-' l R</code> reconnect <code>eglot</code></li>
+<li><code>M-' l f</code> format buffer with <code>eglot</code></li>
+<li><code>M-' l i</code> organize imports with <code>eglot</code></li>
+</ul>
+<h1 id="custom-and-miscellaneous-commands">Custom and Miscellaneous Commands</h1>
+<ul>
+<li><code>M-' h t</code> use custom paging commands</li>
+<li><code>M-' h n</code> open number editing Hydra</li>
+<li><code>M-' h T</code> open TODO management Hydra</li>
+<li><code>M-' h h</code> clear search highlights</li>
+</ul>
+</section>
+
+<section id="mkdocs-terminal-after-content">
+    
+</section>
+<section id="mkdocs-terminal-revision">
+<br>
+<aside>
+    <p>
+        <small>
+            <i>Page last updated 2024-12-18. </i>
+        </small>
+    </p>
+</aside>
+</section>
+            </main>
+        </div>
+        <hr><footer>
+    <div class="terminal-mkdocs-footer-grid">
+        <div id="terminal-mkdocs-footer-copyright-info">
+             Site built with <a href="http://www.mkdocs.org">MkDocs</a> and <a href="https://github.com/ntno/mkdocs-terminal">Terminal for MkDocs</a>.
+        </div>
+    </div>
+</footer>
+    </div>
+
+    
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="alertdialog" aria-modal="true" aria-labelledby="searchModalLabel">
+    <div class="modal-dialog modal-lg" role="search">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchModalLabel">Search</h5>
+                <button type="button" class="close btn btn-default btn-ghost" data-dismiss="modal"><span aria-hidden="true">x</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p id="searchInputLabel">Type to start searching</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" aria-labelledby="searchInputLabel" placeholder="" id="mkdocs-search-query" title="Please enter search terms here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No document matches found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
+</body>
+
+</html>
