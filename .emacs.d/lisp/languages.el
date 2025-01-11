@@ -20,4 +20,12 @@
 (use-package nim-mode
   :ensure t)
 
+(use-package zig-mode
+  :ensure t)
+
+(use-package android-mode
+  :ensure t)
+
+(require 'odin-mode)
+
 (provide 'languages)

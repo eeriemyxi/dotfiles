@@ -3,20 +3,64 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+        abort-recursive-edit
         backward-char
         backward-delete-char-untabify
+        boon-c-god
+        boon-open-next-line-and-insert
+        boon-treasure-region
         boon-two-char-exit-insert-state
+        counsel-M-x
+        counsel-buffer-or-recentf
+        counsel-yank-pop
+        delete-backward-char
+        downcase-word
         forward-char
+        forward-paragraph
+        hydra-multiple-cursors/body
+        insert-register
+        ivy-done
+        kill-line
+        kill-ring-save
+        left-char
+        markdown-outdent-or-delete
         move-end-of-line
         my/backward-delete-word
         python-indent-dedent-line-backspace
+        right-char
+        right-word
         self-insert-command
         undefined
+        upcase-word
+        yank
         ))
 
 (setq mc/cmds-to-run-once
       '(
-        insert-register
+        boon-open-line-and-insert
+        dired-jump
+        hydra-multiple-cursors/ignore
+        hydra-multiple-cursors/ignore
+        hydra-multiple-cursors/mc/add-cursor-on-click
+        hydra-multiple-cursors/mc/edit-lines
+        hydra-multiple-cursors/mc/insert-letters
+        hydra-multiple-cursors/mc/insert-numbers
+        hydra-multiple-cursors/mc/mark-all-in-region-regexp
+        hydra-multiple-cursors/mc/mark-all-like-this
+        hydra-multiple-cursors/mc/mark-next-like-this
+        hydra-multiple-cursors/mc/mark-previous-like-this
+        hydra-multiple-cursors/mc/skip-to-next-like-this
+        hydra-multiple-cursors/mc/skip-to-previous-like-this
+        hydra-multiple-cursors/mc/unmark-next-like-this
+        hydra-multiple-cursors/mc/unmark-previous-like-this
+        hydra-multiple-cursors/mc/vertical-align
+        hydra-multiple-cursors/nil
+        indent-for-tab-command
+        kill-region
+        mc/keyboard-quit
         next-line
         previous-line
+        scroll-up-line
+        set-mark-command
+        undo-redo
         ))

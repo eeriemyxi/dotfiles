@@ -10,6 +10,11 @@ alias amyxi "distrobox enter amyxi"
 alias ain "sudo apt install"
 alias aun "sudo apt remove"
 
+function mkcd
+    mkdir -p $argv[1]
+    cd $argv[1]
+end
+
 function c
     if test (count $argv) -eq 0
         echo "Usage: c [f [r, e], v [v [p [d]], tt [one, two]]]"

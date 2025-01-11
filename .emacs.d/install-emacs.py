@@ -1,6 +1,6 @@
 """Opionated automated compilation of Emacs using Python
-   CAUTION: Do not run it with Python optimization flags.
-   STATUS: NOT COMPLETE!
+CAUTION: Do not run it with Python optimization flags.
+STATUS: NOT COMPLETE!
 """
 
 import pathlib
@@ -25,8 +25,8 @@ EMACS_DIR = TEMP_COMP_PATH / f"emacs-{EMACS_VERSION.strip('a')}"
 
 logging.basicConfig(
     level=logging.DEBUG,
-    format='%(levelname)s: [%(asctime)s] %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S'
+    format="%(levelname)s: [%(asctime)s] %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
 )
 log = logging.getLogger(__file__)
 

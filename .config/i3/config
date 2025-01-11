@@ -30,6 +30,7 @@ assign     [class="wezterm-terminal"]     1
 assign     [class="wezterm_ide*"]         2
 assign     [class="Emacs"]                2
 assign     [class="Code"]                 2
+assign     [class="jetbrains-studio"]     2
 assign     [class="firefox"]              3
 assign     [class="Chromium"]              3
 assign     [class="dissent"]              3

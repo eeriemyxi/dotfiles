@@ -3,6 +3,13 @@
     (save-some-buffers t)))
 (add-hook 'evil-insert-state-exit-hook 'my-save-if-bufferfilename)
 
+(defun my/backward-delete-word ()
+  "Delete the previous word without saving to the kill ring."
+  (interactive)
+  (let ((start (point))
+        (end (progn (backward-word) (point))))
+    (delete-region start end)))
+
 (defun spacemacs//get-scratch-buffer-create ()
   (or (get-buffer "*scratch*")
       (let ((scratch (get-buffer-create "*scratch*")))
@@ -82,5 +89,11 @@
     (insert line)
     (move-beginning-of-line 1)
     (forward-char column)))
+
+(defun insert-line-above ()
+  (interactive)
+  (move-beginning-of-line nil)
+  (newline-and-indent)
+  (indent-according-to-mode))
 
 (provide 'funcs)

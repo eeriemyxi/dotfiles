@@ -70,3 +70,5 @@ function c {
                ;;
        esac
 }
+
+if [ -e /home/myxi/.nix-profile/etc/profile.d/nix.sh ]; then . /home/myxi/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer

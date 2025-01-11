@@ -39,3 +39,4 @@ export GRADLE_USER_HOME=$HOME/.config/gradle
 export PATH=$HOME/Documents/tools/gradle-8.2.1/bin:$PATH
 export PATH=$HOME/Documents/tools/android-studio/bin:$PATH
 export PATH=$PATH:$ANDROID_HOME/ndk/28.0.12674087/toolchains/llvm/prebuilt/linux-x86_64/bin
+export PATH=$PATH:$HOME/Documents/tools/kotlin-language-server/server/build/install/server/bin

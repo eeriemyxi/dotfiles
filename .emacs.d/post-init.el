@@ -28,22 +28,23 @@
   (require 'sane-indent)
   ;; indent level 4 is hard-coded
   (define-key global-map (kbd "RET") 'ey/sane-newline-and-indent))
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
+;; (setq-default indent-tabs-mode nil)
+;; (setq-default tab-width 4)
 (setq-default word-wrap t)
 (setq-default truncate-lines nil)
-(setq indent-line-function 'insert-tab)
-(setq c-default-style "linux")
-(setq c-basic-offset 4)
+;; (setq indent-line-function 'insert-tab)
+;; (setq c-default-style "linux")
+;; (setq c-basic-offset 4)
 (setq recentf-max-saved-items 200)
-(c-set-offset 'comment-intro 0)
+;; (c-set-offset 'comment-intro 0)
 (add-hook 'python-ts-mode-hook 'apply-sane-indent)
 (add-hook 'lua-mode-hook 'apply-sane-indent)
 (add-hook 'fish-mode-hook 'apply-sane-indent)
+(add-hook 'yaml-ts-mode 'apply-sane-indent)
 
-(add-hook 'prog-mode-hook
-          (lambda ()
-            (whitespace-newline-mode t)))
+;; (add-hook 'prog-mode-hook
+;;           (lambda ()
+;;             (whitespace-newline-mode t)))
 
 (global-unset-key (kbd "M-'"))
 
@@ -58,13 +59,6 @@
                ("C-c C-<" . 'mc/mark-all-like-this))))
 
 (use-package which-key :ensure t :config (which-key-mode))
-
-(use-package simpleclip
-  :after boon
-  :ensure t
-  :commands (simpleclip-paste simpleclip-cut simpleclip-copy)
-  :bind ("C-v" . simpleclip-paste)
-  :config (simpleclip-mode 1))
 
 (use-package boon
   :ensure t
@@ -112,18 +106,18 @@
   :config
   (ligature-set-ligatures 't '("www"))
   (ligature-set-ligatures 'eww-mode '("ff" "fi" "ffi"))
-  (ligature-set-ligatures 'prog-mode '("{{" "}}" "{{--" "--}}" "{|" "|}" "[|" "|]" "//" "///" "/*" "/**"
-                                       "++" "+++" ".?" ".." "..." "..<" "<!--" "<<-" "<-" "<#--" "<>" "<:"
-                                       "<:<" ">:>" "<=>" "<->" "<|||" "<||" "<|" "<|>" "||>" "|>" "-|" "->>"
-                                       "-->" "->" ">=" "<=" "<<=" "<==" "!=" "!!" "!==" "=!=" "=>" "==" "=:="
-                                       ":=:" ":=" ":>" ":<" "::" ";;" ";;;" ":?" ":?>" "::=" "||-" "||=" "|-"
-                                       "|=" "||" "--" "---" "<--" "??" "???" "?:" "?." "&&" "__" "=/=" "<-<"
-                                       "<=<" "<==>" "==>" "=>>" ">=>" ">>=" ">>-" "-<" "-<<" "<-|" "<=|" "|=>"
-                                       ">-" "<~" "~~" "<~>" "<~~" "-~" "~~>" "~>" "~-" "~@" "<+>" "<+" "+>"
-                                       "<*>" "<*" "*>" "</>" "</" "/>" "<<" "<<<" ">>" ">>>" "#{" "#[" "#("
-                                       "#?" "#_" "#__" "#:" "#=" "#_(" "]#" "0x12" "[TRACE]" "[DEBUG]" "[INFO]"
-                                       "[WARN]" "[ERROR]" "[FATAL]" "[TODO]" "todo))" "[FIXME]" "fixme))"
-                                       "########" "<!---->" "\\\\"))
+  (ligature-set-ligatures '(prog-mode markdown-mode) '("{{" "}}" "{{--" "--}}" "{|" "|}" "[|" "|]" "//" "///" "/*" "/**"
+                                                       "++" "+++" ".?" ".." "..." "..<" "<!--" "<<-" "<-" "<#--" "<>" "<:"
+                                                       "<:<" ">:>" "<=>" "<->" "<|||" "<||" "<|" "<|>" "||>" "|>" "-|" "->>"
+                                                       "-->" "->" ">=" "<=" "<<=" "<==" "!=" "!!" "!==" "=!=" "=>" "==" "=:="
+                                                       ":=:" ":=" ":>" ":<" "::" ";;" ";;;" ":?" ":?>" "::=" "||-" "||=" "|-"
+                                                       "|=" "||" "--" "---" "<--" "??" "???" "?:" "?." "&&" "__" "=/=" "<-<"
+                                                       "<=<" "<==>" "==>" "=>>" ">=>" ">>=" ">>-" "-<" "-<<" "<-|" "<=|" "|=>"
+                                                       ">-" "<~" "~~" "<~>" "<~~" "-~" "~~>" "~>" "~-" "~@" "<+>" "<+" "+>"
+                                                       "<*>" "<*" "*>" "</>" "</" "/>" "<<" "<<<" ">>" ">>>" "#{" "#[" "#("
+                                                       "#?" "#_" "#__" "#:" "#=" "#_(" "]#" "0x12" "[TRACE]" "[DEBUG]" "[INFO]"
+                                                       "[WARN]" "[ERROR]" "[FATAL]" "[TODO]" "todo))" "[FIXME]" "fixme))"
+                                                       "########" "<!---->" "\\\\"))
   (global-ligature-mode t))
 
 (use-package undo-tree
@@ -147,7 +141,21 @@
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode))
 
-(use-package magit :ensure t)
+(use-package magit
+  :ensure t
+  :bind (:map magit-mode-map
+              ;; Rebind movement keys to hnei-friendly alternatives
+              ("n" . magit-section-forward)       ; Move to next section (was n)
+              ("e" . magit-section-backward)      ; Move to previous section (was p)
+              ("i" . magit-section-up)            ; Move up a section (was u)
+              ("h" . magit-section-toggle)        ; Toggle section visibility (was TAB)
+              ;; Retain important commands with intuitive bindings
+              ("j" . magit-status)                ; Open magit status
+              ("k" . magit-dispatch)              ; Open magit dispatch menu
+              ("l" . magit-log-all)               ; Open log view
+              ("s" . magit-stage)                ; Stage changes
+              ("u" . magit-unstage)))            ; Unstage changes
+
 
 (use-package dtrt-indent
   :ensure t
@@ -183,6 +191,10 @@
   :ensure t
   :config
   (define-key dired-mode-map (kbd "-") 'dired-up-directory)
+  (define-key dired-mode-map (kbd "n") 'dired-next-line)
+  (define-key dired-mode-map (kbd "e") 'dired-previous-line)
+  (define-key dired-mode-map (kbd "i") 'dired-find-file)
+  (define-key dired-mode-map (kbd "h") 'dired-up-directory)
   (dirvish-override-dired-mode))
 
 (use-package eglot
@@ -239,9 +251,10 @@
 
 (use-package snap-indent
   :ensure t
-  :hook (prog-mode . snap-indent-mode)
+  :hook ((prog-mode . snap-indent-mode)
+         (sql-mode . (lambda () (snap-indent-mode -1))))
   :custom ((snap-indent-format 'untabify)
-           (snap-indent-on-save t)))
+           (snap-indent-on-save nil)))
 
 (use-package company
   :ensure t
@@ -297,10 +310,6 @@
   (projectile-mode +1)
   :bind (:map projectile-mode-map
               ("M-' p" . projectile-command-map)))
-
-;; (use-package zoom
-;;   :ensure t
-;;   :config (zoom-mode))
 
 (use-package flx
   :ensure t
@@ -376,14 +385,8 @@
 (add-to-list 'pulsar-pulse-functions #'avy-goto-char-timer)
 (add-to-list 'pulsar-pulse-functions #'avy-goto-char-2)
 
-(defun my/backward-delete-word ()
-  "Delete the previous word without saving to the kill ring."
-  (interactive)
-  (let ((start (point))
-        (end (progn (backward-word) (point))))
-    (delete-region start end)))
-
 ;; INFO: keymaps
+(define-key boon-command-map (kbd "g,") 'insert-line-above)
 (define-key boon-x-map (kbd "x") 'counsel-M-x)
 
 (define-key global-map (kbd "C-<backspace>") 'my/backward-delete-word)
@@ -429,3 +432,4 @@
 (define-key global-map (kbd "M-' h n") #'hydra-numbers/body)
 (define-key global-map (kbd "M-' h T") #'hydra-todo/body)
 (define-key global-map (kbd "M-' h z") #'hydra-zoom/body)
+(define-key global-map (kbd "M-' h h") #'hydra-multiple-cursors/body)

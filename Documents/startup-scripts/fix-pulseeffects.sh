@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Pulseffects as background service: pulseffects --gapplication-service
+
 WAIT_TIME=5
 
 until pgrep -i "pulseeffects"
@@ -12,8 +14,7 @@ done
 
 sleep $WAIT_TIME
 
-pulseeffects -l reset
-# pulseeffects -l default
-# pulseeffects -l probuds
+pulseeffects -l default
+pulseeffects -l probuds
 
 # notify-send "Done fixing Pulse Effects."

@@ -1,0 +1,19 @@
+# Configuration for less(1)
+# Run "lesskey" to produce a ".less" file from this source file.
+
+#command
+h    left-scroll
+
+# qwerty
+l    right-scroll
+
+# colemak
+i    right-scroll
+n    forw-line
+N    forw-line-force
+e    back-line
+E    back-line-force
+k    repeat-search
+\ek  repeat-search-all
+K    reverse-search
+\eK  reverse-search-all

@@ -2,6 +2,7 @@
 from ranger.gui.colorscheme import ColorScheme
 from ranger.gui.color import default_colors, reverse, bold, normal, default
 
+
 class Gruvbox(ColorScheme):
     progress_bar_color = 142  # Gruvbox yellow
 
@@ -35,9 +36,9 @@ class Gruvbox(ColorScheme):
             if context.directory:
                 attr |= bold
                 fg = 142  # Gruvbox yellow
-            elif context.executable and not \
-                    any((context.media, context.container,
-                         context.fifo, context.socket)):
+            elif context.executable and not any(
+                (context.media, context.container, context.fifo, context.socket)
+            ):
                 attr |= bold
                 fg = 142  # Gruvbox yellow
             if context.socket:

@@ -16,8 +16,10 @@ from i3ipc import Connection, Event
 i3 = Connection()
 i3.ws_focus = None
 
+
 def on_workspace_focus(self, e):
     self.ws_focus = e.current
+
 
 def on_window_focus(self, e):
     if not i3.ws_focus:
@@ -27,6 +29,7 @@ def on_window_focus(self, e):
         i3.command("border none")
     else:
         i3.command("border normal")
+
 
 i3.on(Event.WORKSPACE_FOCUS, on_workspace_focus)
 i3.on(Event.WINDOW_FOCUS, on_window_focus)
