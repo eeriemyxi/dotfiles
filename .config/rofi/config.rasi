@@ -10,4 +10,6 @@ configuration {
     matching: "fuzzy";
 }
 
-@theme "~/.config/rofi/gruvbox-material.rasi"
+//@theme "~/.config/rofi/gruvbox-material.rasi"
+
+@theme "/usr/share/rofi/themes/gruvbox-dark.rasi"

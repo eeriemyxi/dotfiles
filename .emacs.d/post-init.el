@@ -3,8 +3,6 @@
 (setq show-trailing-whitespace t)
 (setq tramp-default-method "ssh")
 (setq display-line-numbers-type 'relative)
-;; (setq default-frame-alist '((font . "FiraCode Nerd Font Mono 13")))
-;; (setq default-frame-alist '((font . "JetBrainsMono Nerd Font Mono 13")))
 (setq default-frame-alist '((font . "Maple Mono NF 13")))
 (setq backup-directory-alist
       `(("." . ,(expand-file-name ".backups/" user-emacs-directory))))
@@ -24,27 +22,21 @@
 (require 'my-macros)
 
 ;; INFO: settings
+(customize-set-variable 'scroll-bar-mode nil)
+(customize-set-variable 'horizontal-scroll-bar-mode nil)
+
 (defun apply-sane-indent ()
   (require 'sane-indent)
   ;; indent level 4 is hard-coded
   (define-key global-map (kbd "RET") 'ey/sane-newline-and-indent))
-;; (setq-default indent-tabs-mode nil)
-;; (setq-default tab-width 4)
+
 (setq-default word-wrap t)
 (setq-default truncate-lines nil)
-;; (setq indent-line-function 'insert-tab)
-;; (setq c-default-style "linux")
-;; (setq c-basic-offset 4)
 (setq recentf-max-saved-items 200)
-;; (c-set-offset 'comment-intro 0)
+
 (add-hook 'python-ts-mode-hook 'apply-sane-indent)
 (add-hook 'lua-mode-hook 'apply-sane-indent)
 (add-hook 'fish-mode-hook 'apply-sane-indent)
-(add-hook 'yaml-ts-mode 'apply-sane-indent)
-
-;; (add-hook 'prog-mode-hook
-;;           (lambda ()
-;;             (whitespace-newline-mode t)))
 
 (global-unset-key (kbd "M-'"))
 
@@ -94,6 +86,16 @@
   (define-key boon-insert-map (substring boon-two-char-escape-sequence 0 1)
               #'boon-two-char-exit-insert-state))
 
+(use-package xterm-color
+  :ensure t
+  :config
+  (setq compilation-environment '("TERM=xterm-256color"))
+
+  (defun my/advice-compilation-filter (f proc string)
+    (funcall f proc (xterm-color-filter string)))
+
+  (advice-add 'compilation-filter :around #'my/advice-compilation-filter))
+
 (use-package dumb-jump
   :ensure t
   :config
@@ -138,6 +140,10 @@
   :custom
   (treesit-auto-install 'prompt)
   :config
+  ;; INFO: https://www.reddit.com/r/emacs/comments/17gtxmr/indentation_in_yamltsmode/
+  (delete 'yaml treesit-auto-langs)
+  ;; INFO: Doesn't highlight syntax for whatever reason (Wednesday 02 April 2025 06:18:55 PM IST)
+  (delete 'lua treesit-auto-langs)
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode))
 
@@ -205,6 +211,7 @@
          ("M-' l r" . eglot-rename)
          ("M-' l R" . eglot-reconnect)
          ("M-' l f" . eglot-format-buffer)
+         ("M-' l p" . eglot-code-action-quickfix)
          ("M-' l i" . eglot-code-action-organize-imports))
   :commands (eglot
              eglot-rename
@@ -305,6 +312,7 @@
   :diminish projectile-mode
   :demand t
   :custom
+  (projectile-enable-caching t)
   (projectile-completion-system 'ivy)
   :config
   (projectile-mode +1)

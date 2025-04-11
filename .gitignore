@@ -9,3 +9,4 @@ archives/
 /README.html
 *.bk/
 /.meow.d/
+.emacs.d/eshell/history

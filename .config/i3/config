@@ -6,7 +6,7 @@ focus_follows_mouse no
 
 exec_always --no-startup-id feh --bg-scale /home/myxi/Pictures/Wallpapers/gruvbox.jpg
 
-client.focused           #363636  #363636     #98971a  #282828    #282828
+client.focused           #363636  #363636    # b8bb26  #282828    #282828
 client.unfocused         #282828  #282828     #a89984  #282828    #282828
 client.focused_inactive  #282828  #282828     #a89984  #282828    #282828
 
@@ -19,7 +19,7 @@ exec --no-startup-id i3 workspace 1
 
 # Startup
 exec --no-startup-id fish /home/myxi/Documents/startup-scripts/setup-i3-layout.fish
-# exec uv run -s /home/myxi/Documents/startup-scripts/i3-smart-titlebar.py
+exec --no-startup-id fish /home/myxi/Documents/startup-scripts/middle
 
 # Compositor
 exec --no-startup-id picom -b
@@ -32,7 +32,8 @@ assign     [class="Emacs"]                2
 assign     [class="Code"]                 2
 assign     [class="jetbrains-studio"]     2
 assign     [class="firefox"]              3
-assign     [class="Chromium"]              3
+assign     [class="cachy-browser"]        3
+assign     [class="Chromium"]             3
 assign     [class="dissent"]              3
 assign     [class="Signal"]               3
 assign     [class="Spotify"]              4
@@ -42,7 +43,8 @@ for_window [class="Blueman-manager"]      floating enable
 for_window [class="geary"]                floating enable
 for_window [class="floating_editor"]      floating enable
 for_window [class="firefox"]              layout tabbed
-for_window [class="Chromium"]              layout tabbed
+for_window [class="cachy-browser"]        layout tabbed
+for_window [class="Chromium"]             layout tabbed
 for_window [class="dissent"]              layout tabbed
 for_window [class="wezterm_ide*"]         layout tabbed
 for_window [class="Emacs"]                layout tabbed

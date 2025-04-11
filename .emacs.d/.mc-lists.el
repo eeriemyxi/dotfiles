@@ -10,11 +10,13 @@
         boon-open-next-line-and-insert
         boon-treasure-region
         boon-two-char-exit-insert-state
+        capitalize-word
         counsel-M-x
         counsel-buffer-or-recentf
         counsel-yank-pop
         delete-backward-char
         downcase-word
+        electric-newline-and-maybe-indent
         forward-char
         forward-paragraph
         hydra-multiple-cursors/body
@@ -23,20 +25,26 @@
         kill-line
         kill-ring-save
         left-char
+        markdown-cycle
         markdown-outdent-or-delete
         move-end-of-line
         my/backward-delete-word
+        next-line
+        previous-line
         python-indent-dedent-line-backspace
         right-char
         right-word
         self-insert-command
+        tab-to-tab-stop
         undefined
         upcase-word
+        yaml-electric-dash-and-dot
         yank
         ))
 
 (setq mc/cmds-to-run-once
       '(
+        beginning-of-buffer
         boon-open-line-and-insert
         dired-jump
         hydra-multiple-cursors/ignore
@@ -58,8 +66,7 @@
         indent-for-tab-command
         kill-region
         mc/keyboard-quit
-        next-line
-        previous-line
+        pug-electric-backspace
         scroll-up-line
         set-mark-command
         undo-redo

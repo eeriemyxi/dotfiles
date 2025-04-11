@@ -74,3 +74,16 @@ example, put it in the startup list in the _Session and Startup_ settings.
 sudo apt install bluetooth blueman
 ```
 Set `blueman-applet` in the startup list.
+
+## Some Menus Have Black Borders on i3
+Append `~/.config/gtk-3.0/gtk.css` with:
+```css
+menu,
+.csd .menu,
+.csd .dropdown,
+.csd .context-menu {
+    border-radius: 1px;
+}
+```
+This will remove round edges from those menus to resolve the issue. This is more
+of a workaround from that view.

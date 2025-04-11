@@ -26,6 +26,13 @@
 (use-package android-mode
   :ensure t)
 
+(use-package nix-mode
+  :ensure t)
+
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+
 (require 'odin-mode)
+(require 'cmake-mode)
 
 (provide 'languages)

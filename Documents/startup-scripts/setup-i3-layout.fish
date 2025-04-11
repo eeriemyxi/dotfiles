@@ -23,8 +23,8 @@
 i3 exec wezterm
 i3 exec wezterm
 i3 exec wezterm
-i3 exec chromium
-i3 exec dissent
+i3 exec cachy-browser
+# i3 exec dissent
 # i3 exec spotify
 
-uv run -s /home/myxi/Documents/startup-scripts/i3-smart-titlebar.py &
+# uv run -s /home/myxi/Documents/startup-scripts/i3-smart-titlebar.py &

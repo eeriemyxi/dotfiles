@@ -14,7 +14,7 @@ vim.keymap.set(
     "<cmd>Telescope diagnostics<cr>"
 )
 
-vim.keymap.set("i", "hh", function()
+vim.keymap.set("i", "kt", function()
     -- don't move cursor forward
     -- unless cursor col is > 1
     pos = vim.api.nvim_win_get_cursor(0)

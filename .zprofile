@@ -1,19 +1,15 @@
 export MANPATH="/usr/local/man:$MANPATH"
 export LANG=en_US.UTF-8
-export EDITOR="$HOME/.local/bin/em"
-export SUDO_EDITOR="$HOME/.local/bin/nvim"
+export EDITOR="emacs"
+export SUDO_EDITOR="nvim"
 export XDG_CONFIG_HOME="$HOME/.config/"
 export TERM="xterm-256color"
 
-# A shitty thing that makes startup time
-# EIGHT TIMES slower.
-# https://github.com/asdf-vm/asdf
-# export PATH=$HOME/.asdf/shims:$PATH
-# export PATH=$HOME/.asdf/bin:$PATH
+export PATH=$HOME/.local/bin:$PATH
+export PATH=/var/lib/flatpak/exports/bin:$PATH
 
-# Okay-ish faster alt to asdf, mise
 # https://mise.jdx.dev/installing-mise.html
-export PATH=$HOME/.local/share/mise/shims:$PATH
+# export PATH=$HOME/.local/share/mise/shims:$PATH
 
 # Nim
 # https://nim-lang.org/install.html
