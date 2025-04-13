@@ -105,5 +105,7 @@ end
 
 # https://github.com/rexim/tore
 if status is-interactive
-    tore
+    if type -q tore
+        tore
+    end
 end
