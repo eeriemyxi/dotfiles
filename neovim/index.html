@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="generator" content="mkdocs-1.5.3, mkdocs-terminal-4.7.0">
+    
+    <meta name="description" content="All the notes that I may need for my setup time to time."> 
+    
+    <meta name="author" content="myxi"> 
+    <link rel="icon" type="image/png" sizes="192x192" href="../img/android-chrome-192x192.png" />
+<link rel="icon" type="image/png" sizes="512x512" href="../img/android-chrome-512x512.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../img/apple-touch-icon.png" />
+<link rel="shortcut icon" type="image/png" sizes="48x48" href="../img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="../img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32x32.png" />
+
+
+    
+ 
+<title>Neovim - Documentation</title>
+
+
+<link href="../css/fontawesome/css/fontawesome.min.css" rel="stylesheet">
+<link href="../css/fontawesome/css/solid.min.css" rel="stylesheet">
+<link href="../css/normalize.css" rel="stylesheet">
+<link href="../css/terminal.css" rel="stylesheet">
+<link href="../css/theme.css" rel="stylesheet">
+<link href="../css/theme.tile_grid.css" rel="stylesheet">
+<link href="../css/theme.footer.css" rel="stylesheet">
+<!-- gruvbox_dark color palette -->
+<link href="../css/palettes/gruvbox_dark.css" rel="stylesheet">
+
+<!-- page layout -->
+<style>
+/* initially set page layout to a one column grid */
+.terminal-mkdocs-main-grid {
+    display: grid;
+    grid-column-gap: 1.4em;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+}
+
+/*  
+*   when side navigation is not hidden, use a two column grid.  
+*   if the screen is too narrow, fall back to the initial one column grid layout.
+*   in this case the main content will be placed under the navigation panel. 
+*/
+@media only screen and (min-width: 70em) {
+    .terminal-mkdocs-main-grid {
+        grid-template-columns: 4fr 9fr;
+    }
+}</style>
+
+<!-- cursor_animation override -->
+<style>
+  #mkdocs-terminal-site-name.terminal-prompt::after {
+      display: none;
+  }
+</style>
+
+    
+    <link href="../css/extra.css" rel="stylesheet">  
+    
+    
+
+    
+    <!-- search css support -->
+<link href="../css/search/bootstrap-modal.css" rel="stylesheet">
+<!-- search scripts -->
+<script>
+    var base_url = "..",
+    shortcuts = "{}";
+</script>
+<script src="../js/jquery/jquery-1.10.1.min.js" defer></script>
+<script src="../js/bootstrap/bootstrap.min.js" defer></script>
+<script src="../js/mkdocs/base.js" defer></script>
+    
+    
+    
+    
+    <script src="../search/main.js"></script>
+    
+
+    
+</head>
+
+<body class="terminal"><div class="container">
+    <div class="terminal-nav">
+        <header class="terminal-logo">
+            <div id="mkdocs-terminal-site-name" class="logo terminal-prompt"><a href="/" class="no-style">Documentation</a></div>
+        </header>
+        
+        <nav class="terminal-menu">
+            
+            <ul vocab="https://schema.org/" typeof="BreadcrumbList">
+                
+                
+                <li property="itemListElement" typeof="ListItem">
+                    <a href=".." class="menu-item " property="item" typeof="WebPage">
+                        <span property="name">Home</span>
+                    </a>
+                    <meta property="position" content="0">
+                </li>
+                
+                
+                <li property="itemListElement" typeof="ListItem">
+                    <a href="./" class="menu-item active" property="item" typeof="WebPage">
+                        <span property="name">Neovim</span>
+                    </a>
+                    <meta property="position" content="1">
+                </li>
+                
+                
+                <li property="itemListElement" typeof="ListItem">
+                    <a href="../kakoune/" class="menu-item " property="item" typeof="WebPage">
+                        <span property="name">Kakoune</span>
+                    </a>
+                    <meta property="position" content="2">
+                </li>
+                
+                
+                <li property="itemListElement" typeof="ListItem">
+                    <a href="../emacs/" class="menu-item " property="item" typeof="WebPage">
+                        <span property="name">Emacs</span>
+                    </a>
+                    <meta property="position" content="3">
+                </li>
+                
+                
+                <li property="itemListElement" typeof="ListItem">
+                    <a href="../xfce/" class="menu-item " property="item" typeof="WebPage">
+                        <span property="name">Xfce 4</span>
+                    </a>
+                    <meta property="position" content="4">
+                </li>
+                
+                
+                <li property="itemListElement" typeof="ListItem">
+                    <a href="../linux/" class="menu-item " property="item" typeof="WebPage">
+                        <span property="name">Linux</span>
+                    </a>
+                    <meta property="position" content="5">
+                </li>
+                
+                    
+                    
+
+
+<li property="itemListElement" typeof="ListItem">
+    <a href="#" class="menu-item" data-toggle="modal" data-target="#mkdocs_search_modal" property="item" typeof="SearchAction">
+        <i aria-hidden="true" class="fa fa-search"></i> <span property="name">Search</span>
+    </a>
+    <meta property="position" content="6">
+</li>
+                    
+            </ul>
+            
+        </nav>
+    </div>
+</div>
+        
+    <div class="container">
+        <div class="terminal-mkdocs-main-grid"><aside id="terminal-mkdocs-side-panel"><nav>
+  
+    <ul class="terminal-mkdocs-side-nav-items">
+        
+          
+
+
+
+<li class="terminal-mkdocs-side-nav-li">
+    
+    
+    
+        
+        
+            <a class="
+
+    terminal-mkdocs-side-nav-item" href="..">Home</a>
+        
+    
+    
+    
+  </li>
+        
+          
+
+
+
+<li class="terminal-mkdocs-side-nav-li">
+    
+    
+    
+        
+        <span class="
+
+    terminal-mkdocs-side-nav-item--active">Neovim</span>
+    
+    
+    
+  </li>
+        
+          
+
+
+
+<li class="terminal-mkdocs-side-nav-li">
+    
+    
+    
+        
+        
+            <a class="
+
+    terminal-mkdocs-side-nav-item" href="../kakoune/">Kakoune</a>
+        
+    
+    
+    
+  </li>
+        
+          
+
+
+
+<li class="terminal-mkdocs-side-nav-li">
+    
+    
+    
+        
+        
+            <a class="
+
+    terminal-mkdocs-side-nav-item" href="../emacs/">Emacs</a>
+        
+    
+    
+    
+  </li>
+        
+          
+
+
+
+<li class="terminal-mkdocs-side-nav-li">
+    
+    
+    
+        
+        
+            <a class="
+
+    terminal-mkdocs-side-nav-item" href="../xfce/">Xfce 4</a>
+        
+    
+    
+    
+  </li>
+        
+          
+
+
+
+<li class="terminal-mkdocs-side-nav-li">
+    
+    
+    
+        
+        
+            <a class="
+
+    terminal-mkdocs-side-nav-item" href="../linux/">Linux</a>
+        
+    
+    
+    
+  </li>
+        
+    </ul>
+  
+</nav><hr>
+<nav>
+    <ul>
+        <li><a href="#introduction">Introduction</a></li>
+        <li><a href="#general">General</a></li>
+        <li><a href="#spell-checking">Spell Checking</a></li><li><a href="#macros">Macros</a></li><li><a href="#substitution">Substitution</a></li><li><a href="#plugins">Plugins</a></li>
+        <li><a href="#tab-line">Tab Line</a></li><li><a href="#surrounder">Surrounder</a></li><li><a href="#bufferized-file-explorer">Bufferized File Explorer</a></li><li><a href="#markdown-previews">Markdown Previews</a></li><li><a href="#to-title">To Title</a></li>
+    </ul>
+</nav>
+</aside>
+            <main id="terminal-mkdocs-main-content">
+    
+    
+    
+    
+    
+
+<section id="mkdocs-terminal-content">
+    <h1 id="introduction">Introduction</h1>
+<p>Neovim is one of those apps I actively add new features to then strugle to
+remember them due to my lack of muscle memory for it. But when I do want to use
+them I forget what the keymap is. I'd then have to go through my config files to
+find out the shortcut, which is inconvenient.</p>
+<p>Here I am going to document everything I should be needing here so that I can
+read them when I get the intuition that I forgot something useful.</p>
+<h1 id="general">General</h1>
+<ul>
+<li><code>vU</code> uppercase selection.</li>
+<li><code>vl</code> lowercase selection.</li>
+<li><code>.</code> redo last action.</li>
+<li><code>gl</code> and <code>gh</code> to go to start and end of the line.</li>
+<li><code>]&lt;space&gt;</code> and <code>]&lt;space&gt;</code> to add empty line in the next or previous line.</li>
+<li><code>vuw</code> and <code>vuW</code> to select current word.</li>
+<li><code>vup</code> to select current paragraph.</li>
+<li><code>vu[some symbol like "]</code> to select content within those symbols under context
+  of the cursor.</li>
+<li><code>N</code> and <code>E</code> to scroll down and up.</li>
+<li><code>:new</code> to open a file in another window.</li>
+<li><code>&lt;space&gt;</code> + <code>[hnei]</code> to move cursor to another window.</li>
+<li><code>&lt;space&gt;</code> + <code>[HNEI]</code> to move the current window.</li>
+<li><code>&lt;space&gt;f</code> open file switcher.</li>
+<li><code>&lt;C-x&gt;</code> to open the file as a split.</li>
+<li><code>&lt;C-v&gt;</code> to open the file as a vertical split.</li>
+<li><code>&lt;C-t&gt;</code> to open the file in a new tab.</li>
+<li><code>&lt;space&gt;F</code> open buffer switcher.</li>
+<li><code>&lt;space&gt;d</code> diagnostics.</li>
+<li><code>k</code> go to the next match (from using <code>/</code>).</li>
+<li><code>C-o</code> go to previous match (from using <code>/</code>).</li>
+<li><code>;s</code> hide search highlights.</li>
+<li><code>;q</code> toggle undo branch tree.</li>
+<li><code>;p</code> find text in the source tree.</li>
+<li><code>;r</code> LSP identifier rename (hover over the variable with the cursor then use
+  it).</li>
+<li><code>;w</code> LSP definitions.</li>
+<li><code>;u</code> toggle LSP diagnostics.</li>
+<li><code>ZZ</code> quit the editor.</li>
+<li><code>Zz</code> to force quit the editor.</li>
+</ul>
+<h3 id="spell-checking">Spell Checking</h3>
+<ul>
+<li><code>;d</code> to toggle spell checking.</li>
+<li><code>]s</code> and <code>[s</code> to go to next or previous spelling error.</li>
+<li><code>z=</code> to find suggestions for the current error under cursor.</li>
+</ul>
+<h3 id="macros">Macros</h3>
+<ul>
+<li><code>q</code> to record macros, e.g., <code>qq</code> will record it in <code>q</code> registry.</li>
+<li><code>@</code> to trigger a macro, e.g., <code>@q</code> will trigger the <code>q</code> registry.</li>
+</ul>
+<p><strong>Deleting Stuff</strong></p>
+<ul>
+<li>Visual mode</li>
+<li><code>x</code> to delete <strong>without</strong> copy.</li>
+<li><code>d</code> to delete <strong>with</strong> copy.</li>
+<li>Normal mode</li>
+<li><code>x</code> to delete <strong>without</strong> copy.</li>
+<li><code>dd</code> to delete current line <strong>without</strong> copy.</li>
+</ul>
+<h3 id="substitution">Substitution</h3>
+<p>This editor's text replacement feature is accessed via <code>:substitute</code> or <code>:s</code></p>
+<ul>
+<li>Selecting lines then doing <code>:</code> will insert something into the command line.
+  Those characters help the command understand that you want to execute it in
+  only the selected area.</li>
+<li>They use regular expressions to match stuff.</li>
+<li><code>:%s/hello/hwello</code> this will replace first "hello" in every line of the file.
+  <code>%</code> selects the entire file.</li>
+<li><code>:%s/hello/hwello/g</code> this will replace all "hello" of the file. <code>%</code> selects
+  the entire file. <code>/g</code> will apply it to every match rather the first one in a
+  line.</li>
+<li><code>:%s/^/something</code> this will add "something" to the start of every line.</li>
+<li><code>:%s/$/something</code> this will add "something" to the end of every line.</li>
+</ul>
+<h1 id="plugins">Plugins</h1>
+<h3 id="tab-line">Tab Line</h3>
+<p>Filename: <code>tab-line.lua</code></p>
+<p>This is different from the status line, that is one at the bottom and this one
+is at the top.</p>
+<ul>
+<li><code>&lt;space&gt;th</code> move to the previous tab</li>
+<li><code>&lt;space&gt;ti</code> move to the next tab</li>
+<li><code>Alt + &lt;0-9&gt;</code> move to a specific tab.</li>
+<li><code>&lt;space&gt;tc</code> close the tab.</li>
+<li><code>&lt;space&gt;t&lt;space&gt;</code> select a tab.</li>
+</ul>
+<h3 id="surrounder">Surrounder</h3>
+<p>Filename: <code>surrounder.lua</code></p>
+<p>This plugin helps surround/strip a character from visual selection.</p>
+<ul>
+<li><code>&lt;space&gt;kk</code> then a symbol. To append.</li>
+<li><code>&lt;space&gt;kr</code> then a symbol. To replace.</li>
+<li><code>&lt;space&gt;kd</code> to delete.</li>
+</ul>
+<h3 id="bufferized-file-explorer">Bufferized File Explorer</h3>
+<p>Filename: <code>bufferized-file-explorer.lua</code></p>
+<ul>
+<li><code>&lt;space&gt;tr</code> to trigger.</li>
+<li><code>g.</code> to toggle hidden files.</li>
+</ul>
+<h3 id="markdown-previews">Markdown Previews</h3>
+<p>Filename: <code>markdown-previews.md</code></p>
+<p>View markdown files in a web browser as rendered.</p>
+<ul>
+<li><code>:MaT</code> is an alias to toggle the renderer.</li>
+</ul>
+<h3 id="to-title">To Title</h3>
+<p>Filename: <code>text-enhancers.md</code></p>
+<p>Convert to title-case.</p>
+<ul>
+<li><code>gt</code> to convert visual selection.</li>
+<li><code>gtt</code> to convert the whole line.</li>
+<li><code>gt2w</code> to convert the next two words.</li>
+</ul>
+</section>
+
+<section id="mkdocs-terminal-after-content">
+    
+</section>
+<section id="mkdocs-terminal-revision">
+<br>
+<aside>
+    <p>
+        <small>
+            <i>Page last updated 2024-11-25. </i>
+        </small>
+    </p>
+</aside>
+</section>
+            </main>
+        </div>
+        <hr><footer>
+    <div class="terminal-mkdocs-footer-grid">
+        <div id="terminal-mkdocs-footer-copyright-info">
+             Site built with <a href="http://www.mkdocs.org">MkDocs</a> and <a href="https://github.com/ntno/mkdocs-terminal">Terminal for MkDocs</a>.
+        </div>
+    </div>
+</footer>
+    </div>
+
+    
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="alertdialog" aria-modal="true" aria-labelledby="searchModalLabel">
+    <div class="modal-dialog modal-lg" role="search">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchModalLabel">Search</h5>
+                <button type="button" class="close btn btn-default btn-ghost" data-dismiss="modal"><span aria-hidden="true">x</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p id="searchInputLabel">Type to start searching</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" aria-labelledby="searchInputLabel" placeholder="" id="mkdocs-search-query" title="Please enter search terms here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No document matches found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
+</body>
+
+</html>
