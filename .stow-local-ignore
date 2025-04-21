@@ -10,3 +10,5 @@ README.md
 \.config/gtk-3.0
 \.zshrc
 /\.emacs.d/eshell/history
+compose.yml
+Dockerfile

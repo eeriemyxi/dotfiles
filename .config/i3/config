@@ -19,7 +19,7 @@ exec --no-startup-id i3 workspace 1
 
 # Startup
 exec --no-startup-id fish /home/myxi/Documents/startup-scripts/setup-i3-layout.fish
-exec --no-startup-id fish /home/myxi/Documents/startup-scripts/middle
+exec --no-startup-id fish /home/myxi/Documents/startup-scripts/middle-button-scrolling.sh
 
 # Compositor
 exec --no-startup-id picom -b

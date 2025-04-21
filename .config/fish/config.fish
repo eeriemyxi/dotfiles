@@ -50,7 +50,7 @@ alias jctl="journalctl -p 3 -xb"
 alias mirror="sudo cachyos-rate-mirrors"
 alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl" # recent installed pkgs
 abbr rm "rm -i"
-abbr cdt "cd $(mktemp -d)"
+abbr cdt "cd \$(mktemp -d)"
 
 function history
     builtin history --show-time='%F %T '

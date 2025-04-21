@@ -66,6 +66,7 @@
         indent-for-tab-command
         kill-region
         mc/keyboard-quit
+        mouse-set-region
         pug-electric-backspace
         scroll-up-line
         set-mark-command
