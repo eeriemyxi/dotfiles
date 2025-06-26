@@ -1,14 +1,20 @@
-### Notes
-| Header              | Description                              |
-|---------------------|------------------------------------------|
-| **DE**              | Xfce4 DE with i3wm as its window manager |
-| **Shell**           | `zsh` (from Ubuntu Jammy repositories)   |
-| **Keyboard Layout** | Colemak                                  |
-| **Distribution**    | GNU/Linux Xubuntu 22.04                  |
-| **License**         | MIT                                      |
+### Basic Information
+| Header              | Description |
+|---------------------|-------------|
+| **WM**              | niri        |
+| **Bar**             | waybar      |
+| **Shell**           | fish        |
+| **Keyboard Layout** | colemak     |
+| **Distribution**    | CachyOS     |
+
+### Screenshots
+![](https://files.catbox.moe/myyare.png)
+![](https://files.catbox.moe/h429ze.png)
+![](https://files.catbox.moe/2aeb8t.png)
+![](https://files.catbox.moe/t0lid4.png)
 
 ### Wallpaper
-![](https://gruvbox-wallpapers.pages.dev/wallpapers/anime/wall.jpg)
+![](https://gruvbox-wallpapers.pages.dev/wallpapers/anime/anime_skull.png)
 I acquired it from [this](https://github.com/AngelJumbo/gruvbox-wallpapers)
 repository.
 
@@ -22,22 +28,24 @@ git clone --depth 1 --branch main --single-branch \
 cd ~/.dotfiles
 stow .
 ```
-You'll need to install GNU Stow on your system.
+You'll need to install GNU Stow on your system beforehand.
+
+> [!CAUTION] 
+> My dotfiles are for personal use. Do not complain if the
+> configuration files aren't working on your machine.
 
 ### [Documentation](https://myxi-dotfiles.pages.dev/)
 Visit [this site](https://myxi-dotfiles.pages.dev/) for some documentation on my
 setup. Do keep in mind that I made the documentation for myself; there will be
-notes there that would make no sense to other people. _But_ you'll likely want to
-read at least the Xfce section if you choose to install my dotfiles on your system.
+notes there that would make no sense to other people.
+
+> [!NOTE]
+> The documentation is quite old and unmaintained as of now.
 
 ### Rest of the Things
-- Browser: Mozilla Firefox
+- Browser: Zen Browser
 - New Tab: [nightTab](https://addons.mozilla.org/de/firefox/addon/nighttab/)
 - nightTab Configuration: [link](https://files.catbox.moe/v3qtpo.json)
 - Dark Reader Configuration: [link](https://files.catbox.moe/v7yvcf.json)
-- Vimium C Configuration: [link](https://files.catbox.moe/i21kmj.json)
-
-### Screenshots
-![Emacs](https://files.catbox.moe/xv5f1k.png "Emacs")
-![](https://i.imgur.com/ZZaCYsg.png) ![](https://i.imgur.com/rfG5SGD.png)
-![](https://files.catbox.moe/fkaub8.png) ![](https://i.imgur.com/MNqu3J8.png)
+- Vimium C Configuration: [link](https://files.catbox.moe/amfoel.json)
+- Discord CSS: [link](https://github.com/shvedes/discord-gruvbox)

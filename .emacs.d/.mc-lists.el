@@ -36,6 +36,7 @@
         right-word
         self-insert-command
         tab-to-tab-stop
+        transpose-words
         undefined
         upcase-word
         yaml-electric-dash-and-dot

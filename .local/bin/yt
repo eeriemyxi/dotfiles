@@ -1,0 +1,4 @@
+#!/bin/sh
+
+chromium https://youtube.com > /dev/null 2>&1 &
+echo "Opened YouTube"

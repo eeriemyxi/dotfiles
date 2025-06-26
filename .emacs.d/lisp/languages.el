@@ -34,5 +34,6 @@
 
 (require 'odin-mode)
 (require 'cmake-mode)
+(require 'kdl-ts-mode)
 
 (provide 'languages)

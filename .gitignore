@@ -13,4 +13,5 @@ archives/
 .emacs.d/tree-sitter/*.so
 .emacs.d/tree-sitter/*.dll
 .config/fish/fish_variables
-.config/fish/fishd.tmp.*
+boot
+reboot

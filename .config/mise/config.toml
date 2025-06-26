@@ -1,5 +1,5 @@
 [tools]
-"python" = "3.13"
+python = "3.11"
 "nodejs" = "23.0.0"
 "deno" = "2.1.1"
 "zig" = "0.13.0"
@@ -8,7 +8,11 @@
 "uv" = "latest"
 "pipx" = "latest"
 "ruff" = "latest"
-"npm:vmd" = "latest"
+# "npm:vmd" = "latest"
+# "npm:live-server" = "latest"
+# "npm:localtunnel" = "latest"
+# "npm:typescript-language-server" = "latest"
+# "npm:typescript" = "latest"
 "pipx:eeriemyxi/mechvibes-lite" = "latest"
 "pipx:eeriemyxi/doty" = "latest"
 "pipx:eeriemyxi/lismi" = "latest"
@@ -19,15 +23,13 @@
 "pipx:black" = "latest"
 "pipx:python-lsp-server" = "latest"
 "pipx:pyright" = "latest"
-"npm:live-server" = "latest"
-"npm:localtunnel" = "latest"
-"npm:typescript-language-server" = "latest"
 "pipx:mkdocs" = "latest"
 usage = "latest"
-"npm:typescript" = "latest"
+"npm:vmd" = "latest"
 
 [settings]
 experimental = true
+idiomatic_version_file_enable_tools = []
 
 [settings.npm]
 bun = true

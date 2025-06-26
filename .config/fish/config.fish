@@ -8,6 +8,7 @@ set -x MANROFFOPT "-c"
 set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
 
 set fish_greeting
+set QT_QPA_PLATFORMTHEME "qt5ct"
 
 # A lot of it is yoinked from: 
 # https://github.com/CachyOS/cachyos-fish-config/blob/main/cachyos-config.fish
@@ -51,6 +52,8 @@ alias mirror="sudo cachyos-rate-mirrors"
 alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl" # recent installed pkgs
 abbr rm "rm -i"
 abbr cdt "cd \$(mktemp -d)"
+abbr cvp "source .venv/bin/activate.fish"
+abbr windows "sudo efibootmgr -n 0 && reboot"
 
 function history
     builtin history --show-time='%F %T '

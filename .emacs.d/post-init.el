@@ -32,7 +32,8 @@
 
 (setq-default word-wrap t)
 (setq-default truncate-lines nil)
-(setq recentf-max-saved-items 200)
+(setq recentf-max-saved-items 5000)
+(setq recentf-auto-cleanup 'never)
 
 (add-hook 'python-ts-mode-hook 'apply-sane-indent)
 (add-hook 'lua-mode-hook 'apply-sane-indent)
@@ -204,6 +205,7 @@
   (dirvish-override-dired-mode))
 
 (use-package eglot
+  :after exec-path-from-shell
   :ensure t
   :bind (("M-' l l" . eglot)
          ("M-' l s" . eglot-shutdown)
@@ -224,16 +226,17 @@
   :config
   (fset #'jsonrpc--log-event #'ignore)
   (setq jsonrpc-event-hook nil)
-  (add-to-list 'eglot-server-programs
-               ;; pip install python-lsp-server[all]
-               `(python-ts-mode . ,(eglot-alternatives
-                                    '(("pylsp")))))
-  (setq-default eglot-workspace-configuration
-                `(:pylsp (:plugins
-                          (
-                           ;; pip install python-lsp-{isort,black}
-                           :isort (:enabled t)
-                           :black (:enabled t))))))
+  ;; (add-to-list 'eglot-server-programs
+  ;; pip install python-lsp-server[all]
+  ;; `(python-ts-mode . ,(eglot-alternatives
+  ;; '(("pyright")))))
+  ;; (setq-default eglot-workspace-configuration
+  ;;               `(:pylsp (:plugins
+  ;;                         (
+  ;;                          ;; pip install python-lsp-{isort,black}
+  ;;                          :isort (:enabled t)
+  ;; :black (:enabled t)))))
+  )
 
 (use-package aggressive-indent
   :ensure t
@@ -379,6 +382,7 @@
 ;; save history when focus out, save the buffer as well
 (add-hook 'focus-out-hook
           (lambda ()
+            (recentf-save-list)
             (save-some-buffers t)
             (when (and (buffer-file-name) undo-tree-mode)
               (undo-tree-save-history nil 'overwrite))))
