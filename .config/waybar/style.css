@@ -8,9 +8,11 @@
     padding: 0;
 }
 
+
 window#waybar {
     background: rgba(40, 40, 40, 0);
 }
+
 
 #clock,
 #tray,
@@ -34,6 +36,38 @@ window#waybar {
     padding: 2px 8px;
 }
 
+
+#cpu,
+#memory,
+#network,
+#pulseaudio,
+#custom-temp {
+    background-color: #ddc7a1;
+    border: 2px solid #c7ab7a;
+    color: #1d2021;
+}
+
+#cpu.critical,
+#memory.critical {
+    background-color: #ddc7a1;
+    border: 2px solid #c7ab7a;
+    color: #c14a4a;
+}
+
+
+#tray {
+    border: 2px solid #c7ab7a;
+    margin: 6px 6px 6px 6px;
+}
+
+
+#clock {
+    background-color: #458588;
+    border: 2px solid #076678;
+    color: #ddc7a1;
+}
+
+
 #workspaces {
     background-color: #ddc7a1;
     border: 2px solid #c7ab7a;
@@ -56,29 +90,3 @@ window#waybar {
     background-color: #e78a4e;
 }
 
-#tray {
-    border: 2px solid #c7ab7a;
-    margin: 6px 6px 6px 6px;
-}
-
-#clock {
-    background-color: #458588;
-    border: 2px solid #076678;
-    color: #ddc7a1;
-}
-#cpu,
-#memory,
-#network,
-#pulseaudio,
-#custom-temp {
-    background-color: #ddc7a1;
-    border: 2px solid #c7ab7a;
-    color: #1d2021;
-}
-
-#cpu.critical,
-#memory.critical {
-    background-color: #ddc7a1;
-    border: 2px solid #c7ab7a;
-    color: #c14a4a;
-}
