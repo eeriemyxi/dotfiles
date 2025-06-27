@@ -82,8 +82,16 @@ window#waybar {
     color: #1d2021;
 }
 
+@keyframes spread {
+    50% {
+        margin: 0 5px 0 5px;
+        text-shadow: 2px 2px 10px rgba(214, 93, 14, 0.8);
+    }
+}
+
 #workspaces button.focused {
     color: #d65d0e;
+    animation: spread .3s ease-out;
 }
 
 #workspaces button.urgent {
