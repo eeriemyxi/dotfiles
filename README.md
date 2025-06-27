@@ -49,3 +49,4 @@ notes there that would make no sense to other people.
 - Dark Reader Configuration: [link](https://files.catbox.moe/v7yvcf.json)
 - Vimium C Configuration: [link](https://files.catbox.moe/amfoel.json)
 - Discord CSS: [link](https://github.com/shvedes/discord-gruvbox)
+- Spicetify Theme: `text` by `darkthemer`, gruvbox colorscheme
