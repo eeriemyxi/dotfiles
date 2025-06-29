@@ -9,9 +9,23 @@
 
 ### Screenshots
 ![](https://files.catbox.moe/myyare.png)
+
+<center><p>App Launcher (fuzzel)</p></center>
+
 ![](https://files.catbox.moe/h429ze.png)
+
+<center><p>Spotify (with spicetify)</p></center>
+
 ![](https://files.catbox.moe/2aeb8t.png)
+
+<center><p>Emacs</p></center>
+
 ![](https://files.catbox.moe/t0lid4.png)
+
+<center><p>Notifications (swaync)</p></center>
+
+![](https://files.catbox.moe/jgfk4m.png)
+![](https://files.catbox.moe/edu8zc.png)
 
 ### Wallpaper
 ![](https://gruvbox-wallpapers.pages.dev/wallpapers/anime/anime_skull.png)
