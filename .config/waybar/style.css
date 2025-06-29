@@ -21,6 +21,7 @@ window#waybar {
 #network,
 #pulseaudio,
 #custom-temp,
+#custom-notification,
 #workspaces {
     box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
 }
@@ -31,7 +32,8 @@ window#waybar {
 #memory,
 #network,
 #pulseaudio,
-#custom-temp {
+#custom-temp,
+#custom-notification {
     margin: 6px 6px 6px 0px;
     padding: 2px 8px;
 }
@@ -41,7 +43,8 @@ window#waybar {
 #memory,
 #network,
 #pulseaudio,
-#custom-temp {
+#custom-temp,
+#custom-notification {
     background-color: #ddc7a1;
     border: 2px solid #c7ab7a;
     color: #1d2021;
@@ -57,7 +60,7 @@ window#waybar {
 
 #tray {
     border: 2px solid #c7ab7a;
-    margin: 6px 6px 6px 6px;
+    margin: 6px 6px 6px 0px;
 }
 
 
@@ -71,7 +74,7 @@ window#waybar {
 #workspaces {
     background-color: #ddc7a1;
     border: 2px solid #c7ab7a;
-    margin: 6px 0px 6px 6px;
+    margin: 6px 6px 6px 6px;
 }
 
 #workspaces button {
@@ -98,3 +101,9 @@ window#waybar {
     background-color: #e78a4e;
 }
 
+
+#custom-notification {
+    border: 2px solid #c7ab7a;
+    margin: 6px 6px 6px 0px;
+    padding-right: 10px;
+}

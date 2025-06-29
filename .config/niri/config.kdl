@@ -26,8 +26,6 @@ spawn-at-startup "lxqt-policykit-agent"
 spawn-at-startup "wl-paste" "--watch" "cliphist" "store"
 spawn-at-startup "swaybg" "-i" "/home/myxi/Pictures/Wallpapers/anime_skull.png"
 
-spawn-at-startup "niri" "msg" "action" "focus-workspace 1"
-
 // This config is in the KDL format: https://kdl.dev
 // "/-" comments out the following node.
 // Check the wiki for a full description of the configuration:
@@ -290,28 +288,30 @@ window-rule {
 }
 
 window-rule {
-  match app-id="Emacs"
-  match app-id="Code"
+  match app-id="jetbrains-.*"
   open-on-workspace "2"
   open-maximized true
 }
 
 window-rule {
-  match app-id="cachy-browser"
-  match app-id="zen"
+  match app-id="Emacs|Code"
+  open-on-workspace "2"
+  open-maximized true
+}
+
+window-rule {
+  match app-id="cachy-browser|zen"
   open-on-workspace "3"
   open-maximized true
 }
 
 window-rule {
-  match app-id="Chromium"
-  match app-id="chromium"
+  match app-id="(c|C)hromium"
   open-on-workspace "3"
 }
 
 window-rule {
-  match app-id="spotify"
-  match app-id="Spotify"
+  match app-id="(s|S)potify"
   open-maximized true
   open-on-workspace "4"
 }
