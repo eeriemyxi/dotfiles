@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="generator" content="mkdocs-1.5.3, mkdocs-terminal-4.7.0">
+    
+    <meta name="description" content="All the notes that I may need for my setup time to time."> 
+    
+    <meta name="author" content="myxi"> 
+    <link rel="icon" type="image/png" sizes="192x192" href="../img/android-chrome-192x192.png" />
+<link rel="icon" type="image/png" sizes="512x512" href="../img/android-chrome-512x512.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../img/apple-touch-icon.png" />
+<link rel="shortcut icon" type="image/png" sizes="48x48" href="../img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="../img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32x32.png" />
+
+
+    
+ 
+<title>Xfce 4 - Documentation</title>
+
+
+<link href="../css/fontawesome/css/fontawesome.min.css" rel="stylesheet">
+<link href="../css/fontawesome/css/solid.min.css" rel="stylesheet">
+<link href="../css/normalize.css" rel="stylesheet">
+<link href="../css/terminal.css" rel="stylesheet">
+<link href="../css/theme.css" rel="stylesheet">
+<link href="../css/theme.tile_grid.css" rel="stylesheet">
+<link href="../css/theme.footer.css" rel="stylesheet">
+<!-- gruvbox_dark color palette -->
+<link href="../css/palettes/gruvbox_dark.css" rel="stylesheet">
+
+<!-- page layout -->
+<style>
+/* initially set page layout to a one column grid */
+.terminal-mkdocs-main-grid {
+    display: grid;
+    grid-column-gap: 1.4em;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+}
+
+/*  
+*   when side navigation is not hidden, use a two column grid.  
+*   if the screen is too narrow, fall back to the initial one column grid layout.
+*   in this case the main content will be placed under the navigation panel. 
+*/
+@media only screen and (min-width: 70em) {
+    .terminal-mkdocs-main-grid {
+        grid-template-columns: 4fr 9fr;
+    }
+}</style>
+
+<!-- cursor_animation override -->
+<style>
+  #mkdocs-terminal-site-name.terminal-prompt::after {
+      display: none;
+  }
+</style>
+
+    
+    <link href="../css/extra.css" rel="stylesheet">  
+    
+    
+
+    
+    <!-- search css support -->
+<link href="../css/search/bootstrap-modal.css" rel="stylesheet">
+<!-- search scripts -->
+<script>
+    var base_url = "..",
+    shortcuts = "{}";
+</script>
+<script src="../js/jquery/jquery-1.10.1.min.js" defer></script>
+<script src="../js/bootstrap/bootstrap.min.js" defer></script>
+<script src="../js/mkdocs/base.js" defer></script>
+    
+    
+    
+    
+    <script src="../search/main.js"></script>
+    
+
+    
+</head>
+
+<body class="terminal"><div class="container">
+    <div class="terminal-nav">
+        <header class="terminal-logo">
+            <div id="mkdocs-terminal-site-name" class="logo terminal-prompt"><a href="/" class="no-style">Documentation</a></div>
+        </header>
+        
+        <nav class="terminal-menu">
+            
+            <ul vocab="https://schema.org/" typeof="BreadcrumbList">
+                
+                
+                <li property="itemListElement" typeof="ListItem">
+                    <a href=".." class="menu-item " property="item" typeof="WebPage">
+                        <span property="name">Home</span>
+                    </a>
+                    <meta property="position" content="0">
+                </li>
+                
+                
+                <li property="itemListElement" typeof="ListItem">
+                    <a href="../neovim/" class="menu-item " property="item" typeof="WebPage">
+                        <span property="name">Neovim</span>
+                    </a>
+                    <meta property="position" content="1">
+                </li>
+                
+                
+                <li property="itemListElement" typeof="ListItem">
+                    <a href="../kakoune/" class="menu-item " property="item" typeof="WebPage">
+                        <span property="name">Kakoune</span>
+                    </a>
+                    <meta property="position" content="2">
+                </li>
+                
+                
+                <li property="itemListElement" typeof="ListItem">
+                    <a href="../emacs/" class="menu-item " property="item" typeof="WebPage">
+                        <span property="name">Emacs</span>
+                    </a>
+                    <meta property="position" content="3">
+                </li>
+                
+                
+                <li property="itemListElement" typeof="ListItem">
+                    <a href="./" class="menu-item active" property="item" typeof="WebPage">
+                        <span property="name">Xfce 4</span>
+                    </a>
+                    <meta property="position" content="4">
+                </li>
+                
+                
+                <li property="itemListElement" typeof="ListItem">
+                    <a href="../linux/" class="menu-item " property="item" typeof="WebPage">
+                        <span property="name">Linux</span>
+                    </a>
+                    <meta property="position" content="5">
+                </li>
+                
+                    
+                    
+
+
+<li property="itemListElement" typeof="ListItem">
+    <a href="#" class="menu-item" data-toggle="modal" data-target="#mkdocs_search_modal" property="item" typeof="SearchAction">
+        <i aria-hidden="true" class="fa fa-search"></i> <span property="name">Search</span>
+    </a>
+    <meta property="position" content="6">
+</li>
+                    
+            </ul>
+            
+        </nav>
+    </div>
+</div>
+        
+    <div class="container">
+        <div class="terminal-mkdocs-main-grid"><aside id="terminal-mkdocs-side-panel"><nav>
+  
+    <ul class="terminal-mkdocs-side-nav-items">
+        
+          
+
+
+
+<li class="terminal-mkdocs-side-nav-li">
+    
+    
+    
+        
+        
+            <a class="
+
+    terminal-mkdocs-side-nav-item" href="..">Home</a>
+        
+    
+    
+    
+  </li>
+        
+          
+
+
+
+<li class="terminal-mkdocs-side-nav-li">
+    
+    
+    
+        
+        
+            <a class="
+
+    terminal-mkdocs-side-nav-item" href="../neovim/">Neovim</a>
+        
+    
+    
+    
+  </li>
+        
+          
+
+
+
+<li class="terminal-mkdocs-side-nav-li">
+    
+    
+    
+        
+        
+            <a class="
+
+    terminal-mkdocs-side-nav-item" href="../kakoune/">Kakoune</a>
+        
+    
+    
+    
+  </li>
+        
+          
+
+
+
+<li class="terminal-mkdocs-side-nav-li">
+    
+    
+    
+        
+        
+            <a class="
+
+    terminal-mkdocs-side-nav-item" href="../emacs/">Emacs</a>
+        
+    
+    
+    
+  </li>
+        
+          
+
+
+
+<li class="terminal-mkdocs-side-nav-li">
+    
+    
+    
+        
+        <span class="
+
+    terminal-mkdocs-side-nav-item--active">Xfce 4</span>
+    
+    
+    
+  </li>
+        
+          
+
+
+
+<li class="terminal-mkdocs-side-nav-li">
+    
+    
+    
+        
+        
+            <a class="
+
+    terminal-mkdocs-side-nav-item" href="../linux/">Linux</a>
+        
+    
+    
+    
+  </li>
+        
+    </ul>
+  
+</nav><hr>
+<nav>
+    <ul>
+        <li><a href="#theme-not-applying-everywhere">Theme Not Applying Everywhere</a></li>
+        <li><a href="#theme-not-applying-on-login-screen">Theme Not Applying on Login Screen</a></li>
+        <li><a href="#resolving-issues-with-file-permissions">Resolving Issues with File Permissions</a></li><li><a href="#sticky-keys">Sticky Keys</a></li>
+        <li><a href="#using-gtk-theme-for-qt-apps">Using GTK Theme for Qt Apps</a></li>
+        <li><a href="#log-out-menu-not-following-gtk-theme-under-i3-wm">Log out Menu Not Following GTK Theme Under i3 WM</a></li>
+        <li><a href="#exit-tty">Exit TTY</a></li>
+        <li><a href="#flameshot-not-copying-to-clipboard">Flameshot Not Copying to Clipboard</a></li>
+        <li><a href="#bluetooth-icon-missing">Bluetooth Icon Missing</a></li>
+        <li><a href="#some-menus-have-black-borders-on-i3">Some Menus Have Black Borders on i3</a></li>
+        
+    </ul>
+</nav>
+</aside>
+            <main id="terminal-mkdocs-main-content">
+    
+    
+    
+    
+    
+
+<section id="mkdocs-terminal-content">
+    <h2 id="theme-not-applying-everywhere">Theme Not Applying Everywhere</h2>
+<p>There are two steps involved, you likely did only the first step.</p>
+<ul>
+<li>Select the theme on the <em>Appearance</em> settings.</li>
+<li>Select the theme on the <em>Window Manager</em> settings.</li>
+</ul>
+<p><strong>TIP</strong>: Do not forget to set the icons too from the <em>Apperance</em> settings.</p>
+<h2 id="theme-not-applying-on-login-screen">Theme Not Applying on Login Screen</h2>
+<p>See <a href="https://askubuntu.com/a/1505899">this</a> answer on Stack Exchange.</p>
+<h3 id="resolving-issues-with-file-permissions">Resolving Issues with File Permissions</h3>
+<p>You are likely to have issues with file permissions somewhere in the process. I
+resolve them by manually copying the relevant files to these locations:</p>
+<ul>
+<li><code>/usr/share/themes</code></li>
+<li><code>/usr/share/icons</code></li>
+<li><code>/usr/share/wallpapers</code></li>
+<li><code>/usr/share/lightdm/avatars</code></li>
+</ul>
+<p><strong>NOTE</strong>: The last directory does not exist by default so you will have to
+manually make it.</p>
+<p><strong>EXAMPLE</strong>: <code>sudo cp ~/.themes/gruvbox-theme/ /usr/share/themes/gruvbox-theme/ -r</code></p>
+<h2 id="sticky-keys">Sticky Keys</h2>
+<p>You might get nagging notifications about Stick Keys getting enabled. This is
+how I resolve them:</p>
+<ul>
+<li>Open <em>Accessibility</em> settings then turn on Stick Keys manually, then turn it
+  off.</li>
+<li>Uncheck <code>xfce4-settings-helper</code> from <em>Notifications</em> settings' <em>Applications</em>
+  section.</li>
+</ul>
+<h2 id="using-gtk-theme-for-qt-apps">Using GTK Theme for Qt Apps</h2>
+<p><strong>SELF NOTE</strong>: Don't. Not worth it since there are quirks here and there.</p>
+<ul>
+<li>Install the dependencies:
+    <code>bash
+    sudo apt install qt5ct qt5ct-style-plugins</code></li>
+<li>Setup your <code>.profile</code> (<code>.zprofile</code> if using Zsh):
+    <code>bash
+    export QT_QPA_PLATFORMTHEME=qt5ct</code></li>
+<li>Log out and log back.</li>
+<li>Open <code>qt5ct</code> then select <code>gtk2</code> theme with default colorscheme.</li>
+<li>Apply.</li>
+</ul>
+<h2 id="log-out-menu-not-following-gtk-theme-under-i3-wm">Log out Menu Not Following GTK Theme Under i3 WM</h2>
+<p>I don't know what exactly the cause is but the fix is tweaking your session
+startup apps.</p>
+<p><img alt="" src="https://files.catbox.moe/fwkp7h.png" /></p>
+<p>Configure your startup session as shown and then login. It should work.</p>
+<p><strong>NOTE</strong>: You might also need to switch to "Xfce" from "Xubuntu" in the login
+manager before doing this.</p>
+<h2 id="exit-tty">Exit TTY</h2>
+<p>Press <code>CTRL + ALT + F7</code>.</p>
+<h2 id="flameshot-not-copying-to-clipboard">Flameshot Not Copying to Clipboard</h2>
+<p>See <a href="https://github.com/flameshot-org/flameshot/discussions/3131">this issue</a>
+for more information.</p>
+<p>The fix is to make sure a flameshot daemon is running whenever you take a
+screenshot. To run a daemon you can simply execute <code>flameshot</code>. You can, for
+example, put it in the startup list in the <em>Session and Startup</em> settings.</p>
+<h2 id="bluetooth-icon-missing">Bluetooth Icon Missing</h2>
+<pre><code class="language-bash">sudo apt install bluetooth blueman
+</code></pre>
+<p>Set <code>blueman-applet</code> in the startup list.</p>
+<h2 id="some-menus-have-black-borders-on-i3">Some Menus Have Black Borders on i3</h2>
+<p>Append <code>~/.config/gtk-3.0/gtk.css</code> with:</p>
+<pre><code class="language-css">menu,
+.csd .menu,
+.csd .dropdown,
+.csd .context-menu {
+    border-radius: 1px;
+}
+</code></pre>
+<p>This will remove round edges from those menus to resolve the issue. This is more
+of a workaround from that view.</p>
+</section>
+
+<section id="mkdocs-terminal-after-content">
+    
+</section>
+<section id="mkdocs-terminal-revision">
+<br>
+<aside>
+    <p>
+        <small>
+            <i>Page last updated 2025-04-11. </i>
+        </small>
+    </p>
+</aside>
+</section>
+            </main>
+        </div>
+        <hr><footer>
+    <div class="terminal-mkdocs-footer-grid">
+        <div id="terminal-mkdocs-footer-copyright-info">
+             Site built with <a href="http://www.mkdocs.org">MkDocs</a> and <a href="https://github.com/ntno/mkdocs-terminal">Terminal for MkDocs</a>.
+        </div>
+    </div>
+</footer>
+    </div>
+
+    
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="alertdialog" aria-modal="true" aria-labelledby="searchModalLabel">
+    <div class="modal-dialog modal-lg" role="search">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchModalLabel">Search</h5>
+                <button type="button" class="close btn btn-default btn-ghost" data-dismiss="modal"><span aria-hidden="true">x</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p id="searchInputLabel">Type to start searching</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" aria-labelledby="searchInputLabel" placeholder="" id="mkdocs-search-query" title="Please enter search terms here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No document matches found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
+</body>
+
+</html>
