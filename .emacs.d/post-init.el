@@ -1,6 +1,7 @@
 ;;; post-init.el --- [core init file] -*- no-byte-compile: t; lexical-binding: t; -*-
 
 (setq show-trailing-whitespace t)
+(setq confirm-kill-processes nil)
 (setq tramp-default-method "ssh")
 (setq display-line-numbers-type 'relative)
 (setq default-frame-alist '((font . "Maple Mono NF 13")))

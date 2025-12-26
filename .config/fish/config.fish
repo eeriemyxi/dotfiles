@@ -18,8 +18,6 @@ alias nvide "neovide"
 alias lg "lazygit"
 alias trsh "gio trash"
 alias amyxi "distrobox enter amyxi"
-alias ain "sudo apt install"
-alias aun "sudo apt remove"
 alias lls='eza -al --color=always --group-directories-first --icons' # preferred listing
 alias la='eza -a --color=always --group-directories-first --icons'  # all files and dirs
 alias ll='eza -l --color=always --group-directories-first --icons'  # long format
@@ -104,6 +102,61 @@ function c
                         -showwpm
             end
     end
+end
+
+function copy-files
+    if test (count $argv) -eq 0
+        echo "Usage: copy-files file1 [file2 ...]"
+        return 1
+    end
+
+    set uris
+    for f in $argv
+        if test -e $f
+            set abs (realpath $f)
+            set uris $uris file://$abs
+        else
+            echo "Warning: file not found: $f" >&2
+        end
+    end
+
+    printf "%s\n" $uris | wl-copy --type text/uri-list
+end
+
+function compressed
+    if test (count $argv) -eq 0
+        echo "Usage: compressed <file>"
+        return 1
+    end
+
+    echo "Compressing" .. $argv
+
+    if not test -e $argv
+        echo "Error: file not found: $argv" >&2
+        return
+    end
+    
+    set output_dir $(mktemp -d)
+    set output_filename $(tr -dc A-Za-z0-9 </dev/urandom | head -c 13; echo)
+    set output_extension (path extension $argv)
+    set output_path "$output_dir/$output_filename$output_extension"
+    
+    ffmpeg -i $argv -c:v libx264 -preset slower -crf 26 -c:a aac -b:a 96k -movflags +faststart $output_path
+    
+    echo Exported to $output_path
+
+    copy-files $output_path
+
+    echo Copied $output_path to clipboard
+end
+
+function gcl --description "Quick shallow git clone"
+    if test (count $argv) -eq 0
+        echo "Usage: gcl <repo-url> [directory]"
+        return 1
+    end
+
+    git clone --depth 1 --single-branch --recurse-submodules --shallow-submodules $argv
 end
 
 # https://github.com/rexim/tore

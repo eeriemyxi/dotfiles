@@ -14,11 +14,10 @@ core = vapoursynth.core
 # ref: http://avisynth.org.ru/mvtools/mvtools2.html#functions
 # default is 400, less means interpolation will only happen when it will work well
 ignore_threshold=140
-# ignore_threshold=80
 # ignore_threshold=400
 # if n% of blocks change more than threshold then don't interpolate at all (default is 51%)
-# scene_change_percentage=15
-scene_change_percentage=51
+scene_change_percentage=15
+# scene_change_percentage=51
 
 # dst_fps = display_fps
 dst_fps = min(60, display_fps)
@@ -69,7 +68,7 @@ print("Reflowing from {} fps to {} fps (quality={})".format(clip.fps_num/clip.fp
 sup  = core.mv.Super(clip, pel=2)
 bvec = core.mv.Analyse(sup, isb=True, **analParams)
 fvec = core.mv.Analyse(sup, isb=False, **analParams)
-clip = core.mv.BlockFPS(clip, sup, bvec, fvec, 
+clip = core.mv.FlowFPS(clip, sup, bvec, fvec, 
         num=dst_fps_num, den=dst_fps_den, 
         **blockParams)
 

@@ -5,9 +5,6 @@ export SUDO_EDITOR="nvim"
 export XDG_CONFIG_HOME="$HOME/.config/"
 export TERM="xterm-256color"
 
-export PATH=$HOME/.local/bin:$PATH
-export PATH=/var/lib/flatpak/exports/bin:$PATH
-
 # https://mise.jdx.dev/installing-mise.html
 # export PATH=$HOME/.local/share/mise/shims:$PATH
 
@@ -29,10 +26,12 @@ export NNN_PLUG='f:fzplug;n:kak_open'
 export PATH=$HOME/.distrobox/bin:$PATH
 
 # Android
-export ANDROID_HOME=$HOME/.android-sdk/Sdk
+export ANDROID_HOME=$HOME/.android/sdk
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 export GRADLE_USER_HOME=$HOME/.config/gradle
-export PATH=$HOME/Documents/tools/gradle-8.2.1/bin:$PATH
-export PATH=$HOME/Documents/tools/android-studio/bin:$PATH
 export PATH=$PATH:$ANDROID_HOME/ndk/28.0.12674087/toolchains/llvm/prebuilt/linux-x86_64/bin
 export PATH=$PATH:$HOME/Documents/tools/kotlin-language-server/server/build/install/server/bin
+
+export PATH=$HOME/.local/bin:$PATH
+export PATH=/var/lib/flatpak/exports/bin:$PATH
+

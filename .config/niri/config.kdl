@@ -17,14 +17,18 @@ cursor {
   hide-after-inactive-ms 5000
 }
 
-// spawn-at-startup "wezterm"
-
-spawn-at-startup "zen-browser"
-spawn-at-startup "xwayland-satellite"
+spawn-at-startup "easyeffects" "--gapplication-service"
+spawn-at-startup "swaybg" "-i" "/home/myxi/Pictures/Wallpapers/anime_skull.png"
 spawn-at-startup "waybar"
+spawn-at-startup "vivaldi-stable"
+spawn-at-startup "xwayland-satellite"
 spawn-at-startup "lxqt-policykit-agent"
 spawn-at-startup "wl-paste" "--watch" "cliphist" "store"
-spawn-at-startup "swaybg" "-i" "/home/myxi/Pictures/Wallpapers/anime_skull.png"
+spawn-at-startup "spotify"
+
+spawn-at-startup "sh" "-c" "sleep 5 && pw-play '/home/myxi/Music/Windows 11 startup sound.wav'"
+
+spawn-at-startup "niri" "msg" "action" "focus-workspace" "1"
 
 // This config is in the KDL format: https://kdl.dev
 // "/-" comments out the following node.
@@ -43,6 +47,7 @@ input {
             // For example:
             // layout "us,ru"
             // options "grp:win_space_toggle,compose:ralt,ctrl:nocaps"
+            options "compose:ins"
         }
         repeat-rate 50
         repeat-delay 150
@@ -270,7 +275,7 @@ animations {
     // Uncomment to turn off all animations.
     // off
 
-    // Slow down all animations by this factor. Values below 1 speed them up instead.
+    // Slow down all animations by this factor. Values below 1 speed them up instead
     // slowdown 3.0
 }
 
@@ -294,20 +299,16 @@ window-rule {
 }
 
 window-rule {
-  match app-id="Emacs|Code"
+  match app-id="Emacs|Code|code"
   open-on-workspace "2"
   open-maximized true
 }
 
 window-rule {
-  match app-id="cachy-browser|zen"
+  match app-id="cachy-browser|zen|vivaldi-stable|chromium"
   open-on-workspace "3"
   open-maximized true
-}
-
-window-rule {
-  match app-id="(c|C)hromium"
-  open-on-workspace "3"
+  open-focused false
 }
 
 window-rule {
@@ -317,8 +318,20 @@ window-rule {
 }
 
 window-rule {
-    match app-id=r#"firefox|cachy"# title="^Picture-in-Picture$"
+    match app-id=r#"firefox|cachy|vivaldi"# title="^Picture-in-Picture$"
     open-floating true
+}
+
+layer-rule {
+  match namespace="stats"
+
+  shadow {
+    on
+    offset x=0 y=0
+    spread 1
+    softness 10
+    color "#00000090"
+ }
 }
 
 // Example: block out two password managers from screen capture.
@@ -364,9 +377,9 @@ binds {
     // The allow-when-locked=true property makes them work even when the session is locked.
 
     // Volume up with bound check for 100%.
-    XF86AudioRaiseVolume allow-when-locked=true { spawn "sh" "-c" "v=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $2}'); if [ -n \"$v\" ] && [ \"$(echo \"$v < 1.0\" | bc -l)\" -eq 1 ]; then wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+; fi"; }
+  XF86AudioRaiseVolume allow-when-locked=true { spawn "sh" "-c" "v=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $2}'); if [ -n \"$v\" ]; then if [ \"$(echo \"$v > 1.0\" | bc -l)\" -eq 1 ]; then wpctl set-volume @DEFAULT_AUDIO_SINK@ 1.0; elif [ \"$(echo \"$v < 1.0\" | bc -l)\" -eq 1 ]; then wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05+; fi; fi"; }
 
-    XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.05-"; }
     XF86AudioMute        allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
     XF86AudioMicMute     allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
 
@@ -576,6 +589,7 @@ binds {
     Shift+Print { screenshot; }
     Ctrl+Print { screenshot-screen; }
     Alt+Print { screenshot-window; }
+    // Mod+Shift+U { spawn "sh" "-c" "flameshot gui -r | tesseract stdin stdout -l eng | yad --text-info --width=600 --height=400 --title='OCR Result'"; }
 
     // Applications such as remote-desktop clients and software KVM switches may
     // request that niri stops processing the keyboard shortcuts defined here

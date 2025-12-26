@@ -14,6 +14,7 @@
         counsel-M-x
         counsel-buffer-or-recentf
         counsel-yank-pop
+        default-indent-new-line
         delete-backward-char
         downcase-word
         electric-newline-and-maybe-indent
@@ -26,15 +27,19 @@
         kill-ring-save
         left-char
         markdown-cycle
+        markdown-end-of-line
         markdown-outdent-or-delete
+        move-beginning-of-line
         move-end-of-line
         my/backward-delete-word
         next-line
+        open-line
         previous-line
         python-indent-dedent-line-backspace
         right-char
         right-word
         self-insert-command
+        swiper
         tab-to-tab-stop
         transpose-words
         undefined
@@ -48,6 +53,7 @@
         beginning-of-buffer
         boon-open-line-and-insert
         dired-jump
+        goto-line
         hydra-multiple-cursors/ignore
         hydra-multiple-cursors/ignore
         hydra-multiple-cursors/mc/add-cursor-on-click
