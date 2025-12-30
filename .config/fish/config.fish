@@ -52,6 +52,7 @@ abbr rm "rm -i"
 abbr cdt "cd \$(mktemp -d)"
 abbr cvp "source .venv/bin/activate.fish"
 abbr windows "sudo efibootmgr -n 0 && reboot"
+abbr gcl "git clone --depth 1 --single-branch --recurse-submodules --shallow-submodules"
 
 function history
     builtin history --show-time='%F %T '
@@ -148,15 +149,6 @@ function compressed
     copy-files $output_path
 
     echo Copied $output_path to clipboard
-end
-
-function gcl --description "Quick shallow git clone"
-    if test (count $argv) -eq 0
-        echo "Usage: gcl <repo-url> [directory]"
-        return 1
-    end
-
-    git clone --depth 1 --single-branch --recurse-submodules --shallow-submodules $argv
 end
 
 # https://github.com/rexim/tore

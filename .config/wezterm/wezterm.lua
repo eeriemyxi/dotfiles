@@ -11,6 +11,22 @@ config.default_cursor_style = "SteadyBar"
 config.default_prog = { '/usr/bin/fish', '-l' }
 config.enable_wayland = true -- doesn't work on hyprland when true
 
+config.cursor_trail = {
+   enabled = false,
+   -- dwell_threshold controls the amount of time the cursor must sit still
+   -- to draw a trail.
+   dwell_threshold = 1,
+   -- distance_threshold defines the radius in cells the cursor must jump before
+   -- a trail is drawn.
+   distance_threshold = 6,
+   -- duration is the animation time in milliseconds for leading edges of the trail to reach the cursor
+   duration = 300,
+   -- spread is a multiplier for duration applied to the trailing edges of the quad used to render the trail. This increases the apparent smear.
+   spread = 2,
+   opacity = 0.6,
+}
+config.animation_fps = 60
+
 config.key_tables = {
    copy_mode = {
       { key = 'Tab', mods = 'NONE', action = act.CopyMode 'MoveForwardWord' },

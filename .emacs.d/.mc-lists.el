@@ -74,6 +74,8 @@
         kill-region
         mc/keyboard-quit
         mouse-set-region
+        my/consult-tscout
+        my/tscout
         pug-electric-backspace
         scroll-up-line
         set-mark-command

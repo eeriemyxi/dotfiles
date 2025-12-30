@@ -35,3 +35,6 @@ export PATH=$PATH:$HOME/Documents/tools/kotlin-language-server/server/build/inst
 export PATH=$HOME/.local/bin:$PATH
 export PATH=/var/lib/flatpak/exports/bin:$PATH
 
+# Wine
+export WINEPREFIX=$HOME/.wineprefixes/dev
+export WINEARCH=win64

@@ -12,6 +12,7 @@
 (global-display-line-numbers-mode)
 (global-auto-revert-mode t)
 (auto-save-visited-mode)
+(column-number-mode 1)
 
 ;; INFO: theme
 (use-package gruvbox-theme :ensure t :config (load-theme 'gruvbox-dark-medium t))
@@ -106,6 +107,11 @@
 
 (use-package ag :ensure t)
 
+(use-package consult
+  :ensure t
+  :bind (("M-' n n" . counsel-switch-buffer))
+  :after ivy)
+
 (use-package ligature
   :config
   (ligature-set-ligatures 't '("www"))
@@ -123,6 +129,15 @@
                                                        "[WARN]" "[ERROR]" "[FATAL]" "[TODO]" "todo))" "[FIXME]" "fixme))"
                                                        "########" "<!---->" "\\\\"))
   (global-ligature-mode t))
+
+(use-package ultra-scroll
+  :init
+  (setq pixel-scroll-precision-interpolate-page t
+        pixel-scroll-precision-interpolate-mice t
+        scroll-conservatively 3 ; or whatever value you prefer, since v0.4
+        scroll-margin 0)        ; important: scroll-margin>0 not yet supported
+  :config
+  (ultra-scroll-mode 1))
 
 (use-package undo-tree
   :ensure t
@@ -336,7 +351,7 @@
   :bind (:map ivy-mode-map ("<escape>" . 'minibuffer-keyboard-quit))
   :bind (("M-' n a" . counsel-grep-or-swiper)
          ("M-' n i" . counsel-file-jump)
-         ("M-' n n" . counsel-bookmark)
+         ;; ("M-' n n" . counsel-bookmark)
          ("M-' n f" . counsel-buffer-or-recentf))
   :bind (("C-x C-f" . counsel-find-file)
          ("M-y"     . counsel-yank-pop)
@@ -407,7 +422,6 @@
 
 (define-key global-map (kbd "M-' q") #'quit-window)
 (define-key global-map (kbd "M-' M-f") #'delete-indentation)
-(define-key global-map (kbd "M-' s") #'boon-enclose)
 (define-key global-map (kbd "M-' TAB") #'mode-line-other-buffer)
 (define-key global-map (kbd "M-' f") #'dired-jump)
 (define-key global-map (kbd "M-' Q") #'kill-emacs)
@@ -446,3 +460,46 @@
 (define-key global-map (kbd "M-' h T") #'hydra-todo/body)
 (define-key global-map (kbd "M-' h z") #'hydra-zoom/body)
 (define-key global-map (kbd "M-' h h") #'hydra-multiple-cursors/body)
+
+(defun my/tscout--jump (cand)
+  (when (string-match
+         "^\\([^:]+\\):\\([0-9]+\\):\\([0-9]+\\):"
+         cand)
+    (let ((file (match-string 1 cand))
+          (line (string-to-number (match-string 2 cand)))
+          (col  (string-to-number (match-string 3 cand))))
+      (find-file file)
+      (goto-char (point-min))
+      (forward-line (1- line))
+      (move-to-column (- col 1)))))
+
+(defun my/tscout (&optional dir)
+  (interactive)
+  (let* ((default-directory
+          (or dir
+              ;; Projectile (preferred)
+              (when (fboundp 'projectile-project-root)
+                (ignore-errors (projectile-project-root)))
+              ;; project.el fallback
+              (and (fboundp 'project-current)
+                   (when-let ((proj (project-current)))
+                     (project-root proj)))
+              default-directory))
+         (candidates
+          (process-lines "tscout" "." "-d:-1")))
+    (unless candidates
+      (user-error "No tscout results found"))
+    (my/tscout--jump
+     (if (fboundp 'consult--read)
+         (consult--read
+          candidates
+          :prompt "tscout: ")
+       (completing-read
+        "tscout: "
+        candidates
+        nil
+        t)))))
+
+(define-key boon-command-map (kbd "C-s") #'my/tscout)
+(define-key global-map (kbd "M-' s") #'my/tscout)
+(define-key global-map (kbd "M-' n s") #'boon-enclose)

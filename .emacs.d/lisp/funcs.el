@@ -1,3 +1,10 @@
+(require 'subr-x)      ;; when-let
+(require 'project)    ;; project-current / project-root
+
+;; Optional, but safe
+(require 'consult nil t)
+(require 'projectile nil t)
+
 (defun my-save-if-bufferfilename ()
   (when (buffer-file-name)
     (save-some-buffers t)))
@@ -95,5 +102,6 @@
   (move-beginning-of-line nil)
   (newline-and-indent)
   (indent-according-to-mode))
+
 
 (provide 'funcs)
