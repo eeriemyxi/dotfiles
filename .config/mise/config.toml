@@ -28,6 +28,9 @@ usage = "latest"
 "npm:vmd" = "latest"
 kotlin = "latest"
 "npm:localtunnel" = "latest"
+"npm:typescript-language-server" = "latest"
+"npm:vercel" = "latest"
+"npm:typescript" = "latest"
 
 [settings]
 experimental = true

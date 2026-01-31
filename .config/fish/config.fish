@@ -75,6 +75,13 @@ function c
     end
 
     switch $argv[1]
+        case o
+            switch $argv[2]
+                case cl
+                    compressed $(cd ~/Videos/OBS && ls -t | head -n 1)
+                case l
+                    copy-files $(cd ~/Videos/OBS && ls -t | head -n 1)
+            end
         case f
             switch $argv[2]
                 case r
@@ -149,6 +156,37 @@ function compressed
     copy-files $output_path
 
     echo Copied $output_path to clipboard
+end
+
+function add-lc -a link
+    cd ~/Documents/coding/cp/leetcode/
+
+    if test -z "$link"
+        echo "ERROR: Link not provided."
+        echo "USAGE: add-lc <link>"
+        cd -
+        return 1
+    end
+
+    if not test -e "./gen"
+        echo "ERROR: ./gen executable doesn't exist."
+        cd -1
+        return 1
+    end
+    
+    set --local paste (wl-paste | string collect)
+
+    if not printf "%s" "$paste" | grep -qe "Solution"
+        echo "ERROR: 'Solution' not found in the clipboard data:"
+        printf "%s" "$paste"
+        cd -
+        return 1
+    end
+
+    printf "%s" "$paste" | ./gen -i $link
+    git add .
+
+    cd -
 end
 
 # https://github.com/rexim/tore

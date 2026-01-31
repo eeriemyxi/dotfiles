@@ -38,3 +38,5 @@ export PATH=/var/lib/flatpak/exports/bin:$PATH
 # Wine
 export WINEPREFIX=$HOME/.wineprefixes/dev
 export WINEARCH=win64
+
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"

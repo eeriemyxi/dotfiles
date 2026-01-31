@@ -9,7 +9,7 @@
       `(("." . ,(expand-file-name ".backups/" user-emacs-directory))))
 (setq auto-save-list-file-prefix (expand-file-name ".auto-saves/" user-emacs-directory))
 (setq auto-save-file-name-transforms `(("\\`.*\\'" ,(expand-file-name ".auto-saves/" user-emacs-directory))))
-(global-display-line-numbers-mode)
+
 (global-auto-revert-mode t)
 (auto-save-visited-mode)
 (column-number-mode 1)
@@ -241,18 +241,12 @@
   (eglot-report-progress nil)
   :config
   (fset #'jsonrpc--log-event #'ignore)
-  (setq jsonrpc-event-hook nil)
-  ;; (add-to-list 'eglot-server-programs
-  ;; pip install python-lsp-server[all]
-  ;; `(python-ts-mode . ,(eglot-alternatives
-  ;; '(("pyright")))))
-  ;; (setq-default eglot-workspace-configuration
-  ;;               `(:pylsp (:plugins
-  ;;                         (
-  ;;                          ;; pip install python-lsp-{isort,black}
-  ;;                          :isort (:enabled t)
-  ;; :black (:enabled t)))))
-  )
+  (defun my/project-try-npm (dir)
+    (when-let ((root (locate-dominating-file dir "package.json")))
+      (cons 'transient root)))
+
+  ;; Add to the START of the list so it takes precedence over the default Git detection
+  (add-hook 'project-find-functions #'my/project-try-npm nil nil))
 
 (use-package aggressive-indent
   :ensure t
@@ -413,6 +407,14 @@
 (add-to-list 'pulsar-pulse-functions #'avy-goto-char-timer)
 (add-to-list 'pulsar-pulse-functions #'avy-goto-char-2)
 
+(defun switch-to-last-file-buffer ()
+  (interactive)
+  (let ((buf (current-buffer))
+        (bufs (seq-filter #'buffer-file-name (buffer-list))))
+    (if (not (buffer-file-name (or (buffer-base-buffer buf) buf)))
+        (switch-to-buffer (car bufs))
+      (switch-to-buffer (cadr bufs)))))
+
 ;; INFO: keymaps
 (define-key boon-command-map (kbd "g,") 'insert-line-above)
 (define-key boon-x-map (kbd "x") 'counsel-M-x)
@@ -422,7 +424,7 @@
 
 (define-key global-map (kbd "M-' q") #'quit-window)
 (define-key global-map (kbd "M-' M-f") #'delete-indentation)
-(define-key global-map (kbd "M-' TAB") #'mode-line-other-buffer)
+(define-key global-map (kbd "M-' TAB") 'switch-to-last-file-buffer)
 (define-key global-map (kbd "M-' f") #'dired-jump)
 (define-key global-map (kbd "M-' Q") #'kill-emacs)
 (define-key global-map (kbd "M-' y") (lambda () (interactive)
@@ -486,7 +488,7 @@
                      (project-root proj)))
               default-directory))
          (candidates
-          (process-lines "tscout" "." "-d:-1")))
+          (process-lines "tscout" "." "-d:5")))
     (unless candidates
       (user-error "No tscout results found"))
     (my/tscout--jump
@@ -498,8 +500,8 @@
         "tscout: "
         candidates
         nil
-        t)))))
-
+        t))))
+  )
 (define-key boon-command-map (kbd "C-s") #'my/tscout)
 (define-key global-map (kbd "M-' s") #'my/tscout)
 (define-key global-map (kbd "M-' n s") #'boon-enclose)

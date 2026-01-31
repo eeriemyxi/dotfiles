@@ -20,6 +20,7 @@
         electric-newline-and-maybe-indent
         forward-char
         forward-paragraph
+        forward-sentence
         hydra-multiple-cursors/body
         insert-register
         ivy-done
@@ -41,6 +42,7 @@
         self-insert-command
         swiper
         tab-to-tab-stop
+        transpose-chars
         transpose-words
         undefined
         upcase-word
@@ -73,11 +75,13 @@
         indent-for-tab-command
         kill-region
         mc/keyboard-quit
+        mode-line-other-buffer
         mouse-set-region
         my/consult-tscout
         my/tscout
         pug-electric-backspace
         scroll-up-line
         set-mark-command
+        switch-to-last-file-buffer
         undo-redo
         ))

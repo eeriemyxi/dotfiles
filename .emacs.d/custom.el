@@ -9,9 +9,9 @@
         exec-path-from-shell fish-mode flx gnu-elpa-keyring-update goto-chg
         gruvbox-theme haskell-mode hl-todo hydra ivy-prescient kotlin-mode
         ligature lua-mode magit markdown-mode meow-tree-sitter nim-mode nix-mode
-        projectile pug-mode pulsar rainbow-delimiters shift-number simpleclip
-        snap-indent titlecase treesit-auto ultra-scroll undo-tree which-key
-        xonsh-mode xterm-color yaml-mode zig-mode zoom)))
+        projectile pug-mode pulsar rainbow-delimiters rustic shift-number
+        simpleclip snap-indent titlecase treesit-auto ultra-scroll undo-tree
+        which-key xonsh-mode xterm-color yaml-mode zig-mode zoom)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
