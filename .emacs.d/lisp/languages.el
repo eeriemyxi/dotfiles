@@ -26,6 +26,11 @@
 (use-package nix-mode
   :ensure t)
 
+(use-package caddyfile-mode
+  :ensure t
+  :mode (("Caddyfile\\'" . caddyfile-mode)
+         ("caddy\\.conf\\'" . caddyfile-mode)))
+
 (use-package rustic
   :ensure t
   :bind (:map rustic-mode-map
@@ -34,7 +39,34 @@
               ("C-c C-c C-t" . rustic-cargo-test)
               ("C-c C-c C-c" . rustic-compile))   ; or whatever keys you like
   :config
-  (setq rustic-compile-command "cargo build --message-format=json-diagnostic-short"))
+  (setq rustic-compile-command "cargo build --message-format=json-diagnostic-short")
+  :custom
+  ;; Automatically format with rustfmt on save (optional, but highly recommended)
+  (rust-format-on-save t))
+
+(use-package web-mode
+  :ensure t
+  :mode ("\\.tsx\\'" . web-mode)
+  :custom
+  ;; I noticed your indentation was set to 4 in your logs
+  (web-mode-markup-indent-offset 4)
+  (web-mode-css-indent-offset 4)
+  (web-mode-code-indent-offset 4)
+  (web-mode-enable-auto-pairing t)
+  (web-mode-enable-css-colorization t)
+  :config
+  ;; Tell web-mode to treat .tsx files as JSX/TSX content
+  (add-to-list 'web-mode-content-types-alist '("jsx" . "\\.tsx\\'")))
+
+;; 2. Pure TypeScript (for standard .ts files)
+(use-package php-mode
+  :ensure t)
+
+(use-package typescript-mode
+  :ensure t
+  :mode "\\.ts\\'"
+  :custom
+  (typescript-indent-level 4))
 
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
@@ -42,5 +74,8 @@
 (require 'odin-mode)
 (require 'cmake-mode)
 (require 'kdl-ts-mode)
+(require 'oil)
+;; (require 'term-cursor)
+;; (global-term-cursor-mode)
 
 (provide 'languages)

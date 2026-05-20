@@ -12,6 +12,7 @@
         "niri/workspaces",
         "tray",
         "custom/notification",
+        "custom/hydration",
     ],
 
     "modules-center": [
@@ -27,6 +28,14 @@
         "pulseaudio",
     ],
 
+    "custom/hydration": {
+        "format": "{}", 
+        "exec": "waydrate display watch",
+        "return-type": "",
+        "tooltip": true,
+        "restart-interval": 5
+    },
+
     "sway/workspaces": {
         "disable-scroll": true,
         "all-outputs": true,
@@ -34,9 +43,9 @@
     },
 
     "tray": {
-        "show-passive-items": true,
+        "show-passive-items": false,
         "spacing": 10,
-        "tooltip": false
+        "tooltip": false,
     },
 
     "clock": {

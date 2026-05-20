@@ -21,7 +21,6 @@ alias amyxi "distrobox enter amyxi"
 alias lls='eza -al --color=always --group-directories-first --icons' # preferred listing
 alias la='eza -a --color=always --group-directories-first --icons'  # all files and dirs
 alias ll='eza -l --color=always --group-directories-first --icons'  # long format
-alias lt='eza -aT --color=always --group-directories-first --icons' # tree listing
 alias l.="eza -a | grep -e '^\.'" # show only dotfiles
 alias grubup="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 alias fixpacman="sudo rm /var/lib/pacman/db.lck"
@@ -78,9 +77,9 @@ function c
         case o
             switch $argv[2]
                 case cl
-                    compressed $(cd ~/Videos/OBS && ls -t | head -n 1)
+                    compressed ~/Videos/OBS/(ls -t ~/Videos/OBS | head -n 1)
                 case l
-                    copy-files $(cd ~/Videos/OBS && ls -t | head -n 1)
+                    copy-files ~/Videos/OBS/(ls -t ~/Videos/OBS | head -n 1)
             end
         case f
             switch $argv[2]
@@ -195,3 +194,7 @@ if status is-interactive
         tore
     end
 end
+
+fish_add_path /home/myxi/.spicetify
+
+set -q GHCUP_INSTALL_BASE_PREFIX[1]; or set GHCUP_INSTALL_BASE_PREFIX $HOME ; set -gx PATH $HOME/.cabal/bin /home/myxi/.ghcup/bin $PATH # ghcup-env

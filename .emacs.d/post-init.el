@@ -3,22 +3,31 @@
 (setq show-trailing-whitespace t)
 (setq confirm-kill-processes nil)
 (setq tramp-default-method "ssh")
-(setq display-line-numbers-type 'relative)
-(setq default-frame-alist '((font . "Maple Mono NF 13")))
+(setq default-frame-alist '((font . "Maple Mono NF 9")))
 (setq backup-directory-alist
       `(("." . ,(expand-file-name ".backups/" user-emacs-directory))))
 (setq auto-save-list-file-prefix (expand-file-name ".auto-saves/" user-emacs-directory))
 (setq auto-save-file-name-transforms `(("\\`.*\\'" ,(expand-file-name ".auto-saves/" user-emacs-directory))))
-
 (global-auto-revert-mode t)
 (auto-save-visited-mode)
 (column-number-mode 1)
+(menu-bar-mode -1)
+(electric-pair-mode)
+(global-display-line-numbers-mode 1)
+(setq display-line-numbers-width-start t)
+(setq display-line-numbers-width 1)
+(setq ispell-program-name "aspell")
+
+(setq select-enable-clipboard t)
 
 ;; INFO: theme
 (use-package gruvbox-theme :ensure t :config (load-theme 'gruvbox-dark-medium t))
+(set-face-attribute 'font-lock-keyword-face nil
+                    :weight 'bold)
 
 ;; INFO: custom files
 (add-to-list 'load-path (expand-file-name "lisp/" user-emacs-directory))
+(add-to-list 'default-frame-alist '(alpha-background . 90))
 
 ;; INFO: macros
 (require 'my-macros)
@@ -32,14 +41,27 @@
   ;; indent level 4 is hard-coded
   (define-key global-map (kbd "RET") 'ey/sane-newline-and-indent))
 
-(setq-default word-wrap t)
-(setq-default truncate-lines nil)
+;; (setq-default word-wrap t)
+;; (setq-default truncate-lines nil)
 (setq recentf-max-saved-items 5000)
 (setq recentf-auto-cleanup 'never)
 
 (add-hook 'python-ts-mode-hook 'apply-sane-indent)
+(add-hook 'python-mode-hook 'apply-sane-indent)
 (add-hook 'lua-mode-hook 'apply-sane-indent)
 (add-hook 'fish-mode-hook 'apply-sane-indent)
+(add-hook 'oil-mode-hook #'turn-on-boon-mode)
+(add-hook 'prog-mode-hook 'hs-minor-mode)
+(add-hook 'compilation-mode-hook
+          (lambda ()
+            (local-set-key (kbd "q") 'quit-window)))
+
+(defun my/disable-electric-pair-in-replace ()
+  "Disable `electric-pair-mode' in query-replace by checking the prompt text."
+  (when (string-match-p "^Query replace" (minibuffer-prompt))
+    (electric-pair-local-mode -1)))
+
+(add-hook 'minibuffer-setup-hook #'my/disable-electric-pair-in-replace)
 
 (global-unset-key (kbd "M-'"))
 
@@ -153,14 +175,29 @@
 ;; INFO: language-specific
 (load-file (expand-file-name "lisp/languages.el" user-emacs-directory))
 
+(setq treesit-language-source-alist
+      '(
+        ;; Pin TypeScript/TSX to stable 0.20.3
+        (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "typescript/src")
+        (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "tsx/src")
+        
+        ;; Pin Rust to stable 0.20.4
+        (rust "https://github.com/tree-sitter/tree-sitter-rust" "v0.20.4" "src")
+        
+        ;; Pin Python to the Emacs 30 sweet-spot
+        (python "https://github.com/tree-sitter/tree-sitter-python" "v0.23.2" "src")
+        ))
+
 (use-package treesit-auto
   :custom
+  :disabled
   (treesit-auto-install 'prompt)
   :config
   ;; INFO: https://www.reddit.com/r/emacs/comments/17gtxmr/indentation_in_yamltsmode/
-  (delete 'yaml treesit-auto-langs)
+  ;; (delete 'yaml treesit-auto-langs)
   ;; INFO: Doesn't highlight syntax for whatever reason (Wednesday 02 April 2025 06:18:55 PM IST)
-  (delete 'lua treesit-auto-langs)
+  ;; (delete 'lua treesit-auto-langs)
+  ;; (delete 'rust treesit-auto-langs)
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode))
 
@@ -222,6 +259,7 @@
 
 (use-package eglot
   :after exec-path-from-shell
+  :disabled
   :ensure t
   :bind (("M-' l l" . eglot)
          ("M-' l s" . eglot-shutdown)
@@ -246,7 +284,80 @@
       (cons 'transient root)))
 
   ;; Add to the START of the list so it takes precedence over the default Git detection
-  (add-hook 'project-find-functions #'my/project-try-npm nil nil))
+  (add-hook 'project-find-functions #'my/project-try-npm nil nil)
+  (add-to-list 'eglot-server-programs
+               '((python-ts-mode python-mode)
+                 . ("ty" "server"))))
+
+(use-package lsp-haskell
+  :ensure t)
+
+(use-package yasnippet
+  :ensure t
+  :config
+  (yas-global-mode 1))
+
+(use-package lsp-mode
+  :ensure t
+  :bind (("M-' l l" . lsp)
+         ("M-' l s" . lsp-disconnect)
+         ("M-' l d" . lsp-describe-thing-at-point)
+         ("M-' l r" . lsp-rename)
+         ("M-' l R" . lsp-workspace-restart)
+         ("M-' l f" . lsp-format-buffer)
+         ("M-' l p" . lsp-execute-code-action)
+         ("M-' l i" . lsp-organize-imports))
+  :after exec-path-from-shell lsp-haskell yasnippet
+  :commands (lsp lsp-deferred)
+  :hook ((typescript-ts-mode . lsp-deferred)
+         (typescript-mode . lsp-deferred)
+         (tsx-ts-mode . lsp-deferred)
+         (python-mode . lsp-deferred)
+         (python-ts-mode . lsp-deferred)
+         (haskell-mode . lsp-deferred)
+         (lsp-mode . lsp-ui-mode))
+
+  :custom
+  (lsp-disabled-clients '(pyright pylsp ruff ty-server))
+  ;; what to use when checking on-save. "check" is default, I prefer clippy
+  (lsp-rust-analyzer-cargo-watch-command "clippy")
+  (lsp-eldoc-render-all t)
+  (lsp-idle-delay 0.6)
+  ;; enable / disable the hints as you prefer:
+  (lsp-inlay-hint-enable t)
+  ;; These are optional configurations. See https://emacs-lsp.github.io/lsp-mode/page/lsp-rust-analyzer/#lsp-rust-analyzer-display-chaining-hints for a full list
+  (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
+  (lsp-rust-analyzer-display-chaining-hints t)
+  (lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
+  (lsp-rust-analyzer-display-closure-return-type-hints t)
+  (lsp-rust-analyzer-display-parameter-hints t)
+  (lsp-rust-analyzer-display-reborrow-hints "never")
+
+  :config
+  (setq flycheck-check-syntax-automatically '(save idle-change mode-enabled))
+  (setq flycheck-idle-change-delay 0.8)
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+
+  (defun my/project-try-npm (dir)
+    (when-let ((root (locate-dominating-file dir "package.json")))
+      (cons 'transient root)))
+  (add-hook 'project-find-functions #'my/project-try-npm nil nil)
+
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection '("ty" "server"))
+                    :major-modes '(python-ts-mode python-mode)
+                    :server-id 'ty-server)))
+
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode
+  :custom
+  (lsp-ui-doc-enable t)
+  (lsp-ui-doc-position 'at-point)
+  (lsp-ui-doc-enhanced-markdown t)
+  (lsp-ui-sideline-show-hover t)
+  ;; Helps with rendering
+  (lsp-ui-peek-always-show t))
 
 (use-package aggressive-indent
   :ensure t
@@ -325,7 +436,8 @@
   :diminish projectile-mode
   :demand t
   :custom
-  (projectile-enable-caching t)
+  (projectile-enable-caching nil)
+  (projectile-indexing-method 'alien)
   (projectile-completion-system 'ivy)
   :config
   (projectile-mode +1)
@@ -367,6 +479,15 @@
   :config
   (pulsar-global-mode 1))
 
+(use-package puni
+  :defer t
+  :init
+  ;; The autoloads of Puni are set up so you can enable `puni-mode` or
+  ;; `puni-global-mode` before `puni` is actually loaded. Only after you press
+  ;; any key that calls Puni commands, it's loaded.
+  (puni-global-mode)
+  (add-hook 'term-mode-hook #'puni-disable-puni-mode))
+
 ;; INFO: startup stuff
 (add-hook 'after-init-hook #'global-auto-revert-mode)
 (add-hook 'after-init-hook #'recentf-mode)
@@ -406,6 +527,7 @@
 (add-to-list 'pulsar-pulse-functions #'hydra-paging/scroll-down-command)
 (add-to-list 'pulsar-pulse-functions #'avy-goto-char-timer)
 (add-to-list 'pulsar-pulse-functions #'avy-goto-char-2)
+(add-to-list 'pulsar-pulse-functions #'my/avy-goto-char-2-end)
 
 (defun switch-to-last-file-buffer ()
   (interactive)
@@ -450,6 +572,7 @@
 (define-key global-map (kbd "M-' u u") #'delete-trailing-whitespace)
 (define-key global-map (kbd "M-' u a") #'align-regexp)
 (define-key global-map (kbd "M-' u h") 'boon-unhighlight)
+(define-key global-map (kbd "M-' u e") 'hs-toggle-hiding)
 
 (define-key global-map (kbd "M-' k p") #'kill-this-buffer)
 (define-key global-map (kbd "M-' k P") #'kill-buffer)
@@ -462,6 +585,9 @@
 (define-key global-map (kbd "M-' h T") #'hydra-todo/body)
 (define-key global-map (kbd "M-' h z") #'hydra-zoom/body)
 (define-key global-map (kbd "M-' h h") #'hydra-multiple-cursors/body)
+
+(define-key boon-command-map (kbd "C-S-u") 'scroll-down-command)
+(define-key boon-command-map (kbd "C-S-y") 'scroll-up-command)
 
 (defun my/tscout--jump (cand)
   (when (string-match

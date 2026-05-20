@@ -14,6 +14,8 @@ output "HDMI-A-1" {
 }
 
 cursor {
+  xcursor-theme "Bibata-Modern-Ice"
+  // xcursor-size 48
   hide-after-inactive-ms 5000
 }
 
@@ -69,8 +71,10 @@ input {
     }
 
     mouse {
-      accel-speed 0.6
+      accel-speed 1.0
+      scroll-factor 2.0
       scroll-method "on-button-down"
+      middle-emulation
     }
 
     trackpoint {
@@ -287,9 +291,12 @@ animations {
 // }
 
 window-rule {
-    match app-id="wezterm"
+    match app-id="wezterm|ghostty"
     open-on-workspace "1"
     default-column-width {}
+    background-effect {
+      blur true
+    }
 }
 
 window-rule {
@@ -302,6 +309,9 @@ window-rule {
   match app-id="Emacs|Code|code"
   open-on-workspace "2"
   open-maximized true
+  background-effect {
+    blur true
+  }
 }
 
 window-rule {
@@ -369,8 +379,8 @@ binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
-    Mod+T { spawn "wezterm"; }
-    Mod+Return { spawn "wezterm"; }
+    Mod+T { spawn "ghostty"; }
+    Mod+Return { spawn "ghostty"; }
     Mod+D { spawn "fuzzel"; }
     Super+Alt+L { spawn "swaylock"; }
 
@@ -611,5 +621,10 @@ binds {
 
     Mod+V {spawn "sh" "-c" "cliphist list | fuzzel --dmenu --with-nth=2 --width 80 | cliphist decode | wl-copy";}
 
-    Alt+Space {spawn "fuzzel" "--list-executables-in-path";}
+    // Hydration
+    Mod+Ctrl+Semicolon {spawn "waydrate" "record" "cup";}
+    Mod+Ctrl+bracketLeft {spawn "waydrate" "record" "remove" "last";}
+
+    // Alt+Space {spawn "fuzzel" "--list-executables-in-path";}
+    Alt+Space {spawn "fuzzel";}
 }

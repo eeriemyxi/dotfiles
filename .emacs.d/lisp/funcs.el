@@ -8,7 +8,6 @@
 (defun my-save-if-bufferfilename ()
   (when (buffer-file-name)
     (save-some-buffers t)))
-(add-hook 'evil-insert-state-exit-hook 'my-save-if-bufferfilename)
 
 (defun my/backward-delete-word ()
   "Delete the previous word without saving to the kill ring."
@@ -39,17 +38,16 @@
         (switch-to-buffer-other-window scratch)
       (switch-to-buffer scratch))))
 
-(defun spacemacs/switch-to-messages-buffer (&optional arg)
+(defun my/switch-to-messages-buffer (&optional arg)
   "Switch to the `*Messages*' buffer.
-  if prefix argument ARG is given, switch to it in an other, possibly new window."
+  If prefix argument ARG is given, switch to it in another, possibly new window."
   (interactive "P")
   (with-current-buffer (messages-buffer)
     (goto-char (point-max))
     (if arg
         (switch-to-buffer-other-window (current-buffer))
       (switch-to-buffer (current-buffer)))
-    (when (evil-evilified-state-p)
-      (evil-normal-state))))
+    (boon-set-command-state)))
 
 (defun spacemacs/show-hide-compilation-window ()
   "Show/Hide the window containing the compilation buffer."

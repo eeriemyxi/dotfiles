@@ -10,6 +10,9 @@
         boon-open-next-line-and-insert
         boon-treasure-region
         boon-two-char-exit-insert-state
+        c-electric-backspace
+        c-electric-colon
+        c-electric-lt-gt
         capitalize-word
         counsel-M-x
         counsel-buffer-or-recentf
@@ -37,6 +40,7 @@
         open-line
         previous-line
         python-indent-dedent-line-backspace
+        query-replace
         right-char
         right-word
         self-insert-command
@@ -44,8 +48,11 @@
         tab-to-tab-stop
         transpose-chars
         transpose-words
+        ultra-scroll
         undefined
         upcase-word
+        wdired--self-insert
+        yaml-electric-backspace
         yaml-electric-dash-and-dot
         yank
         ))
@@ -54,6 +61,7 @@
       '(
         beginning-of-buffer
         boon-open-line-and-insert
+        c-electric-semi&comma
         dired-jump
         goto-line
         hydra-multiple-cursors/ignore

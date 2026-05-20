@@ -40,3 +40,6 @@ export WINEPREFIX=$HOME/.wineprefixes/dev
 export WINEARCH=win64
 
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+
+export XCURSOR_THEME=Bibata-Modern-Ice
+export XCURSOR_SIZE=24

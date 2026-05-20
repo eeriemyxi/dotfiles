@@ -1,1 +1,0 @@
-/home/myxi/.local/share/mise/installs/node/23.0.0/lib/node_modules/webtorrent-mpv-hook/build/webtorrent.js
