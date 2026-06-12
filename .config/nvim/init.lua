@@ -64,11 +64,12 @@ local plugins = {
   github("pocco81/auto-save.nvim"),
   github("folke/which-key.nvim"),
   github("folke/flash.nvim"),
+  github("ej-shafran/compile-mode.nvim"),
   github("mbbill/undotree"),
   github("karb94/neoscroll.nvim"),
   github("nvim-lua/plenary.nvim"),
   github("DrKJeff16/project.nvim"),
-  github("nvim-telescope/telescope.nvim"),
+  -- github("nvim-telescope/telescope.nvim"),
   github("tpope/vim-sleuth"),
   github("sindrets/diffview.nvim"),
   github("NeogitOrg/neogit.git"),
@@ -85,7 +86,11 @@ vim.cmd.colorscheme("gruvbox")
 require("mini.files").setup()
 require("Comment").setup()
 require("which-key").setup({ delay = 0 })
-require("project").setup()
+require("project").setup({
+  fzf_lua = {
+    enabled = true
+  }
+})
 require("auto-save").setup()
 
 require("flash").setup({})
@@ -119,8 +124,12 @@ require("neogit").setup({
   integrations = { diffview = true },
 })
 
-require("telescope").setup()
-require("telescope").load_extension("projects")
+-- require('telescope').setup({
+--   defaults = {
+--     sorter = require('telescope.sorters').get_generic_fuzzy_sorter,
+--   }
+-- })
+-- require("telescope").load_extension("projects")
 require("neoscroll").setup()
 require("lsp_signature").setup()
 
@@ -164,6 +173,9 @@ set("i", "kj", "<Esc>")
 set("i", "<C-Backspace>", "<C-w>", { desc = "Delete word backward" })
 set("n", "gp", "`[v`]", { desc = "Select last pasted text" })
 
+set({'n', 'v'}, 'H', '^')
+set({'n', 'v'}, 'L', '$')
+
 local function check_lua_syntax(path)
   local cmd = {
     "nvim",
@@ -198,14 +210,6 @@ end
 
 vim.keymap.set("n", "<leader>rs", safe_restart, { desc = "Safe Restart Neovim" })
 
-set("n", "<leader>m", "<cmd>make<CR>")
-set("n", "<leader>w", "<cmd>Telescope projects<CR>")
-set("n", "<F5>", "<cmd>w | make<CR>")
-set("n", "<leader>Co", "<cmd>copen<CR>")
-set("n", "<leader>Cc", "<cmd>cclose<CR>")
-set("n", "<leader>]", "<cmd>cnext<CR>")
-set("n", "<leader>[", "<cmd>cprev<CR>")
-
 set("n", "<leader>H", "<cmd>nohlsearch<CR>")
 set("n", "<leader>sv", "<cmd>vsplit<CR>")
 set("n", "<leader>sh", "<cmd>split<CR>")
@@ -217,14 +221,30 @@ set("n", "<leader>F", function()
 end)
 set("n", "<leader>u", vim.cmd.UndotreeToggle)
 
+vim.g.compile_mode = {
+  error_regexp_table = {
+    odin = {
+      regex = [[\v^([a-zA-Z0-9_./\-]+)\((\d+):(\d+)\)\s+([^:]+):\s+(.+)$]],
+      filename = 1,
+      line = 2,
+      col = 3,
+      type = 4,
+    },
+  },
+}
+set("n", "<leader>]", "<cmd>NextError<CR>")
+set("n", "<leader>[", "<cmd>PrevError<CR>")
+
 set("n", "<leader>g", vim.cmd.Neogit)
 
 local fzf = require("fzf-lua")
 set("n", "<leader>ff", fzf.files)
-set("n", "<leader>fd", "<cmd>Telescope treesitter<CR>")
+set("n", "<leader>fd", fzf.treesitter)
+set("n", "<leader>fj", fzf.blines)
 set("n", "<leader>fg", fzf.live_grep)
 set("n", "<leader>fb", fzf.buffers)
 set("n", "<leader>fh", fzf.help_tags)
+set("n", "<leader>fp", "<cmd>Project fzf-lua<CR>")
 set("n", "<leader>fr", fzf.oldfiles, { desc = "Find Recent Files" })
 
 set({ "n", "x" }, "<up>", function() mc.lineAddCursor(-1) end)
@@ -341,66 +361,73 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
   end,
 })
 
-local last_cmd = ""
-local active_job_id = nil
-local stream_buf = ""
+-- Table to cache compile commands uniquely per project root
+local project_compile_cmds = {}
 
-local group = vim.api.nvim_create_augroup("CompileQF", { clear = true })
-vim.api.nvim_create_autocmd("FileType", {
-  group = group,
-  pattern = "qf",
-  callback = function(args)
-    vim.keymap.set("n", "q", "<cmd>cclose<cr>", { buffer = args.buf, nowait = true, silent = true })
+local function smart_project_compile()
+  local project_lib = require("project")
+  
+  -- 1. Resolve root based on the focused buffer
+  local root = project_lib.get_project_root()
+  
+  -- Fallback for orphan buffers with no physical disk path yet
+  root = root or vim.fn.getcwd()
+
+  -- 2. Retrieve cached command or use 'make' as a default guess
+  local default_cmd = project_compile_cmds[root] or "make"
+
+  -- 3. Prompt user for the command
+  vim.ui.input({ 
+    prompt = "Compile project (" .. vim.fn.fnamemodify(root, ":t") .. "): ", 
+    default = default_cmd 
+  }, function(input)
+    if not input or input == "" then return end
+    
+    -- Cache the command for this specific directory
+    project_compile_cmds[root] = input
+
+    -- 4. Enforce strict directory binding
+    local prev_cwd = vim.fn.getcwd()
+    vim.api.nvim_set_current_dir(root)
+    
+    -- Execute via compile-mode.nvim
+    vim.cmd("Compile " .. input)
+    
+    -- Restore original directory state
+    vim.api.nvim_set_current_dir(prev_cwd)
+  end)
+end
+
+-- Recompile equivalent (bypasses prompt if cached)
+local function smart_project_recompile()
+  local project_lib = require("project")
+  local root = project_lib.get_project_root() or vim.fn.getcwd()
+
+  local cmd = project_compile_cmds[root]
+  if not cmd then
+    return smart_project_compile()
+  end
+
+  local prev_cwd = vim.fn.getcwd()
+  vim.api.nvim_set_current_dir(root)
+  vim.cmd("Compile " .. cmd)
+  vim.api.nvim_set_current_dir(prev_cwd)
+end
+
+local set = vim.keymap.set
+
+set("n", "<leader>C", smart_project_compile, { desc = "Projectile-like Compile" })
+set("n", "<leader>c", smart_project_recompile, { desc = "Projectile-like Recompile" })
+set("n", "<leader>P", "<cmd>Compile<CR>", { desc = "Compile" })
+set("n", "<leader>p", "<cmd>Recompile<CR>", { desc = "Recompile" })
+
+-- Load up last exit position for a file when opened
+vim.api.nvim_create_autocmd("BufReadPost", {
+  callback = function()
+    local mark = vim.api.nvim_buf_get_mark(0, '"')
+    local lcount = vim.api.nvim_buf_line_count(0)
+    if mark[1] > 0 and mark[1] <= lcount then
+      pcall(vim.api.nvim_win_set_cursor, 0, mark)
+    end
   end,
 })
-
-vim.api.nvim_create_user_command("Compile", function()
-  vim.ui.input({ prompt = "Compile command: ", default = last_cmd }, function(input)
-    if not input or input == "" then return end
-    last_cmd = input
-
-    if active_job_id then
-      vim.fn.jobstop(active_job_id)
-    end
-
-    stream_buf = ""
-    vim.opt.errorformat = "%f(%l:%c) %t%*[^:]: %m"
-    vim.fn.setqflist({}, "r", { title = input, items = {} })
-
-    local current_win = vim.api.nvim_get_current_win()
-    vim.cmd("botright copen 10")
-    if vim.api.nvim_win_is_valid(current_win) then
-      vim.api.nvim_set_current_win(current_win)
-    end
-
-    local function append_to_qf(_, data)
-      if not data then return end
-      
-      data[1] = stream_buf .. data[1]
-      stream_buf = table.remove(data) or ""
-
-      if #data > 0 then
-        vim.fn.setqflist({}, "a", { lines = data })
-        vim.cmd("cbottom")
-      end
-    end
-
-    active_job_id = vim.fn.jobstart(vim.fn.expand(input), {
-      stdout_buffered = false,
-      stderr_buffered = false,
-      on_stdout = append_to_qf,
-      on_stderr = append_to_qf,
-      on_exit = function(_, code)
-        active_job_id = nil
-        if stream_buf ~= "" then
-          vim.fn.setqflist({}, "a", { lines = { stream_buf } })
-          stream_buf = ""
-        end
-        vim.fn.setqflist({}, "a", { title = string.format("%s (Exit code: %d)", input, code) })
-        vim.cmd("cbottom")
-      end,
-    })
-  end)
-end, {})
-
-vim.keymap.set("n", "<leader>c", "<cmd>Compile<cr>")
