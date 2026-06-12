@@ -80,7 +80,8 @@
 (use-package boon
   :ensure t
   :config
-  (require 'boon-colemak-hnei)
+  ;; (require 'boon-colemak-hnei)
+  (require 'boon-qwerty-hjkl)
   (boon-mode)
 
   ;; https://github.com/meow-edit/meow/discussions/168#discussioncomment-2974816

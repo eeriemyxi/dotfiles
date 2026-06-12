@@ -12,6 +12,7 @@ archives/
 .emacs.d/eshell/history
 .emacs.d/tree-sitter/*.so
 .emacs.d/tree-sitter/*.dll
-.config/fish/fish_variables
+.config/fish/fish_variables*
+.config/fish/fishd*
 boot
 reboot

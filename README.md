@@ -4,8 +4,13 @@
 | **WM**              | niri        |
 | **Bar**             | waybar      |
 | **Shell**           | fish        |
-| **Keyboard Layout** | colemak     |
+| **Keyboard Layout** | QWERTY      |
 | **Distribution**    | CachyOS     |
+
+> [!NOTE]
+> I am actively migrating from Colemak keyboard layout to QWERTY. Most
+> configuration files contain a mixed-bag of keymapping depending on how
+> frequently I use them.
 
 ### Screenshots
 ![](https://files.catbox.moe/myyare.png)

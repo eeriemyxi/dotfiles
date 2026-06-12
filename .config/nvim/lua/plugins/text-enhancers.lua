@@ -1,5 +1,0 @@
-return {
-    {
-        "iggredible/totitle-vim",
-    },
-}

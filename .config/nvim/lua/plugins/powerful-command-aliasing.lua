@@ -1,1 +1,0 @@
-return { "Konfekt/vim-alias" }

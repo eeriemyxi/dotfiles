@@ -10,6 +10,13 @@ set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
 set fish_greeting
 set QT_QPA_PLATFORMTHEME "qt5ct"
 
+function fish_user_key_bindings
+    fish_vi_key_bindings
+    bind -M insert -m default kj backward-char
+    bind -M default \cr history-pager
+    bind -M insert \cr history-pager
+end
+
 # A lot of it is yoinked from: 
 # https://github.com/CachyOS/cachyos-fish-config/blob/main/cachyos-config.fish
 
@@ -47,11 +54,13 @@ alias cleanup='sudo pacman -Rns (pacman -Qtdq)'
 alias jctl="journalctl -p 3 -xb"
 alias mirror="sudo cachyos-rate-mirrors"
 alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl" # recent installed pkgs
+
 abbr rm "rm -i"
 abbr cdt "cd \$(mktemp -d)"
 abbr cvp "source .venv/bin/activate.fish"
 abbr windows "sudo efibootmgr -n 0 && reboot"
 abbr gcl "git clone --depth 1 --single-branch --recurse-submodules --shallow-submodules"
+abbr gnvim "dex ~/.local/share/applications/ghostty-nvim.desktop . 2> /dev/null &"
 
 function history
     builtin history --show-time='%F %T '
