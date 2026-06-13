@@ -185,7 +185,50 @@ set("n", "[<Space>", "O<Esc>j", { noremap = true, silent = true, desc = "Add lin
 
 set("i", "kj", "<Esc>")
 set("i", "<C-Backspace>", "<C-w>", { desc = "Delete word backward" })
-set("n", "gp", "`[v`]", { desc = "Select last pasted text" })
+
+local function clean_paste(key)
+  return function()
+    vim.cmd("normal! " .. key)
+    
+    local start_mark = vim.api.nvim_buf_get_mark(0, "[")
+    local end_mark = vim.api.nvim_buf_get_mark(0, "]")
+    
+    if start_mark[1] > 0 and end_mark[1] > 0 then
+      vim.b.last_paste_start = start_mark
+      vim.b.last_paste_end = end_mark
+      vim.b.last_paste_regtype = vim.fn.getregtype()
+    end
+  end
+end
+
+set("n", "p", clean_paste("p"), { desc = "Paste and capture boundaries" })
+set("n", "P", clean_paste("P"), { desc = "Paste and capture boundaries" })
+
+-- Select text using our pristine cached boundaries
+set("n", "gp", function()
+  local start_m = vim.b.last_paste_start
+  local end_m = vim.b.last_paste_end
+  local reg_type = vim.b.last_paste_regtype
+  
+  if not start_m or not end_m then
+    -- Fallback to native marks if cache is empty
+    vim.cmd("normal! `[v`]")
+    return
+  end
+  
+  -- Resolve the correct visual mode character
+  local v_mode = "v"
+  if reg_type == "V" then
+    v_mode = "V"
+  elseif reg_type:sub(1, 1) == "\22" or reg_type == "b" then
+    v_mode = "\22" -- Ctrl-V block mode
+  end
+  
+  -- Target positions directly
+  vim.api.nvim_win_set_cursor(0, start_m)
+  vim.cmd("normal! " .. v_mode)
+  vim.api.nvim_win_set_cursor(0, end_m)
+end, { desc = "Select last pasted text cleanly" })
 
 set({'n', 'v'}, 'H', '^')
 set({'n', 'v'}, 'L', '$')
