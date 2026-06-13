@@ -16,7 +16,8 @@ vim.g.mapleader = " "
 local opt = vim.opt
 
 opt.virtualedit = "onemore"
-opt.completeopt = { "menu", "menuone", "noselect", "popup" }
+-- opt.completeopt = { "menu", "menuone", "noselect", "popup" }
+-- vim.o.autocomplete = true
 opt.expandtab = true
 opt.shiftwidth = 2
 opt.tabstop = 2
@@ -47,8 +48,8 @@ vim.opt.foldlevelstart = 99
 vim.opt.directory = vim.fn.stdpath("cache") .. "/swap//"
 vim.opt.shortmess:append("A")
 vim.opt.viewoptions:remove("curdir")
+vim.opt.iskeyword:remove("_")
 
-vim.o.autocomplete = true
 vim.cmd("filetype plugin indent on")
 
 local function github(repo)
@@ -56,13 +57,12 @@ local function github(repo)
 end
 
 local plugins = {
-  github("ellisonleao/gruvbox.nvim"),
+  github("sainnhe/gruvbox-material"),
   github("nvim-treesitter/nvim-treesitter"),
   github("neovim/nvim-lspconfig"),
   github("jake-stewart/multicursor.nvim"),
   github("echasnovski/mini.files"),
   github("ibhagwan/fzf-lua"),
-  -- github("numToStr/Comment.nvim"),
   github("lewis6991/gitsigns.nvim"),
   github("pocco81/auto-save.nvim"),
   github("folke/which-key.nvim"),
@@ -72,19 +72,37 @@ local plugins = {
   github("karb94/neoscroll.nvim"),
   github("nvim-lua/plenary.nvim"),
   github("DrKJeff16/project.nvim"),
-  -- github("nvim-telescope/telescope.nvim"),
   github("tpope/vim-sleuth"),
   github("sindrets/diffview.nvim"),
   github("NeogitOrg/neogit.git"),
   github("mason-org/mason.nvim"),
   github("mason-org/mason-lspconfig.nvim"),
-  github("ray-x/lsp_signature.nvim"),
+  github("rafamadriz/friendly-snippets"),
+  github("saghen/blink.lib"),
+  github("saghen/blink.cmp"),
+  github("nvim-lualine/lualine.nvim"),
 }
 
 vim.pack.add(plugins)
 
-require("gruvbox").setup({ transparent_mode = true })
-vim.cmd.colorscheme("gruvbox")
+require("lualine").setup({
+  options = {
+    theme = 'gruvbox-material'
+  }
+})
+
+vim.g.gruvbox_material_enable_italic = true
+vim.g.gruvbox_material_enable_bold = true
+vim.g.gruvbox_material_transparent_background = true
+vim.g.gruvbox_material_foreground = "original"
+vim.cmd.colorscheme('gruvbox-material')
+
+local cmp = require('blink.cmp')
+cmp.build():pwait()
+cmp.setup({
+  completion = { documentation = { auto_show = true } },
+  signature = { enabled = true },
+})
 
 require("mini.files").setup()
 require("which-key").setup({ delay = 0 })
@@ -116,7 +134,7 @@ require("neogit").setup({
   use_per_project_settings = true,
   
   sections = {
-    untracked = { folded = false },
+    untracked = { folded = true },
     unstaged = { folded = false },
     staged = { folded = false },
     recent = { folded = true },
@@ -128,7 +146,6 @@ require("neogit").setup({
 })
 
 require("neoscroll").setup()
-require("lsp_signature").setup()
 
 local gs = require("gitsigns")
 gs.setup({
