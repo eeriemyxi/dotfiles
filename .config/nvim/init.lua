@@ -406,27 +406,30 @@ vim.diagnostic.config({
 local function fix_neogit_highlights()
   local hl = vim.api.nvim_set_hl
 
+  -- 1. Inactive Hunks (Normal font, transparent background)
   hl(0, "NeogitDiffAdd", { fg = "#b8bb26", bg = "NONE" })
   hl(0, "NeogitDiffDelete", { fg = "#fb4934", bg = "NONE" })
   hl(0, "NeogitDiffContext", { bg = "NONE" })
 
-  hl(0, "NeogitDiffAddHighlight", { fg = "#b8bb26", bg = "NONE" })
-  hl(0, "NeogitDiffDeleteHighlight", { fg = "#fb4934", bg = "NONE" })
-  hl(0, "NeogitDiffContextHighlight", { bg = "NONE" })
+  -- 2. Active/Focused Hunk (Italicized, transparent background)
+  hl(0, "NeogitDiffAddHighlight", { fg = "#b8bb26", bg = "NONE"})
+  hl(0, "NeogitDiffDeleteHighlight", { fg = "#fb4934", bg = "NONE"})
+  hl(0, "NeogitDiffContextHighlight", { bg = "NONE"})
 
-  hl(0, "NeogitDiffContextCursor", { bg = "NONE" })
-  hl(0, "NeogitDiffAddCursor", { fg = "#b8bb26", bg = "NONE" })
-  hl(0, "NeogitDiffDeleteCursor", { fg = "#fb4934", bg = "NONE" })
+  -- 3. Cursor Line inside Active Hunk (Matches active hunk styling)
+  hl(0, "NeogitDiffContextCursor", { bg = "NONE"})
+  hl(0, "NeogitDiffAddCursor", { fg = "#b8bb26", bg = "NONE"})
+  hl(0, "NeogitDiffDeleteCursor", { fg = "#fb4934", bg = "NONE"})
   hl(0, "NeogitDiffHeaderCursor", { bg = "NONE" })
-  hl(0, "NeogitHunkHeaderCursor", { fg = "#fabd2f", bg = "NONE", bold = true })
   
+  -- 4. Hunk Headers (@@ lines - High contrast solid background)
+  hl(0, "NeogitHunkHeader", { fg = "#282828", bg = "#fabd2f", bold = true })
+  hl(0, "NeogitHunkHeaderHighlight", { fg = "#282828", bg = "#fabd2f", bold = true })
+  hl(0, "NeogitHunkHeaderCursor", { fg = "#282828", bg = "#fabd2f", bold = true })
+  
+  -- 5. Miscellaneous UI elements
   hl(0, "NeogitCursorLine", { bg = "NONE", underline = true, sp = "#504945" })
-
-  hl(0, "NeogitHunkHeader", { fg = "#fabd2f", bg = "NONE" })
-  hl(0, "NeogitHunkHeaderHighlight", { fg = "#fabd2f", bg = "NONE", bold = true })
-
   hl(0, "NeogitChangeDeleted", { fg = "#fb4934", bg = "NONE", bold = true })
-
   hl(0, "NeogitDiffAddInline", { bg = "#b8bb26", fg = "#282828", bold = true })
   hl(0, "NeogitDiffDeleteInline", { bg = "#fb4934", fg = "#282828", bold = true })
 end
