@@ -27,7 +27,7 @@ spawn-at-startup "xwayland-satellite"
 spawn-at-startup "lxqt-policykit-agent"
 spawn-at-startup "wl-paste" "--watch" "cliphist" "store"
 spawn-at-startup "spotify"
-spawn-at-startup "tremind" "start"
+// spawn-at-startup "tremind" "start"
 
 spawn-at-startup "sh" "-c" "sleep 5 && pw-play '/home/myxi/Music/Windows 11 startup sound.wav'"
 

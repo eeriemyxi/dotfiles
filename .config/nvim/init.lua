@@ -44,6 +44,9 @@ vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
+vim.opt.directory = vim.fn.stdpath("cache") .. "/swap//"
+vim.opt.shortmess:append("A")
+vim.opt.viewoptions:remove("curdir")
 
 vim.o.autocomplete = true
 vim.cmd("filetype plugin indent on")
@@ -59,7 +62,7 @@ local plugins = {
   github("jake-stewart/multicursor.nvim"),
   github("echasnovski/mini.files"),
   github("ibhagwan/fzf-lua"),
-  github("numToStr/Comment.nvim"),
+  -- github("numToStr/Comment.nvim"),
   github("lewis6991/gitsigns.nvim"),
   github("pocco81/auto-save.nvim"),
   github("folke/which-key.nvim"),
@@ -84,9 +87,9 @@ require("gruvbox").setup({ transparent_mode = true })
 vim.cmd.colorscheme("gruvbox")
 
 require("mini.files").setup()
-require("Comment").setup()
 require("which-key").setup({ delay = 0 })
 require("project").setup({
+  manual_mode = true,
   fzf_lua = {
     enabled = true
   }
@@ -124,12 +127,6 @@ require("neogit").setup({
   integrations = { diffview = true },
 })
 
--- require('telescope').setup({
---   defaults = {
---     sorter = require('telescope.sorters').get_generic_fuzzy_sorter,
---   }
--- })
--- require("telescope").load_extension("projects")
 require("neoscroll").setup()
 require("lsp_signature").setup()
 
@@ -217,9 +214,20 @@ set("n", "<leader>sx", "<cmd>close<CR>")
 set("n", "<leader>d", "<C-w>")
 set("n", "<leader>q", "<cmd>q<CR>")
 set("n", "<leader>F", function()
-  if not MiniFiles.close() then MiniFiles.open() end
+  if not MiniFiles.close() then 
+    MiniFiles.open(vim.api.nvim_buf_get_name(0)) 
+  end
 end)
 set("n", "<leader>u", vim.cmd.UndotreeToggle)
+
+set("n", "<leader>jf", function()
+  local project_lib = require("project")
+  local root = project_lib.get_project_root() or vim.fn.getcwd()
+  
+  if not MiniFiles.close() then
+    MiniFiles.open(root)
+  end
+end, { desc = "Open mini.files at project root" })
 
 vim.g.compile_mode = {
   error_regexp_table = {
@@ -235,17 +243,51 @@ vim.g.compile_mode = {
 set("n", "<leader>]", "<cmd>NextError<CR>")
 set("n", "<leader>[", "<cmd>PrevError<CR>")
 
-set("n", "<leader>g", vim.cmd.Neogit)
+set("n", "<leader>g", function()
+  local project_lib = require("project")
+  local root = project_lib.get_project_root() or vim.fn.getcwd()
+  require("neogit").open({ cwd = root })
+end, { desc = "Open Neogit at Project Root" })
 
 local fzf = require("fzf-lua")
-set("n", "<leader>ff", fzf.files)
+local project_lib = require("project")
+set("n", "<leader>ff", function()
+  local root = project_lib.get_project_root() or vim.fn.getcwd()
+  fzf.files({ cwd = root })
+end, { desc = "Find Files in Project" })
+set("n", "<leader>fg", function()
+  local root = project_lib.get_project_root() or vim.fn.getcwd()
+  fzf.live_grep({ cwd = root })
+end, { desc = "Live Grep in Project" })
 set("n", "<leader>fd", fzf.treesitter)
 set("n", "<leader>fj", fzf.blines)
-set("n", "<leader>fg", fzf.live_grep)
 set("n", "<leader>fb", fzf.buffers)
 set("n", "<leader>fh", fzf.help_tags)
 set("n", "<leader>fp", "<cmd>Project fzf-lua<CR>")
-set("n", "<leader>fr", fzf.oldfiles, { desc = "Find Recent Files" })
+local bp = vim.fn.stdpath("data") .. "/oldfiles_blacklist.txt"
+local function fr()
+  local bl, f = {}, io.open(bp, "r")
+  if f then for l in f:lines() do bl[l] = true end f:close() end
+
+  vim.v.oldfiles = vim.tbl_filter(function(v) return not bl[v] end, vim.v.oldfiles)
+
+  require("fzf-lua").oldfiles({
+    desc = "Find Recent Files",
+    actions = {
+      ["alt-d"] = function(sel, opts)
+        if not sel[1] then return end
+        local p = require("fzf-lua").path.entry_to_file(sel[1], opts).path
+        
+        local af = io.open(bp, "a")
+        if af then af:write(p .. "\n") af:close() end
+        
+        vim.v.oldfiles = vim.tbl_filter(function(v) return v ~= p end, vim.v.oldfiles)
+        vim.schedule(fr)
+      end
+    }
+  })
+end
+vim.keymap.set("n", "<leader>fr", fr, { desc = "Find Recent Files" })
 
 set({ "n", "x" }, "<up>", function() mc.lineAddCursor(-1) end)
 set({ "n", "x" }, "<down>", function() mc.lineAddCursor(1) end)
@@ -366,10 +408,10 @@ local project_compile_cmds = {}
 
 local function smart_project_compile()
   local project_lib = require("project")
-  
+
   -- 1. Resolve root based on the focused buffer
   local root = project_lib.get_project_root()
-  
+
   -- Fallback for orphan buffers with no physical disk path yet
   root = root or vim.fn.getcwd()
 
@@ -382,17 +424,17 @@ local function smart_project_compile()
     default = default_cmd 
   }, function(input)
     if not input or input == "" then return end
-    
+
     -- Cache the command for this specific directory
     project_compile_cmds[root] = input
 
     -- 4. Enforce strict directory binding
     local prev_cwd = vim.fn.getcwd()
     vim.api.nvim_set_current_dir(root)
-    
+
     -- Execute via compile-mode.nvim
     vim.cmd("Compile " .. input)
-    
+
     -- Restore original directory state
     vim.api.nvim_set_current_dir(prev_cwd)
   end)
