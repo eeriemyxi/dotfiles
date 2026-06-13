@@ -83,7 +83,7 @@ local plugins = {
   github("nvim-lualine/lualine.nvim"),
 }
 
-vim.pack.add(plugins)
+vim.pack.add(plugins, { shallow = true })
 
 require("lualine").setup({
   options = {
