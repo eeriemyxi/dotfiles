@@ -300,7 +300,7 @@ animations {
 // }
 
 window-rule {
-    match app-id="wezterm|ghostty"
+    match app-id="wezterm|ghostty|Alacritty"
     open-on-workspace "1"
     default-column-width {}
     background-effect {
@@ -315,7 +315,7 @@ window-rule {
 }
 
 window-rule {
-  match app-id="Emacs|Code|code"
+  match app-id="Emacs|Code|code|neovide"
   match title="Neovim"
   open-on-workspace "2"
   open-maximized true

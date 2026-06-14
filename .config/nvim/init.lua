@@ -1,3 +1,21 @@
+-- Neovide settings
+if vim.g.neovide then
+  vim.g.neovide_opacity = 0.9
+  vim.g.neovide_normal_opacity = 0.9
+  vim.o.winblend = 20
+  vim.o.pumblend = 20
+  vim.g.neovide_cursor_animate_in_insert_mode = true
+  vim.g.neovide_floating_blur_amount_x = 2.0
+  vim.g.neovide_floating_blur_amount_y = 2.0
+  vim.g.neovide_floating_corner_radius = 0.3
+  vim.g.neovide_floating_z_height = 10.0
+  vim.g.neovide_scale_factor = 1.0
+  vim.g.neovide_text_gamma = 1
+  vim.g.neovide_text_contrast = 0.1
+  vim.g.neovide_refresh_rate = 120
+  vim.o.guifont = "Maple Mono NF,JetBrainsMono_Nerd_Font:h9:#e-subpixelantialias:#h-slight"
+end
+
 -- Wrap vim.notify to prevent "E5560: nvim_echo must not be called in a fast event context"
 -- errors caused by asynchronous background callbacks (e.g., from project.nvim).
 local original_notify = vim.notify
@@ -92,9 +110,10 @@ require("lualine").setup({
 })
 
 vim.g.gruvbox_material_enable_italic = true
-vim.g.gruvbox_material_enable_bold = true
-vim.g.gruvbox_material_transparent_background = true
+-- vim.g.gruvbox_material_enable_bold = true
+vim.g.gruvbox_material_transparent_background = not vim.g.neovide
 vim.g.gruvbox_material_foreground = "original"
+vim.g.gruvbox_material_background = "medium"
 vim.cmd.colorscheme('gruvbox-material')
 
 local cmp = require('blink.cmp')
@@ -102,6 +121,11 @@ cmp.build():pwait()
 cmp.setup({
   completion = { documentation = { auto_show = true } },
   signature = { enabled = true },
+  cmdline = {
+    enabled = true,
+    keymap = { preset = "cmdline" },
+    completion = { menu = { auto_show = true } },
+  },
 })
 
 require("mini.files").setup()
@@ -145,7 +169,9 @@ require("neogit").setup({
   integrations = { diffview = true },
 })
 
-require("neoscroll").setup()
+require("neoscroll").setup({
+  duration_multiplier = vim.g.neovide and 0.3 or 1.0,
+})
 
 local gs = require("gitsigns")
 gs.setup({
@@ -248,7 +274,7 @@ local function check_lua_syntax(path)
 end
 
 local function safe_restart()
-  vim.cmd("silent! wa")
+  -- vim.cmd("silent! wa")
 
   local init = vim.fn.stdpath("config") .. "/init.lua"
 
@@ -380,6 +406,21 @@ end)
 
 local hl = vim.api.nvim_set_hl
 
+local function make_keywords_bold()
+  for name, _ in pairs(vim.api.nvim_get_hl(0, {})) do
+    if name:lower():find("keyword") then
+      local hl_def = vim.api.nvim_get_hl(0, { name = name, link = false })
+      hl_def.bold = true
+      vim.api.nvim_set_hl(0, name, hl_def)
+    end
+  end
+end
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = "*",
+  callback = make_keywords_bold,
+})
+make_keywords_bold()
+
 hl(0, "CursorLine", { bg = "NONE" }) 
 hl(0, "MultiCursorCursor", { reverse = true })
 hl(0, "MultiCursorVisual", { link = "Visual" })
@@ -401,44 +442,6 @@ vim.diagnostic.config({
   signs = true,
   underline = true,
   update_in_insert = false,
-})
-
-local function fix_neogit_highlights()
-  local hl = vim.api.nvim_set_hl
-
-  -- 1. Inactive Hunks (Normal font, transparent background)
-  hl(0, "NeogitDiffAdd", { fg = "#b8bb26", bg = "NONE" })
-  hl(0, "NeogitDiffDelete", { fg = "#fb4934", bg = "NONE" })
-  hl(0, "NeogitDiffContext", { bg = "NONE" })
-
-  -- 2. Active/Focused Hunk (Italicized, transparent background)
-  hl(0, "NeogitDiffAddHighlight", { fg = "#b8bb26", bg = "NONE"})
-  hl(0, "NeogitDiffDeleteHighlight", { fg = "#fb4934", bg = "NONE"})
-  hl(0, "NeogitDiffContextHighlight", { bg = "NONE"})
-
-  -- 3. Cursor Line inside Active Hunk (Matches active hunk styling)
-  hl(0, "NeogitDiffContextCursor", { bg = "NONE"})
-  hl(0, "NeogitDiffAddCursor", { fg = "#b8bb26", bg = "NONE"})
-  hl(0, "NeogitDiffDeleteCursor", { fg = "#fb4934", bg = "NONE"})
-  hl(0, "NeogitDiffHeaderCursor", { bg = "NONE" })
-  
-  -- 4. Hunk Headers (@@ lines - High contrast solid background)
-  hl(0, "NeogitHunkHeader", { fg = "#282828", bg = "#fabd2f", bold = true })
-  hl(0, "NeogitHunkHeaderHighlight", { fg = "#282828", bg = "#fabd2f", bold = true })
-  hl(0, "NeogitHunkHeaderCursor", { fg = "#282828", bg = "#fabd2f", bold = true })
-  
-  -- 5. Miscellaneous UI elements
-  hl(0, "NeogitCursorLine", { bg = "NONE", underline = true, sp = "#504945" })
-  hl(0, "NeogitChangeDeleted", { fg = "#fb4934", bg = "NONE", bold = true })
-  hl(0, "NeogitDiffAddInline", { bg = "#b8bb26", fg = "#282828", bold = true })
-  hl(0, "NeogitDiffDeleteInline", { bg = "#fb4934", fg = "#282828", bold = true })
-end
-
-fix_neogit_highlights()
-
-vim.api.nvim_create_autocmd("ColorScheme", {
-  pattern = "*",
-  callback = fix_neogit_highlights,
 })
 
 local view_group = vim.api.nvim_create_augroup("AutoView", { clear = true })
