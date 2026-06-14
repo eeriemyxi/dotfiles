@@ -212,49 +212,70 @@ set("n", "[<Space>", "O<Esc>j", { noremap = true, silent = true, desc = "Add lin
 set("i", "kj", "<Esc>")
 set("i", "<C-Backspace>", "<C-w>", { desc = "Delete word backward" })
 
-local function clean_paste(key)
+local paste_ns = vim.api.nvim_create_namespace("robust_paste")
+
+local function robust_paste(cmd)
   return function()
-    vim.cmd("normal! " .. key)
+    -- Capture user-provided counts and registers before execution
+    local count = vim.v.count > 0 and vim.v.count or ""
+    local reg = vim.v.register == '"' and "" or '"' .. vim.v.register
     
-    local start_mark = vim.api.nvim_buf_get_mark(0, "[")
-    local end_mark = vim.api.nvim_buf_get_mark(0, "]")
+    vim.api.nvim_buf_clear_namespace(0, paste_ns, 0, -1)
     
-    if start_mark[1] > 0 and end_mark[1] > 0 then
-      vim.b.last_paste_start = start_mark
-      vim.b.last_paste_end = end_mark
-      vim.b.last_paste_regtype = vim.fn.getregtype()
-    end
+    -- Execute paste synchronously
+    vim.cmd('normal! ' .. reg .. count .. cmd)
+    
+    -- Capture marks immediately before async tools can modify them
+    local start_pos = vim.api.nvim_buf_get_mark(0, "[")
+    local end_pos = vim.api.nvim_buf_get_mark(0, "]")
+    
+    if start_pos[1] == 0 or end_pos[1] == 0 then return end
+    
+    -- Bind extmark to the start of the paste
+    vim.b.paste_start_id = vim.api.nvim_buf_set_extmark(0, paste_ns, start_pos[1] - 1, start_pos[2], {})
+    
+    -- Calculate bounds to prevent column overflow crashes
+    local line_len = #vim.api.nvim_buf_get_lines(0, end_pos[1] - 1, end_pos[1], false)[1]
+    local end_col = math.min(end_pos[2], math.max(0, line_len - 1))
+    
+    -- Bind extmark to the end of the paste
+    vim.b.paste_end_id = vim.api.nvim_buf_set_extmark(0, paste_ns, end_pos[1] - 1, end_col, {})
+    vim.b.paste_regtype = vim.fn.getregtype(vim.v.register)
   end
 end
 
-set("n", "p", clean_paste("p"), { desc = "Paste and capture boundaries" })
-set("n", "P", clean_paste("P"), { desc = "Paste and capture boundaries" })
+vim.keymap.set("n", "p", robust_paste("p"), { desc = "Paste and track with extmarks" })
+vim.keymap.set("n", "P", robust_paste("P"), { desc = "Paste and track with extmarks" })
 
--- Select text using our pristine cached boundaries
-set("n", "gp", function()
-  local start_m = vim.b.last_paste_start
-  local end_m = vim.b.last_paste_end
-  local reg_type = vim.b.last_paste_regtype
+vim.keymap.set("n", "gp", function()
+  local start_id = vim.b.paste_start_id
+  local end_id = vim.b.paste_end_id
+  if not start_id or not end_id then return end
   
-  if not start_m or not end_m then
-    -- Fallback to native marks if cache is empty
-    vim.cmd("normal! `[v`]")
-    return
-  end
+  -- Retrieve current extmark positions (shifted automatically by Neovim)
+  local start_pos = vim.api.nvim_buf_get_extmark_by_id(0, paste_ns, start_id, {})
+  local end_pos = vim.api.nvim_buf_get_extmark_by_id(0, paste_ns, end_id, {})
   
-  -- Resolve the correct visual mode character
+  if #start_pos == 0 or #end_pos == 0 then return end
+  
+  local reg_type = vim.b.paste_regtype or "v"
   local v_mode = "v"
   if reg_type == "V" then
     v_mode = "V"
   elseif reg_type:sub(1, 1) == "\22" or reg_type == "b" then
-    v_mode = "\22" -- Ctrl-V block mode
+    v_mode = "\22"
   end
   
-  -- Target positions directly
-  vim.api.nvim_win_set_cursor(0, start_m)
+  -- Target positions safely
+  pcall(vim.api.nvim_win_set_cursor, 0, {start_pos[1] + 1, start_pos[2]})
   vim.cmd("normal! " .. v_mode)
-  vim.api.nvim_win_set_cursor(0, end_m)
-end, { desc = "Select last pasted text cleanly" })
+  
+  -- Clamp end column dynamically based on current buffer state
+  local line_len = #vim.api.nvim_buf_get_lines(0, end_pos[1], end_pos[1] + 1, false)[1]
+  local end_col = math.min(end_pos[2], math.max(0, line_len - 1))
+  
+  pcall(vim.api.nvim_win_set_cursor, 0, {end_pos[1] + 1, end_col})
+end, { desc = "Select robustly via extmarks" })
 
 set({'n', 'v'}, 'H', '^')
 set({'n', 'v'}, 'L', '$')
