@@ -369,6 +369,18 @@ set("n", "<leader>g", function()
 end, { desc = "Open Neogit at Project Root" })
 
 local fzf = require("fzf-lua")
+fzf.setup({
+  hls = {
+    cursorline = "Visual"
+  },
+  winopts = {
+    border = "solid",
+    preview = {
+      border = "solid"
+    }
+  },
+})
+
 local project_lib = require("project")
 set("n", "<leader>ff", function()
   local root = project_lib.get_project_root() or vim.fn.getcwd()
