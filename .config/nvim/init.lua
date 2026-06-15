@@ -179,9 +179,11 @@ require("neogit").setup({
   integrations = { diffview = true },
 })
 
-require("neoscroll").setup({
-  duration_multiplier = vim.g.neovide and 0.3 or 1.0,
-})
+if not vim.g.neovide then
+  require("neoscroll").setup({
+    duration_multiplier = 1.0,
+  })
+end
 
 local gs = require("gitsigns")
 gs.setup({
