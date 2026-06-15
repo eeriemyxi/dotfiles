@@ -14,6 +14,16 @@ if vim.g.neovide then
   vim.g.neovide_text_contrast = 0.1
   vim.g.neovide_refresh_rate = 120
   vim.o.guifont = "Maple Mono NF,JetBrainsMono_Nerd_Font:h9:#e-subpixelantialias:#h-slight"
+  vim.g.neovide_padding_left = 12
+  vim.g.neovide_padding_right = 12
+  vim.g.neovide_padding_top = 12
+  vim.g.neovide_padding_bottom = 12
+  vim.g.neovide_cursor_vfx_mode = "pixiedust"
+  vim.g.neovide_cursor_vfx_opacity = 200
+  vim.g.neovide_cursor_vfx_particle_lifetime = 1.5
+  vim.g.neovide_cursor_vfx_particle_highlight_lifetime = 0.2
+  vim.g.neovide_cursor_vfx_particle_density = 1.5
+  vim.g.neovide_cursor_short_animation_length = 0.54
 end
 
 -- Wrap vim.notify to prevent "E5560: nvim_echo must not be called in a fast event context"
