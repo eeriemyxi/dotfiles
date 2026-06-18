@@ -55,34 +55,32 @@ end
 
 vim.g.mapleader = " "
 
-local opt = vim.opt
-
-opt.virtualedit = "onemore"
+vim.opt.virtualedit = "onemore"
 -- opt.completeopt = { "menu", "menuone", "noselect", "popup" }
 -- vim.o.autocomplete = true
-opt.expandtab = true
-opt.shiftwidth = 2
-opt.tabstop = 2
-opt.softtabstop = 2
-opt.number = true
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 2
+vim.opt.tabstop = 2
+vim.opt.softtabstop = 2
+vim.opt.number = true
 -- opt.relativenumber = true
-opt.ignorecase = true
-opt.smartcase = true
-opt.smartindent = true
-opt.splitright = true
-opt.splitbelow = true
-opt.cursorline = true
-opt.wrap = false
-opt.scrolloff = 8
-opt.sidescrolloff = 8
-opt.termguicolors = true
-opt.signcolumn = "yes"
-opt.updatetime = 250
-opt.timeoutlen = 300
-opt.clipboard = "unnamedplus"
-opt.mouse = "a"
-opt.undofile = true
-opt.shada = "!,'1000,<50,s10,h"
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.smartindent = true
+vim.opt.splitright = true
+vim.opt.splitbelow = true
+vim.opt.cursorline = true
+vim.opt.wrap = false
+vim.opt.scrolloff = 8
+vim.opt.sidescrolloff = 8
+vim.opt.termguicolors = true
+vim.opt.signcolumn = "yes"
+vim.opt.updatetime = 250
+vim.opt.timeoutlen = 300
+vim.opt.clipboard = "unnamedplus"
+vim.opt.mouse = "a"
+vim.opt.undofile = true
+vim.opt.shada = "!,'1000,<50,s10,h"
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.foldlevel = 99
@@ -91,7 +89,22 @@ vim.opt.directory = vim.fn.stdpath("cache") .. "/swap//"
 vim.opt.shortmess:append("A")
 vim.opt.viewoptions:remove("curdir")
 vim.opt.iskeyword:remove("_")
-
+vim.g.compile_mode = {
+  error_regexp_table = {
+    odin = {
+      regex = [[\v^([a-zA-Z0-9_./\-]+)\((\d+):(\d+)\)\s+([^:]+):\s+(.+)$]],
+      filename = 1,
+      line = 2,
+      col = 3,
+      type = 4,
+    },
+  },
+}
+vim.g.gruvbox_material_enable_italic = true
+-- vim.g.gruvbox_material_enable_bold = true
+vim.g.gruvbox_material_transparent_background = not vim.g.neovide
+vim.g.gruvbox_material_foreground = "original"
+vim.g.gruvbox_material_background = "medium"
 vim.cmd("filetype plugin indent on")
 
 local function gh(repo)
@@ -127,18 +140,14 @@ local plugins = {
 
 vim.pack.add(plugins, { shallow = true })
 
+vim.cmd.colorscheme('gruvbox-material')
+
 require("lualine").setup({
   options = {
     theme = 'gruvbox-material'
   }
 })
 
-vim.g.gruvbox_material_enable_italic = true
--- vim.g.gruvbox_material_enable_bold = true
-vim.g.gruvbox_material_transparent_background = not vim.g.neovide
-vim.g.gruvbox_material_foreground = "original"
-vim.g.gruvbox_material_background = "medium"
-vim.cmd.colorscheme('gruvbox-material')
 
 local cmp = require('blink.cmp')
 cmp.build():pwait()
@@ -266,8 +275,6 @@ set({'n', 'v'}, 'H', '^')
 set({'n', 'v'}, 'L', '$')
 
 local function safe_restart()
-  -- vim.cmd("silent! wa")
-
   local init = vim.fn.stdpath("config") .. "/init.lua"
 
   local chunk, err = loadfile(init)
@@ -307,17 +314,6 @@ set("n", "<leader>jf", function()
   end
 end, { desc = "Open mini.files at project root" })
 
-vim.g.compile_mode = {
-  error_regexp_table = {
-    odin = {
-      regex = [[\v^([a-zA-Z0-9_./\-]+)\((\d+):(\d+)\)\s+([^:]+):\s+(.+)$]],
-      filename = 1,
-      line = 2,
-      col = 3,
-      type = 4,
-    },
-  },
-}
 set("n", "<leader>]", "<cmd>NextError<CR>")
 set("n", "<leader>[", "<cmd>PrevError<CR>")
 
@@ -377,7 +373,7 @@ local function fr()
     }
   })
 end
-vim.keymap.set("n", "<leader>fr", fr, { desc = "Find Recent Files" })
+set("n", "<leader>fr", fr, { desc = "Find Recent Files" })
 
 set({ "n", "x" }, "<up>", function() mc.lineAddCursor(-1) end)
 set({ "n", "x" }, "<down>", function() mc.lineAddCursor(1) end)
@@ -434,11 +430,8 @@ hl(0, "MultiCursorDisabledCursor", { reverse = true })
 hl(0, "MultiCursorDisabledVisual", { link = "Visual" })
 hl(0, "MultiCursorDisabledSign", { link = "SignColumn" })
 
--- The actual label character you need to press (e.g., make it bold and bright)
 hl(0, "FlashLabel", { fg = "#fe8019", bg = "#3c3836", bold = true })
--- The text matching your search pattern underneath/around the label
 hl(0, "FlashMatch", { fg = "#8ec07c", bg = "NONE" })
--- Current target match focus
 hl(0, "FlashCurrent", { fg = "#fabd2f", bg = "#504945" })
 
 vim.diagnostic.config({
@@ -446,31 +439,6 @@ vim.diagnostic.config({
   signs = true,
   underline = true,
   update_in_insert = false,
-})
-
-local view_group = vim.api.nvim_create_augroup("AutoView", { clear = true })
-
-vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
-  group = view_group,
-  pattern = { "*.*" },
-  desc = "Save view when closing file",
-  callback = function()
-    if vim.bo.buftype == "" and vim.fn.expand("%") ~= "" then
-      vim.cmd("mkview")
-    end
-  end,
-})
-
-vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
-  group = view_group,
-  pattern = { "*.*" },
-  nested = true,
-  desc = "Load view when opening file",
-  callback = function()
-    if vim.bo.buftype == "" and vim.fn.expand("%") ~= "" then
-      vim.cmd("silent! loadview")
-    end
-  end,
 })
 
 local project_compile_cmds = {}

@@ -1,0 +1,11 @@
+{
+  "workspace": {
+    "library": [
+      "$VIMRUNTIME/lua"
+    ],
+    "checkThirdParty": false
+  },
+  "diagnostics": {
+    "globals": ["vim"]
+  }
+}
