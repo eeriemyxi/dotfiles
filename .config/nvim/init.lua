@@ -1,3 +1,5 @@
+vim.loader.enable()
+
 -- Neovide settings
 if vim.g.neovide then
   vim.g.neovide_opacity = 0.9
@@ -24,6 +26,18 @@ if vim.g.neovide then
   vim.g.neovide_cursor_vfx_particle_highlight_lifetime = 0.2
   vim.g.neovide_cursor_vfx_particle_density = 1.5
   vim.g.neovide_cursor_short_animation_length = 0.54
+
+  vim.keymap.set({ "n", "v" }, "<C-=>", function()
+    vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1
+  end, { desc = "Increase Neovide Scale" })
+
+  vim.keymap.set({ "n", "v" }, "<C-->", function()
+    vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1
+  end, { desc = "Decrease Neovide Scale" })
+
+  vim.keymap.set({ "n", "v" }, "<C-0>", function()
+    vim.g.neovide_scale_factor = 1.0
+  end, { desc = "Reset Neovide Scale" })
 end
 
 -- Wrap vim.notify to prevent "E5560: nvim_echo must not be called in a fast event context"
@@ -179,9 +193,11 @@ require("neogit").setup({
   integrations = { diffview = true },
 })
 
-require("neoscroll").setup({
-  duration_multiplier = vim.g.neovide and 0.3 or 1.0,
-})
+if not vim.g.neovide then
+  require("neoscroll").setup({
+    duration_multiplier = 1.0,
+  })
+end
 
 local gs = require("gitsigns")
 gs.setup({
@@ -290,20 +306,6 @@ end, { desc = "Select robustly via extmarks" })
 set({'n', 'v'}, 'H', '^')
 set({'n', 'v'}, 'L', '$')
 
-local function check_lua_syntax(path)
-  local cmd = {
-    "nvim",
-    "--headless",
-    "--clean",
-    "-u", "NONE",
-    "-c", ("lua assert(loadfile(%q))"):format(path),
-    "-c", "qa!",
-  }
-
-  local output = vim.fn.system(cmd)
-  return vim.v.shell_error == 0, output
-end
-
 local function safe_restart()
   -- vim.cmd("silent! wa")
 
@@ -367,6 +369,18 @@ set("n", "<leader>g", function()
 end, { desc = "Open Neogit at Project Root" })
 
 local fzf = require("fzf-lua")
+fzf.setup({
+  hls = {
+    cursorline = "Visual"
+  },
+  winopts = {
+    border = "solid",
+    preview = {
+      border = "solid"
+    }
+  },
+})
+
 local project_lib = require("project")
 set("n", "<leader>ff", function()
   local root = project_lib.get_project_root() or vim.fn.getcwd()
