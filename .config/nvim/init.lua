@@ -160,6 +160,30 @@ require("project").setup({
     enabled = true
   }
 })
+
+-- automatically save project if found without editing cwd
+vim.api.nvim_create_autocmd({ "BufEnter", "VimEnter" }, {
+  pattern = "*",
+  callback = function()
+    local core = require("project.core")
+    local history = require("project.util.history")
+    local root = core.get_project_root()
+
+    if root then
+      local exists = vim.tbl_contains(history.session_projects, function(val)
+        return val.path == root
+      end, { predicate = true })
+
+      if not exists then
+        table.insert(history.session_projects, 1, {
+          path = root,
+          name = vim.fs.basename(root)
+        })
+        history.write_history()
+      end
+    end
+  end
+})
 require("auto-save").setup()
 
 require("flash").setup({})
@@ -180,14 +204,14 @@ require("mason-lspconfig").setup({})
 require("neogit").setup({
   remember_settings = true,
   use_per_project_settings = true,
-  
+
   sections = {
     untracked = { folded = true },
     unstaged = { folded = false },
     staged = { folded = false },
     recent = { folded = true },
   },
-  
+
   treesitter_diff_highlight = false,
   word_diff_highlight = true,
   integrations = { diffview = true },
@@ -245,25 +269,25 @@ local function robust_paste(cmd)
     -- Capture user-provided counts and registers before execution
     local count = vim.v.count > 0 and vim.v.count or ""
     local reg = vim.v.register == '"' and "" or '"' .. vim.v.register
-    
+
     vim.api.nvim_buf_clear_namespace(0, paste_ns, 0, -1)
-    
+
     -- Execute paste synchronously
     vim.cmd('normal! ' .. reg .. count .. cmd)
-    
+
     -- Capture marks immediately before async tools can modify them
     local start_pos = vim.api.nvim_buf_get_mark(0, "[")
     local end_pos = vim.api.nvim_buf_get_mark(0, "]")
-    
+
     if start_pos[1] == 0 or end_pos[1] == 0 then return end
-    
+
     -- Bind extmark to the start of the paste
     vim.b.paste_start_id = vim.api.nvim_buf_set_extmark(0, paste_ns, start_pos[1] - 1, start_pos[2], {})
-    
+
     -- Calculate bounds to prevent column overflow crashes
     local line_len = #vim.api.nvim_buf_get_lines(0, end_pos[1] - 1, end_pos[1], false)[1]
     local end_col = math.min(end_pos[2], math.max(0, line_len - 1))
-    
+
     -- Bind extmark to the end of the paste
     vim.b.paste_end_id = vim.api.nvim_buf_set_extmark(0, paste_ns, end_pos[1] - 1, end_col, {})
     vim.b.paste_regtype = vim.fn.getregtype(vim.v.register)
@@ -277,13 +301,13 @@ vim.keymap.set("n", "gp", function()
   local start_id = vim.b.paste_start_id
   local end_id = vim.b.paste_end_id
   if not start_id or not end_id then return end
-  
+
   -- Retrieve current extmark positions (shifted automatically by Neovim)
   local start_pos = vim.api.nvim_buf_get_extmark_by_id(0, paste_ns, start_id, {})
   local end_pos = vim.api.nvim_buf_get_extmark_by_id(0, paste_ns, end_id, {})
-  
+
   if #start_pos == 0 or #end_pos == 0 then return end
-  
+
   local reg_type = vim.b.paste_regtype or "v"
   local v_mode = "v"
   if reg_type == "V" then
@@ -291,15 +315,15 @@ vim.keymap.set("n", "gp", function()
   elseif reg_type:sub(1, 1) == "\22" or reg_type == "b" then
     v_mode = "\22"
   end
-  
+
   -- Target positions safely
   pcall(vim.api.nvim_win_set_cursor, 0, {start_pos[1] + 1, start_pos[2]})
   vim.cmd("normal! " .. v_mode)
-  
+
   -- Clamp end column dynamically based on current buffer state
   local line_len = #vim.api.nvim_buf_get_lines(0, end_pos[1], end_pos[1] + 1, false)[1]
   local end_col = math.min(end_pos[2], math.max(0, line_len - 1))
-  
+
   pcall(vim.api.nvim_win_set_cursor, 0, {end_pos[1] + 1, end_col})
 end, { desc = "Select robustly via extmarks" })
 
@@ -333,8 +357,8 @@ set("n", "<leader>sx", "<cmd>close<CR>")
 set("n", "<leader>d", "<C-w>")
 set("n", "<leader>q", "<cmd>q<CR>")
 set("n", "<leader>F", function()
-  if not MiniFiles.close() then 
-    MiniFiles.open(vim.api.nvim_buf_get_name(0)) 
+  if not MiniFiles.close() then
+    MiniFiles.open(vim.api.nvim_buf_get_name(0))
   end
 end)
 set("n", "<leader>u", vim.cmd.UndotreeToggle)
@@ -342,7 +366,7 @@ set("n", "<leader>u", vim.cmd.UndotreeToggle)
 set("n", "<leader>jf", function()
   local project_lib = require("project")
   local root = project_lib.get_project_root() or vim.fn.getcwd()
-  
+
   if not MiniFiles.close() then
     MiniFiles.open(root)
   end
@@ -408,10 +432,10 @@ local function fr()
       ["alt-d"] = function(sel, opts)
         if not sel[1] then return end
         local p = require("fzf-lua").path.entry_to_file(sel[1], opts).path
-        
+
         local af = io.open(bp, "a")
         if af then af:write(p .. "\n") af:close() end
-        
+
         vim.v.oldfiles = vim.tbl_filter(function(v) return v ~= p end, vim.v.oldfiles)
         vim.schedule(fr)
       end
@@ -439,7 +463,7 @@ mc.addKeymapLayer(function(layerSet)
   layerSet({ "n", "x" }, "<left>", mc.prevCursor)
   layerSet({ "n", "x" }, "<right>", mc.nextCursor)
   layerSet({ "n", "x" }, "<leader>x", mc.deleteCursor)
-  
+
   layerSet("n", "<esc>", function()
     if not mc.cursorsEnabled() then
       mc.enableCursors()
@@ -466,7 +490,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 })
 make_keywords_bold()
 
-hl(0, "CursorLine", { bg = "NONE" }) 
+hl(0, "CursorLine", { bg = "NONE" })
 hl(0, "MultiCursorCursor", { reverse = true })
 hl(0, "MultiCursorVisual", { link = "Visual" })
 hl(0, "MultiCursorSign", { link = "SignColumn" })
@@ -514,44 +538,31 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
   end,
 })
 
--- Table to cache compile commands uniquely per project root
 local project_compile_cmds = {}
 
 local function smart_project_compile()
   local project_lib = require("project")
-
-  -- 1. Resolve root based on the focused buffer
   local root = project_lib.get_project_root()
-
-  -- Fallback for orphan buffers with no physical disk path yet
   root = root or vim.fn.getcwd()
-
-  -- 2. Retrieve cached command or use 'make' as a default guess
   local default_cmd = project_compile_cmds[root] or "make"
 
-  -- 3. Prompt user for the command
-  vim.ui.input({ 
-    prompt = "Compile project (" .. vim.fn.fnamemodify(root, ":t") .. "): ", 
-    default = default_cmd 
+  vim.ui.input({
+    prompt = "Compile project (" .. vim.fn.fnamemodify(root, ":t") .. "): ",
+    default = default_cmd
   }, function(input)
     if not input or input == "" then return end
 
-    -- Cache the command for this specific directory
     project_compile_cmds[root] = input
 
-    -- 4. Enforce strict directory binding
     local prev_cwd = vim.fn.getcwd()
     vim.api.nvim_set_current_dir(root)
 
-    -- Execute via compile-mode.nvim
     vim.cmd("Compile " .. input)
 
-    -- Restore original directory state
     vim.api.nvim_set_current_dir(prev_cwd)
   end)
 end
 
--- Recompile equivalent (bypasses prompt if cached)
 local function smart_project_recompile()
   local project_lib = require("project")
   local root = project_lib.get_project_root() or vim.fn.getcwd()
@@ -567,12 +578,10 @@ local function smart_project_recompile()
   vim.api.nvim_set_current_dir(prev_cwd)
 end
 
-local set = vim.keymap.set
-
-set("n", "<leader>C", smart_project_compile, { desc = "Projectile-like Compile" })
-set("n", "<leader>c", smart_project_recompile, { desc = "Projectile-like Recompile" })
-set("n", "<leader>P", "<cmd>Compile<CR>", { desc = "Compile" })
-set("n", "<leader>p", "<cmd>Recompile<CR>", { desc = "Recompile" })
+vim.keymap.set("n", "<leader>C", smart_project_compile, { desc = "Projectile-like Compile" })
+vim.keymap.set("n", "<leader>c", smart_project_recompile, { desc = "Projectile-like Recompile" })
+vim.keymap.set("n", "<leader>P", "<cmd>Compile<CR>", { desc = "Compile" })
+vim.keymap.set("n", "<leader>p", "<cmd>Recompile<CR>", { desc = "Recompile" })
 
 -- Load up last exit position for a file when opened
 vim.api.nvim_create_autocmd("BufReadPost", {
