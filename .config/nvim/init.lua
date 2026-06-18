@@ -80,35 +80,35 @@ vim.opt.iskeyword:remove("_")
 
 vim.cmd("filetype plugin indent on")
 
-local function github(repo)
+local function gh(repo)
   return { src = "https://github.com/" .. repo }
 end
 
 local plugins = {
-  github("sainnhe/gruvbox-material"),
-  github("nvim-treesitter/nvim-treesitter"),
-  github("neovim/nvim-lspconfig"),
-  github("jake-stewart/multicursor.nvim"),
-  github("echasnovski/mini.files"),
-  github("ibhagwan/fzf-lua"),
-  github("lewis6991/gitsigns.nvim"),
-  github("pocco81/auto-save.nvim"),
-  github("folke/which-key.nvim"),
-  github("folke/flash.nvim"),
-  github("ej-shafran/compile-mode.nvim"),
-  github("mbbill/undotree"),
-  github("karb94/neoscroll.nvim"),
-  github("nvim-lua/plenary.nvim"),
-  github("DrKJeff16/project.nvim"),
-  github("tpope/vim-sleuth"),
-  github("sindrets/diffview.nvim"),
-  github("NeogitOrg/neogit.git"),
-  github("mason-org/mason.nvim"),
-  github("mason-org/mason-lspconfig.nvim"),
-  github("rafamadriz/friendly-snippets"),
-  github("saghen/blink.lib"),
-  github("saghen/blink.cmp"),
-  github("nvim-lualine/lualine.nvim"),
+  gh "sainnhe/gruvbox-material",
+  gh "nvim-treesitter/nvim-treesitter",
+  gh "neovim/nvim-lspconfig",
+  gh "jake-stewart/multicursor.nvim",
+  gh "echasnovski/mini.files",
+  gh "ibhagwan/fzf-lua",
+  gh "lewis6991/gitsigns.nvim",
+  gh "pocco81/auto-save.nvim",
+  gh "folke/which-key.nvim",
+  gh "folke/flash.nvim",
+  gh "ej-shafran/compile-mode.nvim",
+  gh "mbbill/undotree",
+  gh "karb94/neoscroll.nvim",
+  gh "nvim-lua/plenary.nvim",
+  gh "DrKJeff16/project.nvim",
+  gh "tpope/vim-sleuth",
+  gh "sindrets/diffview.nvim",
+  gh "NeogitOrg/neogit.git",
+  gh "mason-org/mason.nvim",
+  gh "mason-org/mason-lspconfig.nvim",
+  gh "rafamadriz/friendly-snippets",
+  gh "saghen/blink.lib",
+  gh "saghen/blink.cmp",
+  gh "nvim-lualine/lualine.nvim",
 }
 
 vim.pack.add(plugins, { shallow = true })
@@ -179,11 +179,9 @@ require("neogit").setup({
   integrations = { diffview = true },
 })
 
-if not vim.g.neovide then
-  require("neoscroll").setup({
-    duration_multiplier = 1.0,
-  })
-end
+require("neoscroll").setup({
+  duration_multiplier = vim.g.neovide and 0.3 or 1.0,
+})
 
 local gs = require("gitsigns")
 gs.setup({
@@ -369,18 +367,6 @@ set("n", "<leader>g", function()
 end, { desc = "Open Neogit at Project Root" })
 
 local fzf = require("fzf-lua")
-fzf.setup({
-  hls = {
-    cursorline = "Visual"
-  },
-  winopts = {
-    border = "solid",
-    preview = {
-      border = "solid"
-    }
-  },
-})
-
 local project_lib = require("project")
 set("n", "<leader>ff", function()
   local root = project_lib.get_project_root() or vim.fn.getcwd()
