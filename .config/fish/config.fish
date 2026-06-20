@@ -9,6 +9,7 @@ set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
 
 set fish_greeting
 set QT_QPA_PLATFORMTHEME "qt5ct"
+set EDITOR "nvim"
 
 function fish_user_key_bindings
     fish_vi_key_bindings
@@ -17,7 +18,7 @@ function fish_user_key_bindings
     bind -M insert \cr history-pager
 end
 
-# A lot of it is yoinked from: 
+# A lot of it is yoinked from:
 # https://github.com/CachyOS/cachyos-fish-config/blob/main/cachyos-config.fish
 
 alias py "python"
@@ -151,14 +152,14 @@ function compressed
         echo "Error: file not found: $argv" >&2
         return
     end
-    
+
     set output_dir $(mktemp -d)
     set output_filename $(tr -dc A-Za-z0-9 </dev/urandom | head -c 13; echo)
     set output_extension (path extension $argv)
     set output_path "$output_dir/$output_filename$output_extension"
-    
+
     ffmpeg -i $argv -c:v libx264 -preset slower -crf 26 -c:a aac -b:a 96k -movflags +faststart $output_path
-    
+
     echo Exported to $output_path
 
     copy-files $output_path
@@ -181,7 +182,7 @@ function add-lc -a link
         cd -1
         return 1
     end
-    
+
     set --local paste (wl-paste | string collect)
 
     if not printf "%s" "$paste" | grep -qe "Solution"
