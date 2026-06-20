@@ -518,4 +518,6 @@ end
 
 set("n", "<leader>fr", fr, { desc = "Find Recent Files" })
 
-trim_lib.setup {}
+trim_lib.setup {
+  ft_blocklist = {"gitcommit"},
+}
