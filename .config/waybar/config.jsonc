@@ -25,11 +25,12 @@
         "custom/temp",
         "memory",
         "network",
+        "pulseaudio#microphone",
         "pulseaudio",
     ],
 
     "custom/hydration": {
-        "format": "{}", 
+        "format": "{}",
         "exec": "waydrate display watch",
         "return-type": "",
         "tooltip": true,
@@ -94,6 +95,16 @@
         "nospacing": 1,
         "on-click": "pavucontrol",
         "tooltip": false
+    },
+
+    "pulseaudio#microphone": {
+        "format": "{format_source}",
+        "format-source": "󰍬 {volume}%",
+        "format-source-muted": "󰍭 Muted",
+        "on-click": "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",
+        "on-scroll-up": "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%+",
+        "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%-",
+        "scroll-step": 5
     },
 
     "custom/temp": {
