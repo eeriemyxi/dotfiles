@@ -276,7 +276,18 @@ vim.api.nvim_create_autocmd({ "BufEnter", "VimEnter" }, {
   end,
 })
 
-auto_save_lib.setup {}
+auto_save_lib.setup {
+	condition = function(buf)
+		local utils = require("auto-save.utils.data")
+
+		if
+			vim.fn.getbufvar(buf, "&modifiable") == 1 and
+			utils.not_in(vim.fn.getbufvar(buf, "&filetype"), {"gitcommit"}) then
+			return true
+		end
+		return false
+	end,
+}
 
 flash_lib.setup {}
 
