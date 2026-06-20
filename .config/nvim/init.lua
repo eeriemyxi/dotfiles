@@ -86,6 +86,9 @@ vim.opt.directory = vim.fn.stdpath("cache") .. "/swap//"
 vim.opt.shortmess:append("A")
 vim.opt.viewoptions:remove("curdir")
 vim.opt.iskeyword:remove("_")
+vim.opt.linebreak = true
+vim.opt.textwidth = 80
+vim.opt.modeline = true
 
 vim.cmd("filetype plugin indent on")
 
