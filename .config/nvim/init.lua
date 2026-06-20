@@ -1,4 +1,5 @@
 vim.loader.enable()
+require("vim._core.ui2").enable({})
 
 local function gh(repo)
   return { src = "https://github.com/" .. repo }
@@ -30,6 +31,7 @@ local plugins = {
   gh "saghen/blink.cmp",
   gh "nvim-lualine/lualine.nvim",
   gh "cappyzawa/trim.nvim",
+  gh "rachartier/tiny-cmdline.nvim",
 }
 
 vim.pack.add(plugins, { shallow = true })
@@ -49,6 +51,7 @@ local neoscroll_lib = require("neoscroll")
 local project_lib = require("project")
 local which_key_lib = require("which-key")
 local trim_lib = require("trim")
+local tiny_cmdline_lib = require("tiny-cmdline")
 
 vim.g.mapleader = " "
 
@@ -89,6 +92,7 @@ vim.opt.iskeyword:remove("_")
 vim.opt.linebreak = true
 vim.opt.textwidth = 80
 vim.opt.modeline = true
+vim.opt.cmdheight = 0
 
 vim.cmd("filetype plugin indent on")
 
@@ -161,7 +165,7 @@ if vim.g.neovide then
 end
 
 vim.g.gruvbox_material_enable_italic = true
--- vim.g.gruvbox_material_enable_bold = true
+vim.g.gruvbox_material_enable_bold = false
 vim.g.gruvbox_material_transparent_background = not vim.g.neovide
 vim.g.gruvbox_material_foreground = "original"
 vim.g.gruvbox_material_background = "medium"
@@ -173,6 +177,14 @@ lualine_lib.setup {
     theme = "gruvbox-material",
   },
 }
+
+tiny_cmdline_lib.setup {
+  border = "solid",
+}
+
+local normal = vim.api.nvim_get_hl(0, { name = "NormalFloat" })
+local bg_hex = string.format("#%06x", normal.bg)
+vim.api.nvim_set_hl(0, "TinyCmdlineNormal", { bg = bg_hex })
 
 local hl = vim.api.nvim_set_hl
 
