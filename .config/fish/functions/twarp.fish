@@ -16,7 +16,7 @@ function twarp -d "Advanced Cloudflare Warp manager using argparse"
         set -l time $argv[3]
         test -z "$time"; and set time 5000
         if type -q notify-send
-            notify-send -t $time "$title" "$msg"
+            notify-send -t $time "$title" "$msg" --hint=boolean:transient:true
         end
         _twarp_log "Notification: $title - $msg"
     end
@@ -28,12 +28,10 @@ function twarp -d "Advanced Cloudflare Warp manager using argparse"
     end
 
     # --- Argument Parsing ---
-    # argparse will extract valid flags and leave any positional arguments in $argv
     argparse --name=twarp 'h/help' 's/stop' 'k/keep' 'S/status' 'l/log' 't/time=' -- $argv
-    or return 1 # Exits automatically if user passes an invalid flag
+    or return 1
 
-    # Legacy Subcommand Support: 
-    # If a user types `twarp stop` instead of `twarp --stop`, translate it to the flag
+    # Legacy Subcommand Support
     if test (count $argv) -gt 0
         switch "$argv[1]"
             case "stop" "disconnect"
@@ -46,6 +44,16 @@ function twarp -d "Advanced Cloudflare Warp manager using argparse"
                 set _flag_log 1
             case "help"
                 set _flag_help 1
+        end
+    end
+
+    # --- Toggle Logic for No-Argument Execution ---
+    if test (count $argv) -eq 0; and not set -q _flag_help; and not set -q _flag_log; and not set -q _flag_status; and not set -q _flag_stop; and not set -q _flag_keep; and not set -q _flag_time
+        if test -f $twarp_pid_file
+            set -l pid (cat $twarp_pid_file)
+            if kill -0 $pid 2>/dev/null
+                set _flag_stop 1
+            end
         end
     end
 
@@ -63,7 +71,7 @@ function twarp -d "Advanced Cloudflare Warp manager using argparse"
         echo "  -h, --help         Show this help message"
         echo ""
         echo "Examples:"
-        echo "  twarp              (Connects for 30 mins)"
+        echo "  twarp              (Toggle: Connects for 30 mins OR disconnects if active)"
         echo "  twarp 45           (Connects for 45 mins using positional argument)"
         echo "  twarp -t 120       (Connects for 120 mins using strict flag)"
         echo "  twarp --stop       (Disconnects instantly)"
@@ -88,9 +96,6 @@ function twarp -d "Advanced Cloudflare Warp manager using argparse"
             set -l pid (cat $twarp_pid_file)
             if kill -0 $pid 2>/dev/null
                 set_color green; echo "Active timer running (PID: $pid)."; set_color normal
-            else
-                echo "Stale timer file found. Cleaning up..."
-                rm -f $twarp_pid_file
             end
         else
             echo "No auto-disconnect timer is currently active."
@@ -102,7 +107,7 @@ function twarp -d "Advanced Cloudflare Warp manager using argparse"
         echo "Stopping Warp connection..."
         warp-cli disconnect > /dev/null
         _twarp_notify "Warp CLI" "Manual disconnect initiated."
-        
+
         if test -f $twarp_pid_file
             set -l pid (cat $twarp_pid_file)
             kill $pid 2>/dev/null
@@ -127,8 +132,7 @@ function twarp -d "Advanced Cloudflare Warp manager using argparse"
 
     # --- Timer Logic & Validation ---
     set -l wait_time $DEFAULT_MINUTES
-    
-    # Check if time was passed via flag (-t 45) or positional argument (twarp 45)
+
     if set -q _flag_time
         set wait_time $_flag_time
     else if test (count $argv) -gt 0
@@ -140,11 +144,10 @@ function twarp -d "Advanced Cloudflare Warp manager using argparse"
         end
     end
 
-    # Check for duplicate timer
+    # Check for duplicate timer (fallback cleanup)
     if test -f $twarp_pid_file
         set -l old_pid (cat $twarp_pid_file)
         if kill -0 $old_pid 2>/dev/null
-            set_color yellow; echo "A timer is already running. Replacing it..."; set_color normal
             kill $old_pid
         end
         rm -f $twarp_pid_file
@@ -152,26 +155,24 @@ function twarp -d "Advanced Cloudflare Warp manager using argparse"
 
     # --- Execution ---
     set -l sleep_seconds (math "$wait_time * 60")
-    
+
     echo "Connecting to Cloudflare Warp..."
     warp-cli connect > /dev/null
     _twarp_log "Connected manually. Timer set for $wait_time minutes."
-    
-    # Run the sleep and disconnect in a background subshell
+
     env WARP_TIME=$wait_time WARP_SEC=$sleep_seconds sh -c '
     sleep $WARP_SEC
     warp-cli disconnect > /dev/null
     if command -v notify-send >/dev/null; then
-    notify-send -t 10000 "Warp CLI" "Auto-disconnected after $WARP_TIME minutes."
+        notify-send -t 10000 "Warp CLI" "Auto-disconnected after $WARP_TIME minutes."
     fi
     echo "[$(date "+%Y-%m-%d %H:%M:%S")] Auto-disconnected." >> /tmp/twarp_activity.log
     rm -f /tmp/twarp_timer.pid
     ' &
-    
-    # Save the PID so we can kill it later with --keep or --stop
+
     set -l bg_pid $last_pid
     echo $bg_pid > $twarp_pid_file
-    
+
     disown $bg_pid
 
     set_color green
