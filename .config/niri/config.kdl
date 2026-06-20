@@ -19,7 +19,7 @@ cursor {
   hide-after-inactive-ms 5000
 }
 
-spawn-at-startup "easyeffects" "--gapplication-service"
+spawn-at-startup "easyeffects" "-w" "--service-mode"
 spawn-at-startup "swaybg" "-i" "/home/myxi/Pictures/Wallpapers/anime_skull.png"
 spawn-at-startup "waybar"
 spawn-at-startup "vivaldi-stable"
