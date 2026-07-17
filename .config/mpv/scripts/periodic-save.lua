@@ -1,12 +1,3 @@
--- local utils = require 'mp.utils'
--- 
--- local function save_position()
---     mp.commandv("write-watch-later-config")
--- end
--- 
--- local interval = 3
--- mp.add_periodic_timer(interval, save_position)
-
 local utils = require 'mp.utils'
 
 -- Where we'll store positions
@@ -30,10 +21,15 @@ local function save_positions(tbl)
     f:close()
 end
 
--- Save current time every 3s
+-- Save current time every 3s (except near the end)
 local function save_position()
     local pos = mp.get_property_number("time-pos")
-    if not pos then return end
+    local duration = mp.get_property_number("duration")
+    if not pos or not duration then return end
+
+    -- Do not save if we are within 2 seconds of the end
+    if duration - pos < 2 then return end
+
     local title = mp.get_property("media-title") or mp.get_property("filename")
     if not title then return end
 
@@ -42,12 +38,22 @@ local function save_position()
     save_positions(db)
 end
 
--- Try to restore when file loads
+-- Try to restore when file loads and purge near-end history
 mp.register_event("file-loaded", function()
     local title = mp.get_property("media-title") or mp.get_property("filename")
     if not title then return end
+
     local db = load_positions()
     if db[title] then
+        local duration = mp.get_property_number("duration")
+
+        -- If the saved position is within 2 seconds of the end, clear it from history
+        if duration and (duration - db[title] < 2) then
+            db[title] = nil
+            save_positions(db)
+            return
+        end
+
         mp.set_property_number("time-pos", db[title])
         mp.osd_message("Resumed at " .. math.floor(db[title]) .. "s")
     end

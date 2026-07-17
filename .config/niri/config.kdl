@@ -1,3 +1,5 @@
+include "workspace-switch-anim-off.kdl"
+
 workspace "1"
 workspace "2"
 workspace "3"
@@ -19,20 +21,22 @@ cursor {
   hide-after-inactive-ms 5000
 }
 
-spawn-at-startup "easyeffects" "-w" "--service-mode"
-spawn-at-startup "swaybg" "-i" "/home/myxi/Pictures/Wallpapers/anime_skull.png"
+spawn-sh-at-startup "swaybg -i ~/Pictures/Wallpapers/anime_skull.png"
+spawn-sh-at-startup "niri msg --json event-stream | jq --unbuffered --exit-status 'select(.WindowOpenedOrChanged.window.app_id == \"spotify\")' | head -n 0 && niri msg action focus-workspace 1"
+spawn-sh-at-startup "uv run ~/.config/niri/better-workspace-switch.py"
+
 spawn-at-startup "waybar"
-spawn-at-startup "vivaldi-stable"
 spawn-at-startup "xwayland-satellite"
+// To avoid vivaldi starting before the notification daemon, we delay it by 1 second
+// spawn-sh-at-startup "sleep 1 && vivaldi-stable"
+spawn-sh-at-startup "floorp" // switched to gecko
+spawn-sh-at-startup "env -u DISPLAY ELECTRON_OZONE_PLATFORM_HINT=wayland spotify --enable-features=UseOzonePlatform --ozone-platform=wayland"
+
+spawn-at-startup "easyeffects" "-w" "--service-mode"
 spawn-at-startup "lxqt-policykit-agent"
 spawn-at-startup "wl-paste" "--watch" "cliphist" "store"
-spawn-at-startup "sh" "-c" "env -u DISPLAY ELECTRON_OZONE_PLATFORM_HINT=wayland spotify --enable-features=UseOzonePlatform --ozone-platform=wayland"
-// spawn-at-startup "tremind" "start"
-spawn-at-startup "hga"
-
-spawn-at-startup "sh" "-c" "sleep 5 && pw-play '/home/myxi/Music/Windows 11 startup sound.wav'"
-
-spawn-at-startup "niri" "msg" "action" "focus-workspace" "1"
+spawn-at-startup "fish" "-c" "hga"
+// spawn-at-startup "sh" "-c" "sleep 5 && pw-play '/home/myxi/Music/Windows 11 startup sound.wav'"
 
 // This config is in the KDL format: https://kdl.dev
 // "/-" comments out the following node.
@@ -301,6 +305,12 @@ animations {
 // }
 
 window-rule {
+    match app-id="lxqt-policykit-agent"
+    default-column-width {}
+    open-floating true
+}
+
+window-rule {
     match app-id="wezterm|ghostty|alacritty"
     open-on-workspace "1"
     default-column-width {}
@@ -326,7 +336,7 @@ window-rule {
 }
 
 window-rule {
-  match app-id="cachy-browser|zen|vivaldi-stable|chromium"
+  match app-id="cachy-browser|zen|vivaldi-stable|chromium|firefox|floorp"
   open-on-workspace "3"
   open-maximized true
   open-focused false
@@ -649,4 +659,6 @@ binds {
 
     // Alt+Space {spawn "fuzzel" "--list-executables-in-path";}
     Alt+Space {spawn "fuzzel";}
+
+    Mod+Alt+H {spawn "fish" "-c" "hga";}
 }

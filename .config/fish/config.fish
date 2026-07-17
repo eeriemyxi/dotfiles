@@ -8,7 +8,8 @@ set -x MANROFFOPT "-c"
 set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
 
 set fish_greeting
-set QT_QPA_PLATFORMTHEME "qt5ct"
+set -gx QT_QPA_PLATFORM wayland
+set -gx QT_QPA_PLATFORMTHEME qt5ct
 set EDITOR "nvim"
 
 function fish_user_key_bindings
@@ -75,6 +76,22 @@ end
 function mkcd
     mkdir -p $argv[1]
     cd $argv[1]
+end
+
+function load_local_env --on-variable PWD --description 'Source .local.fish on directory change safely'
+    status is-command-substitution; and return
+
+    if set -q _loading_local_env
+        return
+    end
+
+    if test -f .local.fish
+        set -g _loading_local_env 1
+
+        source .local.fish
+
+        set -e _loading_local_env
+    end
 end
 
 function c

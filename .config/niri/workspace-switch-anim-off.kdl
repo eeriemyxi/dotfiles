@@ -1,0 +1,6 @@
+animations {
+    workspace-switch {
+        duration-ms 0
+        curve "ease-out-expo"
+    }
+}

@@ -1,4 +1,4 @@
-function twarp -d "Advanced Cloudflare Warp manager using argparse"
+function warpt --description 'Advanced Cloudflare Warp manager using argparse'
     # --- Configuration & Constants ---
     set -g twarp_pid_file "/tmp/twarp_timer.pid"
     set -g twarp_log_file "/tmp/twarp_activity.log"

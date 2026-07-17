@@ -13,7 +13,7 @@ local plugins = {
   gh "echasnovski/mini.files",
   gh "ibhagwan/fzf-lua",
   gh "lewis6991/gitsigns.nvim",
-  gh "pocco81/auto-save.nvim",
+  -- gh "pocco81/auto-save.nvim",
   gh "folke/which-key.nvim",
   gh "folke/flash.nvim",
   gh "ej-shafran/compile-mode.nvim",
@@ -32,11 +32,13 @@ local plugins = {
   gh "nvim-lualine/lualine.nvim",
   gh "cappyzawa/trim.nvim",
   gh "rachartier/tiny-cmdline.nvim",
+  gh "m00qek/baleia.nvim",
+  gh "leath-dub/snipe.nvim"
 }
 
 vim.pack.add(plugins, { shallow = true })
 
-local auto_save_lib = require("auto-save")
+-- local auto_save_lib = require("auto-save")
 local blink_cmp_lib = require("blink.cmp")
 local flash_lib = require("flash")
 local fzf_lua_lib = require("fzf-lua")
@@ -52,6 +54,8 @@ local project_lib = require("project")
 local which_key_lib = require("which-key")
 local trim_lib = require("trim")
 local tiny_cmdline_lib = require("tiny-cmdline")
+local baleia_lib = require("baleia")
+local snipe_lib = require("snipe")
 
 vim.g.mapleader = " "
 
@@ -60,7 +64,7 @@ vim.opt.virtualedit = "onemore"
 -- vim.o.autocomplete = true
 vim.opt.expandtab = true
 vim.opt.shiftwidth = 2
-vim.opt.tabstop = 2
+vim.opt.tabstop = 4
 vim.opt.softtabstop = 2
 vim.opt.number = true
 -- opt.relativenumber = true
@@ -81,8 +85,6 @@ vim.opt.clipboard = "unnamedplus"
 vim.opt.mouse = "a"
 vim.opt.undofile = true
 vim.opt.shada = "!,'1000,<50,s10,h"
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
 vim.opt.directory = vim.fn.stdpath("cache") .. "/swap//"
@@ -90,7 +92,7 @@ vim.opt.shortmess:append("A")
 vim.opt.viewoptions:remove("curdir")
 vim.opt.iskeyword:remove("_")
 vim.opt.linebreak = true
-vim.opt.textwidth = 80
+-- vim.opt.textwidth = 80
 vim.opt.modeline = true
 vim.opt.cmdheight = 0
 
@@ -110,6 +112,17 @@ set("n", "<leader>sh", "<cmd>split<CR>")
 set("n", "<leader>sx", "<cmd>close<CR>")
 set("n", "<leader>d", "<C-w>")
 set("n", "<leader>q", "<cmd>q<CR>")
+set("n", "grf", vim.lsp.buf.format)
+set('n', '<leader><leader>', '<cmd>b #<CR>', { desc = 'Toggle alternate buffer' })
+set('n', '<C-h>', '<C-w>h', { desc = 'Go to Left Window' })
+set('n', '<C-j>', '<C-w>j', { desc = 'Go to Lower Window' })
+set('n', '<C-k>', '<C-w>k', { desc = 'Go to Upper Window' })
+set('n', '<C-l>', '<C-w>l', { desc = 'Go to Right Window' })
+
+set('n', '<C-S-h>', '<C-w>H', { desc = 'Move Window Left' })
+set('n', '<C-S-j>', '<C-w>J', { desc = 'Move Window Down' })
+set('n', '<C-S-k>', '<C-w>K', { desc = 'Move Window Up' })
+set('n', '<C-S-l>', '<C-w>L', { desc = 'Move Window Right' })
 
 -- Wrap vim.notify to prevent "E5560: nvim_echo must not be called in a fast event context"
 -- errors caused by asynchronous background callbacks (e.g., from project.nvim).
@@ -288,19 +301,6 @@ vim.api.nvim_create_autocmd({ "BufEnter", "VimEnter" }, {
   end,
 })
 
-auto_save_lib.setup {
-	condition = function(buf)
-		local utils = require("auto-save.utils.data")
-
-		if
-			vim.fn.getbufvar(buf, "&modifiable") == 1 and
-			utils.not_in(vim.fn.getbufvar(buf, "&filetype"), {"gitcommit"}) then
-			return true
-		end
-		return false
-	end,
-}
-
 flash_lib.setup {}
 
 set({ "n", "x", "o" }, "s", function() flash_lib.jump() end, { desc = "Flash" })
@@ -418,61 +418,60 @@ hl(0, "MultiCursorDisabledVisual", { link = "Visual" })
 hl(0, "MultiCursorDisabledSign", { link = "SignColumn" })
 
 vim.g.compile_mode = {
+  use_pseudo_terminal = true,
+  recompile_no_fail = true,
+  environment = {
+    PYTHONUNBUFFERED = "1"
+  },
+  baleia_setup = true,
+  auto_jump_to_first_error = false,
+  use_circular_error_navigation = true,
+  default_command = {
+    pythn = "python %",
+    lua = "lua %",
+    javascript = "deno %",
+    typescript = "deno %",
+    c = "cc -o %:r % && ./%:r",
+    cpp = "cc -std=c++23 -o %:r % && ./%:r",
+    java = "javac % && java %:r",
+    go = "go run %",
+    odin = "odin run .",
+    rust = "cargo check"
+  },
   error_regexp_table = {
     odin = {
-      regex = [[\v^([a-zA-Z0-9_./\-]+)\((\d+):(\d+)\)\s+([^:]+):\s+(.+)$]],
+      regex = [[\v^(\S+)\((\d+):(\d+)\)]],
       filename = 1,
-      line = 2,
+      row = 2,
       col = 3,
-      type = 4,
     },
   },
 }
 
-local project_compile_cmds = {}
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "compilation",
+  callback = function()
+    vim.opt_local.wrap = true
+  end,
+})
 
-local function smart_project_compile()
-  local root = project_lib.get_project_root()
-  root = root or vim.fn.getcwd()
-  local default_cmd = project_compile_cmds[root] or "make"
-
-  vim.ui.input({
-    prompt = "Compile project (" .. vim.fn.fnamemodify(root, ":t") .. "): ",
-    default = default_cmd,
-  }, function(input)
-    if not input or input == "" then return end
-
-    project_compile_cmds[root] = input
-
+local function run_in_project_root(command)
+  return function()
+    local root = project_lib.get_project_root() or vim.fn.getcwd()
     local prev_cwd = vim.fn.getcwd()
+
     vim.api.nvim_set_current_dir(root)
-
-    vim.cmd("Compile " .. input)
-
+    vim.cmd(command)
     vim.api.nvim_set_current_dir(prev_cwd)
-  end)
-end
-
-local function smart_project_recompile()
-  local root = project_lib.get_project_root() or vim.fn.getcwd()
-
-  local cmd = project_compile_cmds[root]
-  if not cmd then
-    return smart_project_compile()
   end
-
-  local prev_cwd = vim.fn.getcwd()
-  vim.api.nvim_set_current_dir(root)
-  vim.cmd("Compile " .. cmd)
-  vim.api.nvim_set_current_dir(prev_cwd)
 end
 
-set("n", "<leader>C", smart_project_compile, { desc = "Projectile-like Compile" })
-set("n", "<leader>c", smart_project_recompile, { desc = "Projectile-like Recompile" })
+set("n", "<leader>C", run_in_project_root("vert Compile"), { desc = "Projectile-like Compile" })
+set("n", "<leader>c", run_in_project_root("vert Recompile"), { desc = "Projectile-like Recompile" })
 set("n", "<leader>P", "<cmd>Compile<CR>", { desc = "Compile" })
 set("n", "<leader>p", "<cmd>Recompile<CR>", { desc = "Recompile" })
-set("n", "<leader>]", "<cmd>NextError<CR>")
-set("n", "<leader>[", "<cmd>PrevError<CR>")
+set("n", "<M-]>", "<cmd>NextError<CR>")
+set("n", "<M-[>", "<cmd>PrevError<CR>")
 
 set("n", "<leader>u", vim.cmd.UndotreeToggle)
 
@@ -507,7 +506,10 @@ set("n", "<leader>fp", "<cmd>Project fzf-lua<CR>")
 local bp = vim.fn.stdpath("data") .. "/oldfiles_blacklist.txt"
 local function fr()
   local bl, f = {}, io.open(bp, "r")
-  if f then for l in f:lines() do bl[l] = true end f:close() end
+  if f then
+    for l in f:lines() do bl[l] = true end
+    f:close()
+  end
 
   vim.v.oldfiles = vim.tbl_filter(function(v) return not bl[v] end, vim.v.oldfiles)
 
@@ -519,7 +521,10 @@ local function fr()
         local p = fzf_lua_lib.path.entry_to_file(sel[1], opts).path
 
         local af = io.open(bp, "a")
-        if af then af:write(p .. "\n") af:close() end
+        if af then
+          af:write(p .. "\n")
+          af:close()
+        end
 
         vim.v.oldfiles = vim.tbl_filter(function(v) return v ~= p end, vim.v.oldfiles)
         vim.schedule(fr)
@@ -531,5 +536,79 @@ end
 set("n", "<leader>fr", fr, { desc = "Find Recent Files" })
 
 trim_lib.setup {
-  ft_blocklist = {"gitcommit"},
+  ft_blocklist = { "gitcommit" },
+  trim_current_line = false,
 }
+
+vim.lsp.config('tsgo', {
+  cmd = { "tsc", "--lsp", "--stdio" },
+  root_markers = { "tsconfig.json", "package.json", ".git" }
+})
+vim.lsp.enable('tsgo')
+
+vim.api.nvim_create_autocmd("FileType", {
+  group = vim.api.nvim_create_augroup("ts-auto-start", { clear = true }),
+  pattern = "*",
+  callback = function()
+    if pcall(vim.treesitter.start) then
+      vim.wo.foldmethod = "expr"
+      vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+    end
+  end,
+})
+
+baleia_lib.setup {}
+
+vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
+  group = vim.api.nvim_create_augroup("AutoSave", { clear = true }),
+  nested = true,
+  callback = function(args)
+    local buf = args.buf
+
+    if not vim.bo[buf].modified or not vim.bo[buf].modifiable or vim.bo[buf].filetype == "gitcommit" then
+      return
+    end
+
+    if vim.api.nvim_buf_get_name(buf) == "" then
+      return
+    end
+
+    vim.cmd("silent! write")
+  end,
+})
+
+vim.api.nvim_create_user_command("Todos", function()
+  local prev_cwd = vim.fn.getcwd()
+  local prev_cmd = vim.g.compile_command
+  local root = project_lib.get_project_root() or prev_cwd
+
+  vim.api.nvim_set_current_dir(root)
+  vim.g.compile_command = [[rg --vimgrep "(TODO|FIXME|BUG|HACK)"]]
+  vim.cmd("vert Compile")
+  vim.api.nvim_set_current_dir(prev_cwd)
+  vim.g.compile_command = prev_cmd
+end, {})
+
+set("n", "<leader>fi", "<cmd>Todos<CR><CR>")
+
+local compile_mode_hl = {
+  CompileModeError            = "DiagnosticError",
+  CompileModeInfo             = "DiagnosticInfo",
+  CompileModeWarning          = "DiagnosticWarn",
+  CompileModeMessage          = "DiagnosticInfo",
+  CompileModeMessageRow       = "DiagnosticHint",
+  CompileModeMessageCol       = "Operator",
+  CompileModeCommandOutput    = "Directory",
+  CompileModeOutputFile       = "Constant",
+  CompileModeCheckTarget      = "Constant",
+  CompileModeCheckResult      = "Directory",
+  CompileModeDirectoryMessage = "DiagnosticHint",
+  CompileModeErrorLocus       = "Search",
+}
+
+for group, link in pairs(compile_mode_hl) do
+  vim.api.nvim_set_hl(0, group, { link = link })
+end
+
+snipe_lib.setup({ ui = {position = "center", text_align = "file-first"}})
+vim.keymap.set("n", "gb", snipe_lib.open_buffer_menu)

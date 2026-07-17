@@ -143,15 +143,26 @@
 /* Styling for images within notifications. */
 .image {
     -gtk-icon-effect: none;
-    border-radius: 100px;
-    margin: 4px;
+
+    /* 1. Reduce or remove this so it doesn't clip your icon theme's natural shape */
+    border-radius: 0;
+
+    /* 2. Lock both min and max to the exact same values to force a perfect square */
+    min-width: 44px;
+    max-width: 44px;
+    min-height: 44px;
+    max-height: 44px;
+
+    /* 3. Increase margins to push it away from the layout edges */
+    margin: 12px 14px;
 }
 
 /* The app icon in a notification. */
 .app-icon {
     -gtk-icon-effect: none;
     -gtk-icon-shadow: 0 1px 4px black;
-    margin: 6px;
+    margin: 10px;
+    -gtk-icon-size: 24px;
 }
 
 /* Notification summary text. */
@@ -295,4 +306,9 @@
     padding: 8px;
     margin: 8px;
     border-radius: 12px;
+}
+
+.notification-content image {
+    -gtk-icon-size: 48px;
+    margin: 10px;
 }
