@@ -33,10 +33,11 @@ local plugins = {
   gh "cappyzawa/trim.nvim",
   gh "rachartier/tiny-cmdline.nvim",
   gh "m00qek/baleia.nvim",
-  gh "leath-dub/snipe.nvim"
+  gh "eeriemyxi-contributions/arrow.nvim",
 }
 
 vim.pack.add(plugins, { shallow = true })
+-- vim.opt.rtp:append("/home/myxi/Documents/coding/contribute/arrow.nvim")
 
 -- local auto_save_lib = require("auto-save")
 local blink_cmp_lib = require("blink.cmp")
@@ -55,7 +56,6 @@ local which_key_lib = require("which-key")
 local trim_lib = require("trim")
 local tiny_cmdline_lib = require("tiny-cmdline")
 local baleia_lib = require("baleia")
-local snipe_lib = require("snipe")
 
 vim.g.mapleader = " "
 
@@ -271,7 +271,7 @@ end, { desc = "Open mini.files at project root" })
 which_key_lib.setup { delay = 0 }
 
 project_lib.setup {
-  manual_mode = true,
+  -- manual_mode = true,
   fzf_lua = {
     enabled = true,
   },
@@ -610,5 +610,8 @@ for group, link in pairs(compile_mode_hl) do
   vim.api.nvim_set_hl(0, group, { link = link })
 end
 
-snipe_lib.setup({ ui = {position = "center", text_align = "file-first"}})
-vim.keymap.set("n", "gb", snipe_lib.open_buffer_menu)
+require('arrow').setup({
+  leader_key = ';',
+  index_keys = "afghjklAFGHJKLwrtyuiop",
+  save_key = "cwd",
+})

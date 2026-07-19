@@ -35,7 +35,7 @@ spawn-sh-at-startup "env -u DISPLAY ELECTRON_OZONE_PLATFORM_HINT=wayland spotify
 spawn-at-startup "easyeffects" "-w" "--service-mode"
 spawn-at-startup "lxqt-policykit-agent"
 spawn-at-startup "wl-paste" "--watch" "cliphist" "store"
-spawn-at-startup "fish" "-c" "hga"
+spawn-at-startup "fish" "-c" "hga --fix"
 // spawn-at-startup "sh" "-c" "sleep 5 && pw-play '/home/myxi/Music/Windows 11 startup sound.wav'"
 
 // This config is in the KDL format: https://kdl.dev
@@ -317,6 +317,11 @@ window-rule {
     background-effect {
       blur true
     }
+}
+
+window-rule {
+  match app-id=".*stremio.*"
+  open-maximized true
 }
 
 window-rule {
