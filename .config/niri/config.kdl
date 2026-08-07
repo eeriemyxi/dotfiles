@@ -36,6 +36,10 @@ spawn-at-startup "easyeffects" "-w" "--service-mode"
 spawn-at-startup "lxqt-policykit-agent"
 spawn-at-startup "wl-paste" "--watch" "cliphist" "store"
 spawn-at-startup "fish" "-c" "hga --fix"
+// spawn-at-startup "archup" "loop"
+spawn-at-startup "npx" "-y" "arrpc"
+spawn-at-startup "logoutdaemon"
+
 // spawn-at-startup "sh" "-c" "sleep 5 && pw-play '/home/myxi/Music/Windows 11 startup sound.wav'"
 
 // This config is in the KDL format: https://kdl.dev
@@ -305,6 +309,13 @@ animations {
 // }
 
 window-rule {
+    match app-id="qalculate-qt"
+    open-floating true
+    default-window-height { proportion 0.8; }
+    // focus-ring { off; }
+}
+
+window-rule {
     match app-id="lxqt-policykit-agent"
     default-column-width {}
     open-floating true
@@ -312,7 +323,16 @@ window-rule {
 
 window-rule {
     match app-id="wezterm|ghostty|alacritty"
+    exclude title="Archup Popup"
     open-on-workspace "1"
+    default-column-width {}
+    background-effect {
+      blur true
+    }
+}
+
+window-rule {
+    match title="Archup Popup"
     default-column-width {}
     background-effect {
       blur true
@@ -666,4 +686,5 @@ binds {
     Alt+Space {spawn "fuzzel";}
 
     Mod+Alt+H {spawn "fish" "-c" "hga";}
+    Mod+Alt+M {spawn "qalculate-qt";}
 }

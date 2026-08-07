@@ -34,10 +34,11 @@ local plugins = {
   gh "rachartier/tiny-cmdline.nvim",
   gh "m00qek/baleia.nvim",
   gh "eeriemyxi-contributions/arrow.nvim",
+  gh "nvim-mini/mini.align",
+  gh "andweeb/presence.nvim"
 }
 
 vim.pack.add(plugins, { shallow = true })
--- vim.opt.rtp:append("/home/myxi/Documents/coding/contribute/arrow.nvim")
 
 -- local auto_save_lib = require("auto-save")
 local blink_cmp_lib = require("blink.cmp")
@@ -90,7 +91,7 @@ vim.opt.foldlevelstart = 99
 vim.opt.directory = vim.fn.stdpath("cache") .. "/swap//"
 vim.opt.shortmess:append("A")
 vim.opt.viewoptions:remove("curdir")
-vim.opt.iskeyword:remove("_")
+-- vim.opt.iskeyword:remove("_")
 vim.opt.linebreak = true
 -- vim.opt.textwidth = 80
 vim.opt.modeline = true
@@ -110,6 +111,7 @@ set("n", "<leader>H", "<cmd>nohlsearch<CR>")
 set("n", "<leader>sv", "<cmd>vsplit<CR>")
 set("n", "<leader>sh", "<cmd>split<CR>")
 set("n", "<leader>sx", "<cmd>close<CR>")
+set("n", "<leader>B", "<cmd>bdelete!<CR>")
 set("n", "<leader>d", "<C-w>")
 set("n", "<leader>q", "<cmd>q<CR>")
 set("n", "grf", vim.lsp.buf.format)
@@ -185,11 +187,27 @@ vim.g.gruvbox_material_background = "medium"
 
 vim.cmd.colorscheme("gruvbox-material")
 
+local function macro_recording()
+    local recording_register = vim.fn.reg_recording()
+    if recording_register == "" then
+        return ""
+    else
+        return "🔴 Recording @" .. recording_register
+    end
+end
+
 lualine_lib.setup {
   options = {
     theme = "gruvbox-material",
   },
+  sections = {
+    lualine_b = { 'branch', 'diff', 'diagnostics' },
+    lualine_c = { macro_recording }, -- ◄ Adds the macro warning to the center block
+  }
 }
+
+vim.api.nvim_create_autocmd("RecordingEnter", { callback = function() require('lualine').refresh() end })
+vim.api.nvim_create_autocmd("RecordingLeave", { callback = function() require('lualine').refresh() end })
 
 tiny_cmdline_lib.setup {
   border = "solid",
@@ -418,8 +436,10 @@ hl(0, "MultiCursorDisabledVisual", { link = "Visual" })
 hl(0, "MultiCursorDisabledSign", { link = "SignColumn" })
 
 vim.g.compile_mode = {
-  use_pseudo_terminal = true,
+  use_pseudo_terminal = false,
+  input_word_completion = true,
   recompile_no_fail = true,
+  bang_expansion = true,
   environment = {
     PYTHONUNBUFFERED = "1"
   },
@@ -427,7 +447,7 @@ vim.g.compile_mode = {
   auto_jump_to_first_error = false,
   use_circular_error_navigation = true,
   default_command = {
-    pythn = "python %",
+    python = "python %",
     lua = "lua %",
     javascript = "deno %",
     typescript = "deno %",
@@ -435,7 +455,7 @@ vim.g.compile_mode = {
     cpp = "cc -std=c++23 -o %:r % && ./%:r",
     java = "javac % && java %:r",
     go = "go run %",
-    odin = "odin run .",
+    odin = "odin run . -debug -sanitize=address -- -l=Debug",
     rust = "cargo check"
   },
   error_regexp_table = {
@@ -445,6 +465,12 @@ vim.g.compile_mode = {
       row = 2,
       col = 3,
     },
+    odin_debug = {
+      regex = [[\v^- \d+ bytes \@ (\S+)\((\d+):(\d+)\)]],
+      filename = 1,
+      row = 2,
+      col = 3,
+    }
   },
 }
 
@@ -583,7 +609,7 @@ vim.api.nvim_create_user_command("Todos", function()
   local root = project_lib.get_project_root() or prev_cwd
 
   vim.api.nvim_set_current_dir(root)
-  vim.g.compile_command = [[rg --vimgrep "(TODO|FIXME|BUG|HACK)"]]
+  vim.g.compile_command = [[rg --vimgrep "@(TODO|FIXME|BUG|HACK)"]]
   vim.cmd("vert Compile")
   vim.api.nvim_set_current_dir(prev_cwd)
   vim.g.compile_command = prev_cmd
@@ -612,6 +638,22 @@ end
 
 require('arrow').setup({
   leader_key = ';',
-  index_keys = "afghjklAFGHJKLwrtyuiop",
+  mappings = {
+    edit = "1",
+    delete_mode = "2",
+    clear_all_items = "3",
+    toggle = "4", -- used as save if separate_save_and_remove is true
+    open_vertical = "7",
+    open_horizontal = "8",
+    quit = "9",
+    remove = "0", -- only used if separate_save_and_remove is true
+    next_item = "]",
+    prev_item = "["
+  },
+  index_keys = "asdfghjklqwertyuiopzxcvbnmASDFGHJKLQWERTYUIOPZXCVBNM",
   save_key = "cwd",
 })
+
+require('mini.align').setup()
+
+require("presence").setup()
